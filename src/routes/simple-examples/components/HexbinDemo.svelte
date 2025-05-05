@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
 	import { hexbin as d3_hexbin } from 'd3-hexbin';
-	let svg;
+	let svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
 	let { data, schema } = $props();
 
 	onMount(() => {

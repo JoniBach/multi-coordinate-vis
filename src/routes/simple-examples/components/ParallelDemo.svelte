@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	let svg;
+	let svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
 	let { data, schema } = $props();
 
 	onMount(() => {
