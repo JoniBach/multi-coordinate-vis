@@ -1,23 +1,30 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	let svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
 	let { data, schema } = $props();
+	let chartContainer = $state<HTMLDivElement>();
 
-	onMount(() => {
+	$effect(() => {
+		if (!chartContainer) return;
+
+		// Clear previous content
+		chartContainer.innerHTML = '';
+
 		const validatedData = schema.safeParse(data);
 		if (!validatedData.success) {
 			console.error('Invalid data:', validatedData.error);
 			return;
 		}
-		const parsedData = validatedData.data;
+		const parsedData = validatedData.data || [];
+
+		// Determine dimensions
 		const width = 400;
 		const height = 400;
 		const margin = 40;
 		const radius = Math.min(width, height) / 2 - margin;
 
-		svg = d3
-			.select('#polar-demo')
+		// Create SVG
+		const svg = d3
+			.select(chartContainer)
 			.append('svg')
 			.attr('width', width)
 			.attr('height', height)
@@ -33,6 +40,7 @@
 				.attr('fill', 'none')
 				.attr('stroke', '#ccc');
 		}
+
 		// Draw radial lines
 		for (let angle = 0; angle < 360; angle += 45) {
 			const rad = (angle * Math.PI) / 180;
@@ -45,14 +53,19 @@
 				.attr('stroke', '#eee');
 		}
 
-		// Scale for r
-		const rExtent = d3.extent(parsedData, (d) => d.r);
-		const rScale = d3.scaleLinear().domain(rExtent).range([0, radius]);
+		// Dynamic scales for r and theta
+		const rExtent = d3.extent(parsedData.map((d) => Number(d.r || 0))) || [0, 1];
+		const thetaExtent = d3.extent(parsedData.map((d) => Number(d.theta || 0))) || [0, 360];
+
+		const rScale = d3
+			.scaleLinear()
+			.domain([Math.min(...rExtent), Math.max(...rExtent)])
+			.range([0, radius]);
 
 		// Plot points
 		parsedData.forEach((d) => {
-			const thetaRad = (d.theta * Math.PI) / 180;
-			const r = rScale(d.r);
+			const thetaRad = (Number(d.theta || 0) * Math.PI) / 180;
+			const r = rScale(Number(d.r || 0));
 			const x = r * Math.cos(thetaRad);
 			const y = r * Math.sin(thetaRad);
 			svg.append('circle').attr('cx', x).attr('cy', y).attr('r', 6).attr('fill', '#1976d2');
@@ -60,4 +73,4 @@
 	});
 </script>
 
-<div id="polar-demo" style="width: 400px; height: 400px;"></div>
+<div bind:this={chartContainer} style="width: 400px; height: 400px;"></div>

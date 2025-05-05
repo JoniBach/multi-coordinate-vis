@@ -1,37 +1,49 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	let svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
 	let { data, schema } = $props();
+	let chartContainer = $state<HTMLDivElement>();
 
-	onMount(() => {
+	$effect(() => {
+		if (!chartContainer) return;
+
+		// Clear previous content
+		chartContainer.innerHTML = '';
+
 		const validatedData = schema.safeParse(data);
 		if (!validatedData.success) {
 			console.error('Invalid data:', validatedData.error);
 			return;
 		}
-		const parsedData = validatedData.data;
+		const parsedData = validatedData.data || [];
+
+		// Determine dimensions
 		const width = 400;
 		const height = 400;
 		const margin = 40;
 		const radius = Math.min(width, height) / 2 - margin;
 
-		svg = d3
-			.select('#radar-demo')
+		// Create SVG
+		const svg = d3
+			.select(chartContainer)
 			.append('svg')
 			.attr('width', width)
 			.attr('height', height)
 			.append('g')
 			.attr('transform', `translate(${width / 2},${height / 2})`);
 
-		const variables = Object.keys(parsedData[0]).filter((k) => k !== 'species');
+		// Dynamically determine variables
+		const variables =
+			parsedData.length > 0 ? Object.keys(parsedData[0]).filter((k) => k !== 'species') : [];
 		const angleSlice = (2 * Math.PI) / variables.length;
 
-		// Find max for each variable
-		const maxValues = variables.map((v) => d3.max(parsedData, (d) => d[v]));
+		// Dynamic scales for each variable
+		const variableExtents = variables.map(
+			(v) => d3.extent(parsedData.map((d) => Number(d[v] || 0))) || [0, 1]
+		);
+
 		const rScale = d3
 			.scaleLinear()
-			.domain([0, d3.max(maxValues)])
+			.domain([0, Math.max(...variableExtents.map((extent) => Math.max(...extent)))])
 			.range([0, radius]);
 
 		// Draw circular grid
@@ -43,6 +55,7 @@
 				.attr('fill', 'none')
 				.attr('stroke', '#ccc');
 		}
+
 		// Draw axes
 		variables.forEach((v, i) => {
 			const angle = angleSlice * i - Math.PI / 2;
@@ -68,7 +81,7 @@
 		parsedData.forEach((d, i) => {
 			const points = variables.map((v, j) => {
 				const angle = angleSlice * j - Math.PI / 2;
-				const r = rScale(d[v]);
+				const r = rScale(Number(d[v] || 0));
 				return [r * Math.cos(angle), r * Math.sin(angle)];
 			});
 			svg
@@ -86,9 +99,9 @@
 				.attr('text-anchor', 'middle')
 				.attr('font-size', '12px')
 				.attr('fill', color(i.toString()))
-				.text(d.species);
+				.text(d.species || '');
 		});
 	});
 </script>
 
-<div id="radar-demo" style="width: 400px; height: 400px;"></div>
+<div bind:this={chartContainer} style="width: 400px; height: 400px;"></div>
