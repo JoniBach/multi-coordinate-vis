@@ -1,0 +1,12 @@
+[
+  {"latitude_angle": 30, "longitude_angle": 45, "radiation_watts_m2": 850},
+  {"latitude_angle": 60, "longitude_angle": 120, "radiation_watts_m2": 620},
+  {"latitude_angle": 15, "longitude_angle": 270, "radiation_watts_m2": 910},
+  {"latitude_angle": 45, "longitude_angle": 90, "radiation_watts_m2": 780},
+  {"latitude_angle": 75, "longitude_angle": 180, "radiation_watts_m2": 670},
+  {"latitude_angle": 10, "longitude_angle": 60, "radiation_watts_m2": 940},
+  {"latitude_angle": 50, "longitude_angle": 135, "radiation_watts_m2": 800},
+  {"latitude_angle": 35, "longitude_angle": 210, "radiation_watts_m2": 860},
+  {"latitude_angle": 20, "longitude_angle": 300, "radiation_watts_m2": 920},
+  {"latitude_angle": 65, "longitude_angle": 240, "radiation_watts_m2": 600}
+]

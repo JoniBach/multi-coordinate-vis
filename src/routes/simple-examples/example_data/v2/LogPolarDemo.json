@@ -1,0 +1,12 @@
+[
+  {"bearing": 15, "range_km": 1, "signal_strength_dbm": -30},
+  {"bearing": 45, "range_km": 5, "signal_strength_dbm": -55},
+  {"bearing": 90, "range_km": 10, "signal_strength_dbm": -70},
+  {"bearing": 120, "range_km": 3, "signal_strength_dbm": -40},
+  {"bearing": 180, "range_km": 8, "signal_strength_dbm": -60},
+  {"bearing": 210, "range_km": 6, "signal_strength_dbm": -65},
+  {"bearing": 270, "range_km": 2, "signal_strength_dbm": -35},
+  {"bearing": 300, "range_km": 7, "signal_strength_dbm": -68},
+  {"bearing": 330, "range_km": 4, "signal_strength_dbm": -50},
+  {"bearing": 60, "range_km": 9, "signal_strength_dbm": -72}
+]

@@ -1,0 +1,12 @@
+[
+  {"sample_location": "Area-X", "sand": 0.6, "silt": 0.3, "clay": 0.1, "suitability_score": 0.8},
+  {"sample_location": "Area-Y", "sand": 0.2, "silt": 0.5, "clay": 0.3, "suitability_score": 0.75},
+  {"sample_location": "Area-Z", "sand": 0.7, "silt": 0.2, "clay": 0.1, "suitability_score": 0.85},
+  {"sample_location": "Area-A", "sand": 0.4, "silt": 0.4, "clay": 0.2, "suitability_score": 0.78},
+  {"sample_location": "Area-B", "sand": 0.3, "silt": 0.5, "clay": 0.2, "suitability_score": 0.81},
+  {"sample_location": "Area-C", "sand": 0.5, "silt": 0.3, "clay": 0.2, "suitability_score": 0.79},
+  {"sample_location": "Area-D", "sand": 0.2, "silt": 0.6, "clay": 0.2, "suitability_score": 0.73},
+  {"sample_location": "Area-E", "sand": 0.65, "silt": 0.15, "clay": 0.2, "suitability_score": 0.87},
+  {"sample_location": "Area-F", "sand": 0.55, "silt": 0.25, "clay": 0.2, "suitability_score": 0.83},
+  {"sample_location": "Area-G", "sand": 0.35, "silt": 0.45, "clay": 0.2, "suitability_score": 0.77}
+]

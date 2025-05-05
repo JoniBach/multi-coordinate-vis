@@ -1,0 +1,12 @@
+[
+  {"field_id": "F-01", "nitrogen_ppm": 120, "phosphorus_ppm": 45, "potassium_ppm": 90, "yield_tons_per_hectare": 7.8},
+  {"field_id": "F-02", "nitrogen_ppm": 105, "phosphorus_ppm": 55, "potassium_ppm": 80, "yield_tons_per_hectare": 7.2},
+  {"field_id": "F-03", "nitrogen_ppm": 135, "phosphorus_ppm": 35, "potassium_ppm": 100, "yield_tons_per_hectare": 8.1},
+  {"field_id": "F-04", "nitrogen_ppm": 110, "phosphorus_ppm": 50, "potassium_ppm": 95, "yield_tons_per_hectare": 7.6},
+  {"field_id": "F-05", "nitrogen_ppm": 125, "phosphorus_ppm": 40, "potassium_ppm": 85, "yield_tons_per_hectare": 7.9},
+  {"field_id": "F-06", "nitrogen_ppm": 130, "phosphorus_ppm": 60, "potassium_ppm": 105, "yield_tons_per_hectare": 8.3},
+  {"field_id": "F-07", "nitrogen_ppm": 100, "phosphorus_ppm": 55, "potassium_ppm": 80, "yield_tons_per_hectare": 7.1},
+  {"field_id": "F-08", "nitrogen_ppm": 140, "phosphorus_ppm": 38, "potassium_ppm": 110, "yield_tons_per_hectare": 8.5},
+  {"field_id": "F-09", "nitrogen_ppm": 115, "phosphorus_ppm": 48, "potassium_ppm": 92, "yield_tons_per_hectare": 7.7},
+  {"field_id": "F-10", "nitrogen_ppm": 128, "phosphorus_ppm": 42, "potassium_ppm": 98, "yield_tons_per_hectare": 8.0}
+]

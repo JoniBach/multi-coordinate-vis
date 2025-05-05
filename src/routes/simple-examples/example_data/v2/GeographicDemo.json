@@ -1,0 +1,12 @@
+[
+  {"sensor_id": "SM-A1", "latitude": 51.4600, "longitude": -2.5850, "moisture_percentage": 65},
+  {"sensor_id": "SM-B2", "latitude": 51.4650, "longitude": -2.5780, "moisture_percentage": 40},
+  {"sensor_id": "SM-C3", "latitude": 51.4550, "longitude": -2.5920, "moisture_percentage": 80},
+  {"sensor_id": "SM-D4", "latitude": 51.4700, "longitude": -2.5800, "moisture_percentage": 55},
+  {"sensor_id": "SM-E5", "latitude": 51.4620, "longitude": -2.5900, "moisture_percentage": 70},
+  {"sensor_id": "SM-F6", "latitude": 51.4680, "longitude": -2.5830, "moisture_percentage": 60},
+  {"sensor_id": "SM-G7", "latitude": 51.4640, "longitude": -2.5870, "moisture_percentage": 50},
+  {"sensor_id": "SM-H8", "latitude": 51.4590, "longitude": -2.5910, "moisture_percentage": 75},
+  {"sensor_id": "SM-I9", "latitude": 51.4660, "longitude": -2.5820, "moisture_percentage": 68},
+  {"sensor_id": "SM-J10", "latitude": 51.4630, "longitude": -2.5890, "moisture_percentage": 59}
+]

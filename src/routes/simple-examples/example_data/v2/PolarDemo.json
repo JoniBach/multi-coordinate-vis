@@ -1,0 +1,12 @@
+[
+  {"turbine_id": "WT-001", "direction_degrees": 30, "speed_mps": 8.2},
+  {"turbine_id": "WT-001", "direction_degrees": 75, "speed_mps": 11.5},
+  {"turbine_id": "WT-001", "direction_degrees": 190, "speed_mps": 5.9},
+  {"turbine_id": "WT-001", "direction_degrees": 250, "speed_mps": 9.1},
+  {"turbine_id": "WT-002", "direction_degrees": 60, "speed_mps": 10.3},
+  {"turbine_id": "WT-002", "direction_degrees": 120, "speed_mps": 7.8},
+  {"turbine_id": "WT-002", "direction_degrees": 200, "speed_mps": 6.5},
+  {"turbine_id": "WT-002", "direction_degrees": 300, "speed_mps": 12.0},
+  {"turbine_id": "WT-003", "direction_degrees": 45, "speed_mps": 9.8},
+  {"turbine_id": "WT-003", "direction_degrees": 135, "speed_mps": 8.6}
+]

@@ -1,0 +1,12 @@
+[
+  {"blend_id": "B-01", "nitrogen_proportion": 0.4, "phosphorus_proportion": 0.3, "potassium_proportion": 0.3, "health_score": 0.88},
+  {"blend_id": "B-02", "nitrogen_proportion": 0.5, "phosphorus_proportion": 0.2, "potassium_proportion": 0.3, "health_score": 0.82},
+  {"blend_id": "B-03", "nitrogen_proportion": 0.3, "phosphorus_proportion": 0.4, "potassium_proportion": 0.3, "health_score": 0.85},
+  {"blend_id": "B-04", "nitrogen_proportion": 0.35, "phosphorus_proportion": 0.35, "potassium_proportion": 0.3, "health_score": 0.87},
+  {"blend_id": "B-05", "nitrogen_proportion": 0.45, "phosphorus_proportion": 0.25, "potassium_proportion": 0.3, "health_score": 0.83},
+  {"blend_id": "B-06", "nitrogen_proportion": 0.42, "phosphorus_proportion": 0.28, "potassium_proportion": 0.3, "health_score": 0.86},
+  {"blend_id": "B-07", "nitrogen_proportion": 0.38, "phosphorus_proportion": 0.32, "potassium_proportion": 0.3, "health_score": 0.84},
+  {"blend_id": "B-08", "nitrogen_proportion": 0.48, "phosphorus_proportion": 0.22, "potassium_proportion": 0.3, "health_score": 0.81},
+  {"blend_id": "B-09", "nitrogen_proportion": 0.36, "phosphorus_proportion": 0.34, "potassium_proportion": 0.3, "health_score": 0.89},
+  {"blend_id": "B-10", "nitrogen_proportion": 0.41, "phosphorus_proportion": 0.29, "potassium_proportion": 0.3, "health_score": 0.88}
+]

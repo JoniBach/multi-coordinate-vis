@@ -1,0 +1,12 @@
+[
+  {"crop_variety": "AlphaGrow", "water_usage_index": 0.7, "disease_resistance_score": 4.5, "growth_rate_index": 0.9, "yield_potential_index": 0.85},
+  {"crop_variety": "BetaYield", "water_usage_index": 0.6, "disease_resistance_score": 3.8, "growth_rate_index": 0.8, "yield_potential_index": 0.92},
+  {"crop_variety": "GammaPlus", "water_usage_index": 0.8, "disease_resistance_score": 4.2, "growth_rate_index": 0.85, "yield_potential_index": 0.88},
+  {"crop_variety": "DeltaMax", "water_usage_index": 0.65, "disease_resistance_score": 4.0, "growth_rate_index": 0.92, "yield_potential_index": 0.90},
+  {"crop_variety": "EcoStar", "water_usage_index": 0.75, "disease_resistance_score": 4.7, "growth_rate_index": 0.87, "yield_potential_index": 0.89},
+  {"crop_variety": "YieldPrime", "water_usage_index": 0.68, "disease_resistance_score": 4.1, "growth_rate_index": 0.83, "yield_potential_index": 0.91},
+  {"crop_variety": "GreenEdge", "water_usage_index": 0.72, "disease_resistance_score": 3.9, "growth_rate_index": 0.88, "yield_potential_index": 0.86},
+  {"crop_variety": "AgroPlus", "water_usage_index": 0.77, "disease_resistance_score": 4.3, "growth_rate_index": 0.86, "yield_potential_index": 0.87},
+  {"crop_variety": "FarmBest", "water_usage_index": 0.69, "disease_resistance_score": 4.4, "growth_rate_index": 0.84, "yield_potential_index": 0.93},
+  {"crop_variety": "BioHarvest", "water_usage_index": 0.73, "disease_resistance_score": 4.6, "growth_rate_index": 0.91, "yield_potential_index": 0.88}
+]

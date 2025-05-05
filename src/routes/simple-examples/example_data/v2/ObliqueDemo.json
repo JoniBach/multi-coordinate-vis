@@ -1,0 +1,12 @@
+[
+  {"panel_angle_degrees": 35, "land_slope_degrees": 5, "efficiency_percentage": 92.1},
+  {"panel_angle_degrees": 40, "land_slope_degrees": 10, "efficiency_percentage": 90.5},
+  {"panel_angle_degrees": 30, "land_slope_degrees": 0, "efficiency_percentage": 93.5},
+  {"panel_angle_degrees": 45, "land_slope_degrees": 7, "efficiency_percentage": 91.2},
+  {"panel_angle_degrees": 38, "land_slope_degrees": 3, "efficiency_percentage": 92.8},
+  {"panel_angle_degrees": 32, "land_slope_degrees": 12, "efficiency_percentage": 89.9},
+  {"panel_angle_degrees": 36, "land_slope_degrees": 6, "efficiency_percentage": 91.7},
+  {"panel_angle_degrees": 42, "land_slope_degrees": 2, "efficiency_percentage": 92.4},
+  {"panel_angle_degrees": 34, "land_slope_degrees": 8, "efficiency_percentage": 90.7},
+  {"panel_angle_degrees": 39, "land_slope_degrees": 4, "efficiency_percentage": 92.0}
+]
