@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 import _ from 'lodash';
 
 // Affine
@@ -129,7 +129,19 @@ export const PolarRemapSchema = z.object({
 });
 export type PolarObject = z.infer<typeof PolarObjectSchema>;
 export type PolarRemap = z.infer<typeof PolarRemapSchema>;
-export const ParallelSchema = z.array(PolarObjectSchema);
+
+// Parallel
+export const ParallelObjectSchema = z.object({
+	r: z.union([z.number(), z.string()]),
+	theta: z.union([z.number(), z.string()])
+});
+export const ParallelRemapSchema = z.object({
+	r: z.string(),
+	theta: z.string()
+});
+export type ParallelObject = z.infer<typeof ParallelObjectSchema>;
+export type ParallelRemap = z.infer<typeof ParallelRemapSchema>;
+export const ParallelSchema = z.array(ParallelObjectSchema);
 
 // Radar
 export const RadarObjectSchema = z.object({
@@ -199,6 +211,20 @@ export const coordinateSchema = {
 	ternary: TernarySchema
 };
 
+export const remapSchema = {
+	affine: AffineRemapSchema,
+	barycentric: BarycentricRemapSchema,
+	cartesian: CartesianRemapSchema,
+	geographic: GeographicRemapSchema,
+	hexbin: HexbinRemapSchema,
+	logPolar: LogPolarRemapSchema,
+	oblique: ObliqueRemapSchema,
+	parallel: ParallelRemapSchema,
+	radar: RadarRemapSchema,
+	spherical: SphericalRemapSchema,
+	ternary: TernaryRemapSchema
+};
+
 export const UserDataTableSchema = z.array(z.unknown());
 
 // Remap utility
@@ -212,251 +238,76 @@ function remapData<T>(userData: Array<unknown>, remap: Record<string, string>): 
 	});
 }
 
-const toAffine = (userData: Array<unknown>, inputSchemaConfiguration: AffineRemap) => {
+export const CoordinateTypeSchema = z.enum([
+	'affine',
+	'barycentric',
+	'cartesian',
+	'geographic',
+	'hexbin',
+	'logPolar',
+	'oblique',
+	'parallel',
+	'polar',
+	'radar',
+	'spherical',
+	'ternary'
+]);
+export type CoordinateType = z.infer<typeof CoordinateTypeSchema>;
+
+export const processData = (
+	coordinateType: CoordinateType,
+	userData: Array<unknown>,
+	inputSchemaConfiguration: Record<string, string>
+) => {
+	const valid = {
+		validCoordinateType: false,
+		validOriginalUserData: false,
+		validUserInputSchemaConfiguration: false,
+		validRemapData: false
+	};
+	const error: { name: string; zodError?: ZodError } = {
+		name: '',
+		zodError: undefined
+	};
+
+	const validatedCoordinateType = CoordinateTypeSchema.safeParse(coordinateType);
+	if (!validatedCoordinateType.success) {
+		console.error('Invalid coordinate type', validatedCoordinateType.error);
+		error.name = 'Invalid coordinate type';
+		error.zodError = validatedCoordinateType.error;
+		return { data: [], valid, error, success: false };
+	}
+	valid.validCoordinateType = true;
 	const validateOriginalUserData = UserDataTableSchema.safeParse(userData);
 	if (!validateOriginalUserData.success) {
 		console.error('Invalid user data', validateOriginalUserData.error);
+		error.name = 'Invalid user data';
+		error.zodError = validateOriginalUserData.error;
+		return { data: [], valid, error, success: false };
 	}
+	valid.validOriginalUserData = true;
 	const validatedUserInputSchemaConfiguration =
-		AffineRemapSchema.safeParse(inputSchemaConfiguration);
+		remapSchema[validatedCoordinateType.data].safeParse(inputSchemaConfiguration);
 	if (!validatedUserInputSchemaConfiguration.success) {
 		console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
-		return [];
+		error.name = 'Invalid schema configuration';
+		error.zodError = validatedUserInputSchemaConfiguration.error;
+		return { data: [], valid, error, success: false };
 	}
-	const remappedUserData = remapData<AffineObject>(userData, inputSchemaConfiguration);
-	const validatedRemapData = AffineSchema.safeParse(remappedUserData);
-	if (validatedRemapData.success) {
-		return validatedRemapData.data;
-	} else {
+	valid.validUserInputSchemaConfiguration = true;
+	const remappedUserData = remapData(userData, inputSchemaConfiguration);
+	const validatedRemapData =
+		coordinateSchema[validatedCoordinateType.data].safeParse(remappedUserData);
+	if (!validatedRemapData.success) {
 		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-		return [];
+		error.name = 'Invalid coordinate data (after remap)';
+		error.zodError = validatedRemapData.error;
+		return { data: [], valid, error, success: false };
 	}
-};
-
-const toBarycentric = (userData: Array<unknown>, inputSchemaConfiguration: BarycentricRemap) => {
-	const validateOriginalUserData = UserDataTableSchema.safeParse(userData);
-	if (!validateOriginalUserData.success) {
-		console.error('Invalid user data', validateOriginalUserData.error);
-	}
-	const validatedUserInputSchemaConfiguration =
-		BarycentricRemapSchema.safeParse(inputSchemaConfiguration);
-	if (!validatedUserInputSchemaConfiguration.success) {
-		console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
-		return [];
-	}
-	const remappedUserData = remapData<BarycentricObject>(userData, inputSchemaConfiguration);
-	const validatedRemapData = BarycentricSchema.safeParse(remappedUserData);
-	if (validatedRemapData.success) {
-		return validatedRemapData.data;
-	} else {
-		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-		return [];
-	}
-};
-
-const toCartesian = (userData: Array<unknown>, inputSchemaConfiguration: CartesianRemap) => {
-	const validateOriginalUserData = UserDataTableSchema.safeParse(userData);
-	if (!validateOriginalUserData.success) {
-		console.error('Invalid user data', validateOriginalUserData.error);
-	}
-	const validatedUserInputSchemaConfiguration =
-		CartesianRemapSchema.safeParse(inputSchemaConfiguration);
-	if (!validatedUserInputSchemaConfiguration.success) {
-		console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
-		return [];
-	}
-	const remappedUserData = remapData<CartesianObject>(userData, inputSchemaConfiguration);
-	const validatedRemapData = CartesianSchema.safeParse(remappedUserData);
-	if (validatedRemapData.success) {
-		return validatedRemapData.data;
-	} else {
-		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-		return [];
-	}
-};
-
-const toGeographic = (userData: Array<unknown>, inputSchemaConfiguration: GeographicRemap) => {
-	// For geographic, map features array using FeatureRemap
-	const features = userData.map((item) => {
-		const mapped = remapData<any>([item], inputSchemaConfiguration.features[0])[0];
-		return {
-			type: 'Feature',
-			geometry: {
-				type: 'Point',
-				coordinates: [mapped.latitude, mapped.longitude]
-			},
-			properties: {
-				name: mapped.name
-			}
-		};
-	});
-	const geoObj = [{ type: 'FeatureCollection', features }];
-	const validatedRemapData = GeographicSchema.safeParse(geoObj);
-	if (validatedRemapData.success) {
-		return validatedRemapData.data;
-	} else {
-		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-		return [];
-	}
-};
-
-const toHexbin = (userData: Array<unknown>, inputSchemaConfiguration: HexbinRemap) => {
-	const validateOriginalUserData = UserDataTableSchema.safeParse(userData);
-	if (!validateOriginalUserData.success) {
-		console.error('Invalid user data', validateOriginalUserData.error);
-	}
-	const validatedUserInputSchemaConfiguration =
-		HexbinRemapSchema.safeParse(inputSchemaConfiguration);
-	if (!validatedUserInputSchemaConfiguration.success) {
-		console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
-		return [];
-	}
-	const remappedUserData = remapData<HexbinObject>(userData, inputSchemaConfiguration);
-	const validatedRemapData = HexbinSchema.safeParse(remappedUserData);
-	if (validatedRemapData.success) {
-		return validatedRemapData.data;
-	} else {
-		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-		return [];
-	}
-};
-
-const toLogPolar = (userData: Array<unknown>, inputSchemaConfiguration: LogPolarRemap) => {
-	const validateOriginalUserData = UserDataTableSchema.safeParse(userData);
-	if (!validateOriginalUserData.success) {
-		console.error('Invalid user data', validateOriginalUserData.error);
-	}
-	const validatedUserInputSchemaConfiguration =
-		LogPolarRemapSchema.safeParse(inputSchemaConfiguration);
-	if (!validatedUserInputSchemaConfiguration.success) {
-		console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
-		return [];
-	}
-	const remappedUserData = remapData<LogPolarObject>(userData, inputSchemaConfiguration);
-	const validatedRemapData = LogPolarSchema.safeParse(remappedUserData);
-	if (validatedRemapData.success) {
-		return validatedRemapData.data;
-	} else {
-		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-		return [];
-	}
-};
-
-const toOblique = (userData: Array<unknown>, inputSchemaConfiguration: ObliqueRemap) => {
-	const validateOriginalUserData = UserDataTableSchema.safeParse(userData);
-	if (!validateOriginalUserData.success) {
-		console.error('Invalid user data', validateOriginalUserData.error);
-	}
-	const validatedUserInputSchemaConfiguration =
-		ObliqueRemapSchema.safeParse(inputSchemaConfiguration);
-	if (!validatedUserInputSchemaConfiguration.success) {
-		console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
-		return [];
-	}
-	const remappedUserData = remapData<ObliqueObject>(userData, inputSchemaConfiguration);
-	const validatedRemapData = ObliqueSchema.safeParse(remappedUserData);
-	if (validatedRemapData.success) {
-		return validatedRemapData.data;
-	} else {
-		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-		return [];
-	}
-};
-
-const toParallel = (userData: Array<unknown>, inputSchemaConfiguration: PolarRemap) => {
-	const validateOriginalUserData = UserDataTableSchema.safeParse(userData);
-	if (!validateOriginalUserData.success) {
-		console.error('Invalid user data', validateOriginalUserData.error);
-	}
-	const validatedUserInputSchemaConfiguration =
-		PolarRemapSchema.safeParse(inputSchemaConfiguration);
-	if (!validatedUserInputSchemaConfiguration.success) {
-		console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
-		return [];
-	}
-	const remappedUserData = remapData<PolarObject>(userData, inputSchemaConfiguration);
-	const validatedRemapData = ParallelSchema.safeParse(remappedUserData);
-	if (validatedRemapData.success) {
-		return validatedRemapData.data;
-	} else {
-		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-		return [];
-	}
-};
-
-const toRadar = (userData: Array<unknown>, inputSchemaConfiguration: RadarRemap) => {
-	const validateOriginalUserData = UserDataTableSchema.safeParse(userData);
-	if (!validateOriginalUserData.success) {
-		console.error('Invalid user data', validateOriginalUserData.error);
-	}
-	const validatedUserInputSchemaConfiguration =
-		RadarRemapSchema.safeParse(inputSchemaConfiguration);
-	if (!validatedUserInputSchemaConfiguration.success) {
-		console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
-		return [];
-	}
-	const remappedUserData = remapData<RadarObject>(userData, inputSchemaConfiguration);
-	const validatedRemapData = RadarSchema.safeParse(remappedUserData);
-	if (validatedRemapData.success) {
-		return validatedRemapData.data;
-	} else {
-		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-		return [];
-	}
-};
-
-const toSpherical = (userData: Array<unknown>, inputSchemaConfiguration: SphericalRemap) => {
-	const validateOriginalUserData = UserDataTableSchema.safeParse(userData);
-	if (!validateOriginalUserData.success) {
-		console.error('Invalid user data', validateOriginalUserData.error);
-	}
-	const validatedUserInputSchemaConfiguration =
-		SphericalRemapSchema.safeParse(inputSchemaConfiguration);
-	if (!validatedUserInputSchemaConfiguration.success) {
-		console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
-		return [];
-	}
-	const remappedUserData = remapData<SphericalObject>(userData, inputSchemaConfiguration);
-	const validatedRemapData = SphericalSchema.safeParse(remappedUserData);
-	if (validatedRemapData.success) {
-		return validatedRemapData.data;
-	} else {
-		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-		return [];
-	}
-};
-
-const toTernary = (userData: Array<unknown>, inputSchemaConfiguration: TernaryRemap) => {
-	const validateOriginalUserData = UserDataTableSchema.safeParse(userData);
-	if (!validateOriginalUserData.success) {
-		console.error('Invalid user data', validateOriginalUserData.error);
-	}
-	const validatedUserInputSchemaConfiguration =
-		TernaryRemapSchema.safeParse(inputSchemaConfiguration);
-	if (!validatedUserInputSchemaConfiguration.success) {
-		console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
-		return [];
-	}
-	const remappedUserData = remapData<TernaryObject>(userData, inputSchemaConfiguration);
-	const validatedRemapData = TernarySchema.safeParse(remappedUserData);
-	if (validatedRemapData.success) {
-		return validatedRemapData.data;
-	} else {
-		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-		return [];
-	}
-};
-
-export const toCoordinates = {
-	affine: toAffine,
-	barycentric: toBarycentric,
-	cartesian: toCartesian,
-	geographic: toGeographic,
-	hexbin: toHexbin,
-	logPolar: toLogPolar,
-	oblique: toOblique,
-	parallel: toParallel,
-	radar: toRadar,
-	spherical: toSpherical,
-	ternary: toTernary
+	valid.validRemapData = true;
+	return {
+		data: validatedRemapData.data,
+		valid,
+		success: true
+	};
 };

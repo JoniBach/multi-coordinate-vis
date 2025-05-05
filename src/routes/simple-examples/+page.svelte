@@ -55,16 +55,14 @@
 	import SphericalExampleData from './example_data/v2/SphericalDemo.json' with { type: 'json' };
 	import ObliqueExampleData from './example_data/v2/ObliqueDemo.json' with { type: 'json' };
 	import AffineExampleData from './example_data/v2/AffineDemo.json' with { type: 'json' };
-	import { toCoordinates } from './schema/AllDemo.schema.js';
+	import { processData } from './schema/AllDemo.schema.js';
 
 	$effect(() => {
-		const schema = {
+		const processedData = processData('cartesian', CartesianExampleData, {
 			x: 'timestamp',
 			y: 'readings.celsius'
-			// celsius: 'greenhouse_id'
-		};
-		const data = toCoordinates['cartesian'](CartesianExampleData, schema);
-		console.log(data);
+		});
+		console.log(processedData);
 	});
 </script>
 
