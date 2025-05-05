@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	import LogPolarDemo from '../data/LogPolarDemo.json' with { type: 'json' };
 	let svg;
+	let { data, schema } = $props();
 
 	onMount(() => {
+		const parsedData = schema.safeParse(data).data;
 		const width = 400;
 		const height = 400;
 		const margin = 40;
@@ -19,7 +20,7 @@
 			.attr('transform', `translate(${width / 2},${height / 2})`);
 
 		// Find log(r) extent
-		const logExtent = d3.extent(LogPolarDemo, (d) => Math.log10(d.r));
+		const logExtent = d3.extent(parsedData, (d) => Math.log10(d.r));
 		const rScale = d3.scaleLinear().domain(logExtent).range([0, radius]);
 
 		// Draw circular grid (log-spaced)
@@ -41,7 +42,7 @@
 		}
 
 		// Plot points
-		LogPolarDemo.forEach((d) => {
+		parsedData.forEach((d) => {
 			const thetaRad = (d.theta * Math.PI) / 180;
 			const r = rScale(Math.log10(d.r));
 			const x = r * Math.cos(thetaRad);

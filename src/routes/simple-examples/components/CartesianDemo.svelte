@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	import CartesianDemo from '../data/CartesianDemo.json' with { type: 'json' };
 	let svg;
+	let { data, schema } = $props();
 
 	onMount(() => {
+		const parsedData = schema.safeParse(data).data;
 		svg = d3
 			.select('#cartesian-demo')
 			.append('svg')
@@ -15,11 +16,11 @@
 
 		const xScale = d3
 			.scaleLinear()
-			.domain([0, d3.max(CartesianDemo, (d) => d.x)])
+			.domain([0, d3.max(parsedData, (d) => d.x)])
 			.range([0, 400]);
 		const yScale = d3
 			.scaleLinear()
-			.domain([0, d3.max(CartesianDemo, (d) => d.y)])
+			.domain([0, d3.max(parsedData, (d) => d.y)])
 			.range([400, 0]);
 
 		const xAxis = d3.axisBottom(xScale);
@@ -30,7 +31,7 @@
 
 		svg
 			.selectAll('circle')
-			.data(CartesianDemo)
+			.data(parsedData)
 			.enter()
 			.append('circle')
 			.attr('cx', (d) => xScale(d.x))

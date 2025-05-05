@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	import GeographicDemo from '../data/GeographicDemo.json' with { type: 'json' };
 	let svg;
+	let { data, schema } = $props();
 
 	onMount(() => {
+		const parsedData = schema.safeParse(data).data;
 		svg = d3.select('#geographic-demo').append('svg').attr('width', 500).attr('height', 300);
 
 		// Define projection and path generator
@@ -21,7 +22,7 @@
 			.attr('stroke', '#ccc');
 
 		// Plot points
-		GeographicDemo.features.forEach((feature) => {
+		parsedData.features.forEach((feature) => {
 			const [lon, lat] = feature.geometry.coordinates;
 			const [x, y] = projection([lon, lat]);
 			svg.append('circle').attr('cx', x).attr('cy', y).attr('r', 6).attr('fill', '#1976d2');

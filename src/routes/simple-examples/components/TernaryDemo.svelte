@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	import TernaryDemo from '../data/TernaryDemo.json' with { type: 'json' };
 	let svg;
+	let { data, schema } = $props();
 
 	onMount(() => {
+		const parsedData = schema.safeParse(data).data;
 		const width = 400;
 		const height = 400;
 		const margin = 40;
@@ -26,16 +27,32 @@
 		];
 
 		// Draw triangle
-		svg.append('polygon')
-			.attr('points', corners.map(d => d.join(",")).join(' '))
+		svg
+			.append('polygon')
+			.attr('points', corners.map((d) => d.join(',')).join(' '))
 			.attr('fill', 'none')
 			.attr('stroke', '#333')
 			.attr('stroke-width', 2);
 
 		// Axis labels
-		svg.append('text').attr('x', corners[0][0]).attr('y', corners[0][1] - 10).attr('text-anchor', 'middle').text('A');
-		svg.append('text').attr('x', corners[1][0] - 15).attr('y', corners[1][1] + 5).attr('text-anchor', 'end').text('B');
-		svg.append('text').attr('x', corners[2][0] + 15).attr('y', corners[2][1] + 5).attr('text-anchor', 'start').text('C');
+		svg
+			.append('text')
+			.attr('x', corners[0][0])
+			.attr('y', corners[0][1] - 10)
+			.attr('text-anchor', 'middle')
+			.text('A');
+		svg
+			.append('text')
+			.attr('x', corners[1][0] - 15)
+			.attr('y', corners[1][1] + 5)
+			.attr('text-anchor', 'end')
+			.text('B');
+		svg
+			.append('text')
+			.attr('x', corners[2][0] + 15)
+			.attr('y', corners[2][1] + 5)
+			.attr('text-anchor', 'start')
+			.text('C');
 
 		// Convert barycentric to cartesian
 		function ternaryToCartesian(a, b, c) {
@@ -45,14 +62,11 @@
 		}
 
 		// Plot points
-		TernaryDemo.forEach((d) => {
+		parsedData.forEach((d) => {
 			const [x, y] = ternaryToCartesian(d.A, d.B, d.C);
-			svg.append('circle')
-				.attr('cx', x)
-				.attr('cy', y)
-				.attr('r', 7)
-				.attr('fill', '#1976d2');
-			svg.append('text')
+			svg.append('circle').attr('cx', x).attr('cy', y).attr('r', 7).attr('fill', '#1976d2');
+			svg
+				.append('text')
 				.attr('x', x + 10)
 				.attr('y', y)
 				.attr('font-size', '12px')

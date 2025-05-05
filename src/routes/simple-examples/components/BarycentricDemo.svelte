@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	import BarycentricDemo from '../data/BarycentricDemo.json' with { type: 'json' };
 	let svg;
+	let { data, schema } = $props();
 
 	onMount(() => {
+		const parsedData = schema.safeParse(data).data;
 		const width = 400;
 		const height = 400;
 		const margin = 40;
@@ -56,7 +57,7 @@
 			return [x, y];
 		}
 
-		BarycentricDemo.forEach((d) => {
+		parsedData.forEach((d) => {
 			const [x, y] = baryToCartesian(d.A, d.B, d.C);
 			svg.append('circle').attr('cx', x).attr('cy', y).attr('r', 7).attr('fill', '#1976d2');
 			svg

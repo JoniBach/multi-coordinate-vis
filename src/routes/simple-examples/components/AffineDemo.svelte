@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	import AffineDemo from '../data/AffineDemo.json' with { type: 'json' };
 	let svg;
+	let { data, schema } = $props();
 
-	onMount(() => {
+	$effect(() => {
+		const parsedData = schema.safeParse(data).data;
 		const width = 400;
 		const height = 400;
 		const margin = 40;
@@ -54,7 +55,7 @@
 			.text('y (affine)');
 
 		// Transform and plot points
-		AffineDemo.forEach((d) => {
+		parsedData.forEach((d) => {
 			const x = d.x * affineMat[0][0] + d.y * affineMat[0][1];
 			const y = d.x * affineMat[1][0] + d.y * affineMat[1][1];
 			svg
