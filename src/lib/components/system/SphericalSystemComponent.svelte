@@ -39,13 +39,14 @@
 		const thetaExtent = d3.extent(parsedData.map((d) => Number(d.theta || 0))) || [0, 360];
 		const phiExtent = d3.extent(parsedData.map((d) => Number(d.phi || 0))) || [0, 180];
 
-		// Use square root scaling for better point distribution
-		const maxR = Math.max(...rExtent);
-		const rScale = d3.scaleSqrt().domain([0, maxR]).range([0, radius]);
+		const rScale = d3
+			.scaleLinear()
+			.domain([Math.min(...rExtent), Math.max(...rExtent)])
+			.range([0, 1]);
 
 		// Project (r, theta, phi) to 2D (orthographic projection)
 		parsedData.forEach((d) => {
-			const r = rScale(Number(d.r || 0));
+			const r = rScale(Number(d.r || 0)) * radius;
 			const thetaRad = (Number(d.theta || 0) * Math.PI) / 180;
 			const phiRad = (Number(d.phi || 0) * Math.PI) / 180;
 

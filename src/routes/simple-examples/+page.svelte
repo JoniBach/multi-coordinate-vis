@@ -44,7 +44,9 @@
 		width: 400,
 		margin: 40,
 		skewX: 30,
-		skewY: 0
+		skewY: 0,
+		gridLevels: 5,
+		scaleExtent: 200
 	};
 </script>
 

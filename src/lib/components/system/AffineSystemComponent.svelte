@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
 	let { data, schema, config } = $props();
 	let chartContainer = $state<HTMLDivElement>();
@@ -16,14 +17,27 @@
 		}
 		const parsedData = validatedData.data || [];
 
+		// Affine transformation matrix
+		const affineMat = [
+			[1.2, 0.5],
+			[0.3, 1.1]
+		];
+
+		// Transform points
+		const transformedPoints = parsedData.map((d) => ({
+			...d,
+			tx: (d.x || 0) * affineMat[0][0] + (d.y || 0) * affineMat[0][1],
+			ty: (d.x || 0) * affineMat[1][0] + (d.y || 0) * affineMat[1][1]
+		}));
+
+		// Calculate dynamic scales
+		const xExtent = d3.extent(transformedPoints.map((d) => d.tx)) || [0, 1];
+		const yExtent = d3.extent(transformedPoints.map((d) => d.ty)) || [0, 1];
+
 		// Determine scale and padding
 		const width = config.width;
 		const height = config.height;
 		const margin = config.margin;
-
-		// Calculate dynamic scales
-		const xExtent = d3.extent(parsedData.map((d) => Number(d.x || 0))) || [0, 1];
-		const yExtent = d3.extent(parsedData.map((d) => Number(d.y || 0))) || [0, 1];
 
 		const xScale = d3
 			.scaleLinear()
@@ -55,7 +69,7 @@
 			.attr('x', width / 2)
 			.attr('y', height)
 			.attr('text-anchor', 'middle')
-			.text('x');
+			.text('x (affine)');
 
 		svg
 			.append('text')
@@ -63,18 +77,25 @@
 			.attr('x', -height / 2)
 			.attr('y', 15)
 			.attr('text-anchor', 'middle')
-			.text('y');
+			.text('y (affine)');
 
-		// Plot points
-		svg
-			.selectAll('circle')
-			.data(parsedData)
-			.enter()
-			.append('circle')
-			.attr('cx', (d) => xScale(d.x))
-			.attr('cy', (d) => yScale(d.y))
-			.attr('r', 5)
-			.attr('fill', '#1976d2');
+		// Plot transformed points
+		transformedPoints.forEach((d) => {
+			svg
+				.append('circle')
+				.attr('cx', xScale(d.tx))
+				.attr('cy', yScale(d.ty))
+				.attr('r', 8)
+				.attr('fill', '#1976d2');
+
+			svg
+				.append('text')
+				.attr('x', xScale(d.tx) + 10)
+				.attr('y', yScale(d.ty))
+				.attr('font-size', '12px')
+				.attr('alignment-baseline', 'middle')
+				.text(d.label);
+		});
 	});
 </script>
 
