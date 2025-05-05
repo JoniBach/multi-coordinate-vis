@@ -1,31 +1,37 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	let svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
 	let { data, schema } = $props();
+	let chartContainer = $state<HTMLDivElement>();
 
-	onMount(() => {
+	$effect(() => {
+		if (!chartContainer) return;
+
+		// Clear previous content
+		chartContainer.innerHTML = '';
+
 		const validatedData = schema.safeParse(data);
 		if (!validatedData.success) {
 			console.error('Invalid data:', validatedData.error);
 			return;
 		}
-		const parsedData = validatedData.data;
+		const parsedData = validatedData.data || [];
 		const width = 400;
 		const height = 400;
 		const margin = 40;
 		const radius = Math.min(width, height) / 2 - margin;
 
-		svg = d3
-			.select('#logpolar-demo')
+		// Create SVG
+		const svg = d3
+			.select(chartContainer)
 			.append('svg')
 			.attr('width', width)
 			.attr('height', height)
 			.append('g')
 			.attr('transform', `translate(${width / 2},${height / 2})`);
 
-		// Find log(r) extent
-		const logExtent = d3.extent(parsedData, (d) => Math.log10(d.r));
+		// Find log(r) extent with safe conversion
+		const safeLogExtent = parsedData.map((d) => Math.log10(Number(d.r || 1)));
+		const logExtent = [Math.min(...safeLogExtent), Math.max(...safeLogExtent)] as [number, number];
 		const rScale = d3.scaleLinear().domain(logExtent).range([0, radius]);
 
 		// Draw circular grid (log-spaced)
@@ -34,6 +40,7 @@
 			const r = rScale(logExtent[0] + (i * (logExtent[1] - logExtent[0])) / gridLevels);
 			svg.append('circle').attr('r', r).attr('fill', 'none').attr('stroke', '#ccc');
 		}
+
 		// Draw radial lines
 		for (let angle = 0; angle < 360; angle += 45) {
 			const rad = (angle * Math.PI) / 180;
@@ -48,8 +55,8 @@
 
 		// Plot points
 		parsedData.forEach((d) => {
-			const thetaRad = (d.theta * Math.PI) / 180;
-			const r = rScale(Math.log10(d.r));
+			const thetaRad = (Number(d.theta || 0) * Math.PI) / 180;
+			const r = rScale(Math.log10(Number(d.r || 1)));
 			const x = r * Math.cos(thetaRad);
 			const y = r * Math.sin(thetaRad);
 			svg.append('circle').attr('cx', x).attr('cy', y).attr('r', 7).attr('fill', '#1976d2');
@@ -63,6 +70,8 @@
 			.attr('text-anchor', 'middle')
 			.attr('fill', '#333')
 			.text('r (log scale)');
+
+		// Angle labels
 		for (let angle = 0; angle < 360; angle += 45) {
 			const rad = (angle * Math.PI) / 180;
 			svg
@@ -72,9 +81,9 @@
 				.attr('text-anchor', 'middle')
 				.attr('font-size', '10px')
 				.attr('fill', '#333')
-				.text(`${angle}\u00B0`);
+				.text(`${angle}°`);
 		}
 	});
 </script>
 
-<div id="logpolar-demo" style="width: 400px; height: 400px;"></div>
+<div bind:this={chartContainer} style="width: 400px; height: 400px;"></div>

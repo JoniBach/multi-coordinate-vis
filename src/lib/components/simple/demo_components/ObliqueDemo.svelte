@@ -1,16 +1,20 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	let svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
 	let { data, schema } = $props();
+	let chartContainer = $state<HTMLDivElement>();
 
-	onMount(() => {
+	$effect(() => {
+		if (!chartContainer) return;
+
+		// Clear previous content
+		chartContainer.innerHTML = '';
+
 		const validatedData = schema.safeParse(data);
 		if (!validatedData.success) {
 			console.error('Invalid data:', validatedData.error);
 			return;
 		}
-		const parsedData = validatedData.data;
+		const parsedData = validatedData.data || [];
 		const width = 400;
 		const height = 400;
 		const margin = 40;
@@ -21,8 +25,20 @@
 			[Math.tan((skewY * Math.PI) / 180), 1]
 		];
 
-		svg = d3
-			.select('#oblique-demo')
+		// Determine dynamic scale based on data
+		const xExtent = d3.extent(parsedData.map((d) => Number(d.x || 0))) || [0, 1];
+		const yExtent = d3.extent(parsedData.map((d) => Number(d.y || 0))) || [0, 1];
+		const maxExtent = Math.max(
+			Math.abs(xExtent[0] || 0),
+			Math.abs(xExtent[1] || 0),
+			Math.abs(yExtent[0] || 0),
+			Math.abs(yExtent[1] || 0)
+		);
+		const scaleFactor = 200 / maxExtent;
+
+		// Create SVG
+		const svg = d3
+			.select(chartContainer)
 			.append('svg')
 			.attr('width', width)
 			.attr('height', height)
@@ -63,23 +79,23 @@
 
 		// Transform and plot points
 		parsedData.forEach((d) => {
-			const x = d.x * skewMat[0][0] + d.y * skewMat[0][1];
-			const y = d.x * skewMat[1][0] + d.y * skewMat[1][1];
+			const x = Number(d.x || 0) * skewMat[0][0] + Number(d.y || 0) * skewMat[0][1];
+			const y = Number(d.x || 0) * skewMat[1][0] + Number(d.y || 0) * skewMat[1][1];
 			svg
 				.append('circle')
-				.attr('cx', x * 70)
-				.attr('cy', y * 70)
+				.attr('cx', x * scaleFactor)
+				.attr('cy', y * scaleFactor)
 				.attr('r', 8)
 				.attr('fill', '#1976d2');
 			svg
 				.append('text')
-				.attr('x', x * 70 + 10)
-				.attr('y', y * 70)
+				.attr('x', x * scaleFactor + 10)
+				.attr('y', y * scaleFactor)
 				.attr('font-size', '12px')
 				.attr('alignment-baseline', 'middle')
-				.text(d.label);
+				.text(d.label || '');
 		});
 	});
 </script>
 
-<div id="oblique-demo" style="width: 400px; height: 400px;"></div>
+<div bind:this={chartContainer} style="width: 400px; height: 400px;"></div>
