@@ -99,20 +99,7 @@ const logPolarScale = (data: Array<LogPolarObject>, config: Config) => {
 	return { logExtent, rScale };
 };
 const obliqueScale = (data: Array<ObliqueObject>, config: Config) => {
-	const { height, width, margin, scaleExtent } = config;
-
-	// Determine dynamic scale based on data
-	const xExtent = d3.extent(data.map((d) => Number(d.x || 0))) || [0, 1];
-	const yExtent = d3.extent(data.map((d) => Number(d.y || 0))) || [0, 1];
-	const maxExtent = Math.max(
-		Math.abs(xExtent[0] || 0),
-		Math.abs(xExtent[1] || 0),
-		Math.abs(yExtent[0] || 0),
-		Math.abs(yExtent[1] || 0)
-	);
-	const scaleFactor = scaleExtent / maxExtent;
-
-	return { scaleFactor };
+	// todo
 };
 const parallelScale = (data: Array<ParallelObject>, config: Config) => {
 	const { height, width } = config;
