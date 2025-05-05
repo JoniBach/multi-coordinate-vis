@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	// import components
-	import CartesianDemoComponent from './components/CartesianDemo.svelte';
-	import PolarDemoComponent from './components/PolarDemo.svelte';
-	import GeographicDemoComponent from './components/GeographicDemo.svelte';
-	import ParallelDemoComponent from './components/ParallelDemo.svelte';
-	import RadarDemoComponent from './components/RadarDemo.svelte';
-	import TernaryDemoComponent from './components/TernaryDemo.svelte';
-	import HexbinDemoComponent from './components/HexbinDemo.svelte';
-	import LogPolarDemoComponent from './components/LogPolarDemo.svelte';
-	import BarycentricDemoComponent from './components/BarycentricDemo.svelte';
-	import SphericalDemoComponent from './components/SphericalDemo.svelte';
-	import ObliqueDemoComponent from './components/ObliqueDemo.svelte';
-	import AffineDemoComponent from './components/AffineDemo.svelte';
+	import CartesianDemoComponent from './demo_components/CartesianDemo.svelte';
+	import PolarDemoComponent from './demo_components/PolarDemo.svelte';
+	import GeographicDemoComponent from './demo_components/GeographicDemo.svelte';
+	import ParallelDemoComponent from './demo_components/ParallelDemo.svelte';
+	import RadarDemoComponent from './demo_components/RadarDemo.svelte';
+	import TernaryDemoComponent from './demo_components/TernaryDemo.svelte';
+	import HexbinDemoComponent from './demo_components/HexbinDemo.svelte';
+	import LogPolarDemoComponent from './demo_components/LogPolarDemo.svelte';
+	import BarycentricDemoComponent from './demo_components/BarycentricDemo.svelte';
+	import SphericalDemoComponent from './demo_components/SphericalDemo.svelte';
+	import ObliqueDemoComponent from './demo_components/ObliqueDemo.svelte';
+	import AffineDemoComponent from './demo_components/AffineDemo.svelte';
 
 	// import data
 	import CartesianDemoData from './generic_data/CartesianDemo.json' with { type: 'json' };
