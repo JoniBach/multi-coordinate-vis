@@ -129,6 +129,7 @@ export const PolarRemapSchema = z.object({
 });
 export type PolarObject = z.infer<typeof PolarObjectSchema>;
 export type PolarRemap = z.infer<typeof PolarRemapSchema>;
+export const PolarSchema = z.array(PolarObjectSchema);
 
 // Parallel
 export const ParallelObjectSchema = z.object({
@@ -206,6 +207,7 @@ export const coordinateSchema = {
 	logPolar: LogPolarSchema,
 	oblique: ObliqueSchema,
 	parallel: ParallelSchema,
+	polar: PolarSchema,
 	radar: RadarSchema,
 	spherical: SphericalSchema,
 	ternary: TernarySchema
@@ -220,6 +222,7 @@ export const remapSchema = {
 	logPolar: LogPolarRemapSchema,
 	oblique: ObliqueRemapSchema,
 	parallel: ParallelRemapSchema,
+	polar: PolarRemapSchema,
 	radar: RadarRemapSchema,
 	spherical: SphericalRemapSchema,
 	ternary: TernaryRemapSchema
@@ -230,11 +233,11 @@ export const UserDataTableSchema = z.array(z.unknown());
 // Remap utility
 function remapData<T>(userData: Array<unknown>, remap: Record<string, string>): T[] {
 	return userData.map((item) => {
-		const mapped: any = {};
+		const mapped: Record<string, unknown> = {};
 		for (const [outKey, inPath] of Object.entries(remap)) {
 			mapped[outKey] = _.get(item, inPath);
 		}
-		return mapped;
+		return mapped as T;
 	});
 }
 
