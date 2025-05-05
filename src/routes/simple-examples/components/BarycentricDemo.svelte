@@ -1,0 +1,73 @@
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import * as d3 from 'd3';
+	import BarycentricDemo from '../data/BarycentricDemo.json' with { type: 'json' };
+	let svg;
+
+	onMount(() => {
+		const width = 400;
+		const height = 400;
+		const margin = 40;
+		const size = width - 2 * margin;
+
+		svg = d3
+			.select('#barycentric-demo')
+			.append('svg')
+			.attr('width', width)
+			.attr('height', height)
+			.append('g')
+			.attr('transform', `translate(${margin},${margin})`);
+
+		const corners = [
+			[size / 2, 0],
+			[0, size * Math.sin(Math.PI / 3)],
+			[size, size * Math.sin(Math.PI / 3)]
+		];
+
+		svg
+			.append('polygon')
+			.attr('points', corners.map((d) => d.join(',')).join(' '))
+			.attr('fill', 'none')
+			.attr('stroke', '#333')
+			.attr('stroke-width', 2);
+
+		svg
+			.append('text')
+			.attr('x', corners[0][0])
+			.attr('y', corners[0][1] - 10)
+			.attr('text-anchor', 'middle')
+			.text('A');
+		svg
+			.append('text')
+			.attr('x', corners[1][0] - 15)
+			.attr('y', corners[1][1] + 5)
+			.attr('text-anchor', 'end')
+			.text('B');
+		svg
+			.append('text')
+			.attr('x', corners[2][0] + 15)
+			.attr('y', corners[2][1] + 5)
+			.attr('text-anchor', 'start')
+			.text('C');
+
+		function baryToCartesian(a, b, c) {
+			const x = a * corners[0][0] + b * corners[1][0] + c * corners[2][0];
+			const y = a * corners[0][1] + b * corners[1][1] + c * corners[2][1];
+			return [x, y];
+		}
+
+		BarycentricDemo.forEach((d) => {
+			const [x, y] = baryToCartesian(d.A, d.B, d.C);
+			svg.append('circle').attr('cx', x).attr('cy', y).attr('r', 7).attr('fill', '#1976d2');
+			svg
+				.append('text')
+				.attr('x', x + 10)
+				.attr('y', y)
+				.attr('font-size', '12px')
+				.attr('alignment-baseline', 'middle')
+				.text(d.label);
+		});
+	});
+</script>
+
+<div id="barycentric-demo" style="width: 400px; height: 400px;"></div>

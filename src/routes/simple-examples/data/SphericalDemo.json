@@ -1,0 +1,6 @@
+[
+  { "r": 1, "theta": 45, "phi": 45, "label": "S1" },
+  { "r": 1, "theta": 135, "phi": 60, "label": "S2" },
+  { "r": 1, "theta": 225, "phi": 120, "label": "S3" },
+  { "r": 1, "theta": 315, "phi": 90, "label": "S4" }
+]

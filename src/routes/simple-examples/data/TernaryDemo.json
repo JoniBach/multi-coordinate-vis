@@ -1,0 +1,9 @@
+[
+  { "A": 0.7, "B": 0.2, "C": 0.1, "label": "Sample 1" },
+  { "A": 0.2, "B": 0.5, "C": 0.3, "label": "Sample 2" },
+  { "A": 0.1, "B": 0.2, "C": 0.7, "label": "Sample 3" },
+  { "A": 0.33, "B": 0.33, "C": 0.34, "label": "Balanced" },
+  { "A": 0.5, "B": 0.25, "C": 0.25, "label": "Mostly A" },
+  { "A": 0.25, "B": 0.5, "C": 0.25, "label": "Mostly B" },
+  { "A": 0.25, "B": 0.25, "C": 0.5, "label": "Mostly C" }
+]
