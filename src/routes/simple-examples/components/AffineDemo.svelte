@@ -4,7 +4,7 @@
 	let svg;
 	let { data, schema } = $props();
 
-	$effect(() => {
+	onMount(() => {
 		const parsedData = schema.safeParse(data).data;
 		const width = 400;
 		const height = 400;
