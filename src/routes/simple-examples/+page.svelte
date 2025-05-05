@@ -1,61 +1,45 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	// import components
-	import CartesianDemoComponent from './demo_components/CartesianDemo.svelte';
-	import PolarDemoComponent from './demo_components/PolarDemo.svelte';
-	import GeographicDemoComponent from './demo_components/GeographicDemo.svelte';
-	import ParallelDemoComponent from './demo_components/ParallelDemo.svelte';
-	import RadarDemoComponent from './demo_components/RadarDemo.svelte';
-	import TernaryDemoComponent from './demo_components/TernaryDemo.svelte';
-	import HexbinDemoComponent from './demo_components/HexbinDemo.svelte';
-	import LogPolarDemoComponent from './demo_components/LogPolarDemo.svelte';
-	import BarycentricDemoComponent from './demo_components/BarycentricDemo.svelte';
-	import SphericalDemoComponent from './demo_components/SphericalDemo.svelte';
-	import ObliqueDemoComponent from './demo_components/ObliqueDemo.svelte';
-	import AffineDemoComponent from './demo_components/AffineDemo.svelte';
+	import AffineDemoSchema from '$lib/components/simple/schema/AffineDemo.schema.js';
+	import { processData } from '$lib/components/simple/schema/AllDemo.schema.js';
+	import BarycentricDemoSchema from '$lib/components/simple/schema/BarycentricDemo.schema.js';
+	import CartesianDemoSchema from '$lib/components/simple/schema/CartesianDemo.schema.js';
+	import GeographicDemoSchema from '$lib/components/simple/schema/GeographicDemo.schema.js';
+	import HexbinDemoSchema from '$lib/components/simple/schema/HexbinDemo.schema.js';
+	import LogPolarDemoSchema from '$lib/components/simple/schema/LogPolarDemo.schema.js';
+	import ObliqueDemoSchema from '$lib/components/simple/schema/ObliqueDemo.schema.js';
+	import ParallelDemoSchema from '$lib/components/simple/schema/ParallelDemo.schema.js';
+	import PolarDemoSchema from '$lib/components/simple/schema/PolarDemo.schema.js';
+	import RadarDemoSchema from '$lib/components/simple/schema/RadarDemo.schema.js';
+	import SphericalDemoSchema from '$lib/components/simple/schema/SphericalDemo.schema.js';
+	import TernaryDemoSchema from '$lib/components/simple/schema/TernaryDemo.schema.js';
 
-	// import schemas
-	import CartesianDemoSchema from './schema/CartesianDemo.schema.js';
-	import PolarDemoSchema from './schema/PolarDemo.schema.js';
-	import GeographicDemoSchema from './schema/GeographicDemo.schema.js';
-	import ParallelDemoSchema from './schema/ParallelDemo.schema.js';
-	import RadarDemoSchema from './schema/RadarDemo.schema.js';
-	import TernaryDemoSchema from './schema/TernaryDemo.schema.js';
-	import HexbinDemoSchema from './schema/HexbinDemo.schema.js';
-	import LogPolarDemoSchema from './schema/LogPolarDemo.schema.js';
-	import BarycentricDemoSchema from './schema/BarycentricDemo.schema.js';
-	import SphericalDemoSchema from './schema/SphericalDemo.schema.js';
-	import ObliqueDemoSchema from './schema/ObliqueDemo.schema.js';
-	import AffineDemoSchema from './schema/AffineDemo.schema.js';
+	import CartesianDemoData from '$lib/components/simple/generic_data/CartesianDemo.json';
+	import PolarDemoData from '$lib/components/simple/generic_data/PolarDemo.json';
+	import GeographicDemoData from '$lib/components/simple/generic_data/GeographicDemo.json';
+	import ParallelDemoData from '$lib/components/simple/generic_data/ParallelDemo.json';
+	import RadarDemoData from '$lib/components/simple/generic_data/RadarDemo.json';
+	import TernaryDemoData from '$lib/components/simple/generic_data/TernaryDemo.json';
+	import HexbinDemoData from '$lib/components/simple/generic_data/HexbinDemo.json';
+	import LogPolarDemoData from '$lib/components/simple/generic_data/LogPolarDemo.json';
+	import BarycentricDemoData from '$lib/components/simple/generic_data/BarycentricDemo.json';
+	import SphericalDemoData from '$lib/components/simple/generic_data/SphericalDemo.json';
+	import ObliqueDemoData from '$lib/components/simple/generic_data/ObliqueDemo.json';
+	import AffineDemoData from '$lib/components/simple/generic_data/AffineDemo.json';
 
-	// import mock data
-	import CartesianDemoData from './generic_data/CartesianDemo.json' with { type: 'json' };
-	import PolarDemoData from './generic_data/PolarDemo.json' with { type: 'json' };
-	import GeographicDemoData from './generic_data/GeographicDemo.json' with { type: 'json' };
-	import ParallelDemoData from './generic_data/ParallelDemo.json' with { type: 'json' };
-	import RadarDemoData from './generic_data/RadarDemo.json' with { type: 'json' };
-	import TernaryDemoData from './generic_data/TernaryDemo.json' with { type: 'json' };
-	import HexbinDemoData from './generic_data/HexbinDemo.json' with { type: 'json' };
-	import LogPolarDemoData from './generic_data/LogPolarDemo.json' with { type: 'json' };
-	import BarycentricDemoData from './generic_data/BarycentricDemo.json' with { type: 'json' };
-	import SphericalDemoData from './generic_data/SphericalDemo.json' with { type: 'json' };
-	import ObliqueDemoData from './generic_data/ObliqueDemo.json' with { type: 'json' };
-	import AffineDemoData from './generic_data/AffineDemo.json' with { type: 'json' };
+	import CartesianDemoComponent from '$lib/components/simple/demo_components/CartesianDemo.svelte';
+	import PolarDemoComponent from '$lib/components/simple/demo_components/PolarDemo.svelte';
+	import GeographicDemoComponent from '$lib/components/simple/demo_components/GeographicDemo.svelte';
+	import ParallelDemoComponent from '$lib/components/simple/demo_components/ParallelDemo.svelte';
+	import RadarDemoComponent from '$lib/components/simple/demo_components/RadarDemo.svelte';
+	import TernaryDemoComponent from '$lib/components/simple/demo_components/TernaryDemo.svelte';
+	import HexbinDemoComponent from '$lib/components/simple/demo_components/HexbinDemo.svelte';
+	import LogPolarDemoComponent from '$lib/components/simple/demo_components/LogPolarDemo.svelte';
+	import BarycentricDemoComponent from '$lib/components/simple/demo_components/BarycentricDemo.svelte';
+	import SphericalDemoComponent from '$lib/components/simple/demo_components/SphericalDemo.svelte';
+	import ObliqueDemoComponent from '$lib/components/simple/demo_components/ObliqueDemo.svelte';
+	import AffineDemoComponent from '$lib/components/simple/demo_components/AffineDemo.svelte';
 
-	// import example data
-	import CartesianExampleData from './example_data/v2/CartesianDemo.json' with { type: 'json' };
-	import PolarExampleData from './example_data/v2/PolarDemo.json' with { type: 'json' };
-	import GeographicExampleData from './example_data/v2/GeographicDemo.json' with { type: 'json' };
-	import ParallelExampleData from './example_data/v2/ParallelDemo.json' with { type: 'json' };
-	import RadarExampleData from './example_data/v2/RadarDemo.json' with { type: 'json' };
-	import TernaryExampleData from './example_data/v2/TernaryDemo.json' with { type: 'json' };
-	import HexbinExampleData from './example_data/v2/HexbinDemo.json' with { type: 'json' };
-	import LogPolarExampleData from './example_data/v2/LogPolarDemo.json' with { type: 'json' };
-	import BarycentricExampleData from './example_data/v2/BarycentricDemo.json' with { type: 'json' };
-	import SphericalExampleData from './example_data/v2/SphericalDemo.json' with { type: 'json' };
-	import ObliqueExampleData from './example_data/v2/ObliqueDemo.json' with { type: 'json' };
-	import AffineExampleData from './example_data/v2/AffineDemo.json' with { type: 'json' };
-	import { processData } from './schema/AllDemo.schema.js';
+	import CartesianExampleData from '$lib/components/simple/example_data/v2/CartesianDemo.json';
 
 	$effect(() => {
 		const processedData = processData('cartesian', CartesianExampleData, {
