@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as d3 from 'd3';
-	let { data, schema } = $props();
+	let { data, schema, config } = $props();
 	let chartContainer = $state<HTMLDivElement>();
 
 	$effect(() => {
@@ -17,9 +17,9 @@
 		const parsedData = validatedData.data || [];
 
 		// Determine dimensions
-		const width = 400;
-		const height = 400;
-		const margin = 40;
+		const width = config.width;
+		const height = config.height;
+		const margin = config.margin;
 		const size = width - 2 * margin;
 
 		// Create SVG
@@ -101,4 +101,4 @@
 	});
 </script>
 
-<div bind:this={chartContainer} style="width: 400px; height: 400px;"></div>
+<div bind:this={chartContainer} style="width: {config.width}px; height: {config.height}px;"></div>

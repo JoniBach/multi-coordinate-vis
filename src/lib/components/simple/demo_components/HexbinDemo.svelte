@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as d3 from 'd3';
 	import { hexbin as d3_hexbin } from 'd3-hexbin';
-	let { data, schema } = $props();
+	let { data, schema, config } = $props();
 	let chartContainer = $state<HTMLDivElement>();
 
 	$effect(() => {
@@ -18,9 +18,9 @@
 		const parsedData = validatedData.data || [];
 
 		// Determine dimensions
-		const width = 400;
-		const height = 400;
-
+		const width = config.width;
+		const height = config.height;
+		const margin = config.margin;
 		// Create SVG
 		const svg = d3
 			.select(chartContainer)
@@ -64,7 +64,16 @@
 		svg
 			.append('g')
 			.attr('transform', `translate(0,${height - 30})`)
-			.call(d3.axisBottom(d3.scaleLinear().domain(xExtent).range([0, width])).ticks(8))
+			.call(
+				d3
+					.axisBottom(
+						d3
+							.scaleLinear()
+							.domain(xExtent)
+							.range([margin, width - margin])
+					)
+					.ticks(8)
+			)
 			.append('text')
 			.attr('x', width - 10)
 			.attr('y', -6)
@@ -86,4 +95,4 @@
 	});
 </script>
 
-<div bind:this={chartContainer} style="width: 400px; height: 400px;"></div>
+<div bind:this={chartContainer} style="width: {config.width}px; height: {config.height}px;"></div>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as d3 from 'd3';
-	let { data, schema } = $props();
+	let { data, schema, config } = $props();
 	let chartContainer = $state<HTMLDivElement>();
 
 	$effect(() => {
@@ -16,8 +16,11 @@
 		}
 		const parsedData = validatedData.data || { features: [] };
 
+		const height = config.height;
+		const width = config.width;
+		const margin = config.margin;
 		// Create SVG
-		const svg = d3.select(chartContainer).append('svg').attr('width', 500).attr('height', 300);
+		const svg = d3.select(chartContainer).append('svg').attr('width', width).attr('height', height);
 
 		// Dynamic scales for longitude and latitude
 		const lonExtent = d3.extent(
@@ -62,4 +65,4 @@
 	});
 </script>
 
-<div bind:this={chartContainer} style="width: 500px; height: 300px;"></div>
+<div bind:this={chartContainer} style="width: {config.width}px; height: {config.height}px;"></div>

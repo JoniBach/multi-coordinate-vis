@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as d3 from 'd3';
-	let { data, schema } = $props();
+	let { data, schema, config } = $props();
 	let chartContainer = $state<HTMLDivElement>();
 
 	$effect(() => {
@@ -15,11 +15,11 @@
 			return;
 		}
 		const parsedData = validatedData.data || [];
-		const width = 400;
-		const height = 400;
-		const margin = 40;
-		const skewX = 30; // degrees
-		const skewY = 0; // degrees
+		const width = config.width;
+		const height = config.height;
+		const margin = config.margin;
+		const skewX = config.skewX || 0; // degrees
+		const skewY = config.skewY || 0; // degrees
 		const skewMat = [
 			[1, Math.tan((skewX * Math.PI) / 180)],
 			[Math.tan((skewY * Math.PI) / 180), 1]
@@ -98,4 +98,4 @@
 	});
 </script>
 
-<div bind:this={chartContainer} style="width: 400px; height: 400px;"></div>
+<div bind:this={chartContainer} style="width: {config.width}px; height: {config.height}px;"></div>

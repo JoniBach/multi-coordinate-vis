@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as d3 from 'd3';
-	let { data, schema } = $props();
+	let { data, schema, config } = $props();
 	let chartContainer = $state<HTMLDivElement>();
 
 	$effect(() => {
@@ -17,9 +17,9 @@
 		const parsedData = validatedData.data || [];
 
 		// Determine scale and padding
-		const width = 500;
-		const height = 500;
-		const margin = 50;
+		const width = config.width;
+		const height = config.height;
+		const margin = config.margin;
 
 		// Calculate dynamic scales
 		const xExtent = d3.extent(parsedData.map((d) => Number(d.x || 0))) || [0, 1];
@@ -78,4 +78,4 @@
 	});
 </script>
 
-<div bind:this={chartContainer} style="width: 500px; height: 500px;"></div>
+<div bind:this={chartContainer} style="width: {config.width}px; height: {config.height}px;"></div>

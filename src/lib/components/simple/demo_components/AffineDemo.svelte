@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	let { data, schema } = $props();
+	let { data, schema, config } = $props();
 	let chartContainer = $state<HTMLDivElement>();
 
 	$effect(() => {
@@ -35,9 +35,9 @@
 		const yExtent = d3.extent(transformedPoints.map((d) => d.ty)) || [0, 1];
 
 		// Determine scale and padding
-		const width = 400;
-		const height = 400;
-		const margin = 40;
+		const width = config.width;
+		const height = config.height;
+		const margin = config.margin;
 
 		const xScale = d3
 			.scaleLinear()
@@ -99,4 +99,4 @@
 	});
 </script>
 
-<div bind:this={chartContainer} style="width: 400px; height: 400px;"></div>
+<div bind:this={chartContainer} style="width: {config.width}px; height: {config.height}px;"></div>
