@@ -5,7 +5,12 @@
 	let { data, schema } = $props();
 
 	onMount(() => {
-		const parsedData = schema.safeParse(data).data;
+		const validatedData = schema.safeParse(data);
+		if (!validatedData.success) {
+			console.error('Invalid data:', validatedData.error);
+			return;
+		}
+		const parsedData = validatedData.data;
 		const margin = { top: 30, right: 10, bottom: 10, left: 10 };
 		const width = 500 - margin.left - margin.right;
 		const height = 300 - margin.top - margin.bottom;

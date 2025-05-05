@@ -5,7 +5,12 @@
 	let { data, schema } = $props();
 
 	onMount(() => {
-		const parsedData = schema.safeParse(data).data;
+		const validatedData = schema.safeParse(data);
+		if (!validatedData.success) {
+			console.error('Invalid data:', validatedData.error);
+			return;
+		}
+		const parsedData = validatedData.data;
 		svg = d3.select('#geographic-demo').append('svg').attr('width', 500).attr('height', 300);
 
 		// Define projection and path generator
