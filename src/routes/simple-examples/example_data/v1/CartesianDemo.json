@@ -3,5 +3,10 @@
   {"reading_timestamp": "2025-05-05T08:15:00Z", "sensor_id": "TEMP-001", "celsius_value": 22.8},
   {"reading_timestamp": "2025-05-05T08:30:00Z", "sensor_id": "TEMP-001", "celsius_value": 23.1},
   {"reading_timestamp": "2025-05-05T08:45:00Z", "sensor_id": "TEMP-002", "celsius_value": 21.9},
-  {"reading_timestamp": "2025-05-05T09:00:00Z", "sensor_id": "TEMP-002", "celsius_value": 22.2}
+  {"reading_timestamp": "2025-05-05T09:00:00Z", "sensor_id": "TEMP-002", "celsius_value": 22.2},
+  {"reading_timestamp": "2025-05-05T09:15:00Z", "sensor_id": "TEMP-001", "celsius_value": 23.3},
+  {"reading_timestamp": "2025-05-05T09:30:00Z", "sensor_id": "TEMP-002", "celsius_value": 22.5},
+  {"reading_timestamp": "2025-05-05T09:45:00Z", "sensor_id": "TEMP-001", "celsius_value": 23.6},
+  {"reading_timestamp": "2025-05-05T10:00:00Z", "sensor_id": "TEMP-003", "celsius_value": 21.7},
+  {"reading_timestamp": "2025-05-05T10:15:00Z", "sensor_id": "TEMP-003", "celsius_value": 21.9}
 ]

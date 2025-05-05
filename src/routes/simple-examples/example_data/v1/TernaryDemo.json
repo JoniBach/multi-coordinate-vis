@@ -1,5 +1,12 @@
 [
   {"soil_sample_id": "FIELD-A-01", "sand_percent": 0.70, "silt_percent": 0.20, "clay_percent": 0.10, "water_retention_capacity": 0.65},
   {"soil_sample_id": "FIELD-B-03", "sand_percent": 0.35, "silt_percent": 0.45, "clay_percent": 0.20, "water_retention_capacity": 0.78},
-  {"soil_sample_id": "FIELD-C-02", "sand_percent": 0.15, "silt_percent": 0.30, "clay_percent": 0.55, "water_retention_capacity": 0.85}
+  {"soil_sample_id": "FIELD-C-02", "sand_percent": 0.15, "silt_percent": 0.30, "clay_percent": 0.55, "water_retention_capacity": 0.85},
+  {"soil_sample_id": "FIELD-D-04", "sand_percent": 0.50, "silt_percent": 0.30, "clay_percent": 0.20, "water_retention_capacity": 0.72},
+  {"soil_sample_id": "FIELD-E-05", "sand_percent": 0.60, "silt_percent": 0.25, "clay_percent": 0.15, "water_retention_capacity": 0.68},
+  {"soil_sample_id": "FIELD-F-06", "sand_percent": 0.25, "silt_percent": 0.55, "clay_percent": 0.20, "water_retention_capacity": 0.80},
+  {"soil_sample_id": "FIELD-G-07", "sand_percent": 0.40, "silt_percent": 0.35, "clay_percent": 0.25, "water_retention_capacity": 0.76},
+  {"soil_sample_id": "FIELD-H-08", "sand_percent": 0.20, "silt_percent": 0.50, "clay_percent": 0.30, "water_retention_capacity": 0.82},
+  {"soil_sample_id": "FIELD-I-09", "sand_percent": 0.55, "silt_percent": 0.30, "clay_percent": 0.15, "water_retention_capacity": 0.70},
+  {"soil_sample_id": "FIELD-J-10", "sand_percent": 0.10, "silt_percent": 0.40, "clay_percent": 0.50, "water_retention_capacity": 0.88}
 ]

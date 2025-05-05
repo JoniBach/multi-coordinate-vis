@@ -1,5 +1,12 @@
 [
   {"strain_x_microns": 120, "strain_y_microns": 85, "material_strength_mpa": 250},
   {"strain_x_microns": 95, "strain_y_microns": 110, "material_strength_mpa": 235},
-  {"strain_x_microns": 150, "strain_y_microns": 70, "material_strength_mpa": 265}
+  {"strain_x_microns": 150, "strain_y_microns": 70, "material_strength_mpa": 265},
+  {"strain_x_microns": 130, "strain_y_microns": 95, "material_strength_mpa": 255},
+  {"strain_x_microns": 110, "strain_y_microns": 100, "material_strength_mpa": 245},
+  {"strain_x_microns": 140, "strain_y_microns": 80, "material_strength_mpa": 260},
+  {"strain_x_microns": 100, "strain_y_microns": 120, "material_strength_mpa": 240},
+  {"strain_x_microns": 160, "strain_y_microns": 75, "material_strength_mpa": 270},
+  {"strain_x_microns": 125, "strain_y_microns": 105, "material_strength_mpa": 252},
+  {"strain_x_microns": 135, "strain_y_microns": 90, "material_strength_mpa": 258}
 ]

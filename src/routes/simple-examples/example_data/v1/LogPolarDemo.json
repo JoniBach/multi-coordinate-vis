@@ -2,5 +2,11 @@
   {"bearing_degrees": 25, "distance_meters": 15, "signal_strength_dbm": -60},
   {"bearing_degrees": 50, "distance_meters": 40, "signal_strength_dbm": -75},
   {"bearing_degrees": 80, "distance_meters": 5, "signal_strength_dbm": -55},
-  {"bearing_degrees": 110, "distance_meters": 20, "signal_strength_dbm": -68}
+  {"bearing_degrees": 110, "distance_meters": 20, "signal_strength_dbm": -68},
+  {"bearing_degrees": 140, "distance_meters": 30, "signal_strength_dbm": -70},
+  {"bearing_degrees": 170, "distance_meters": 25, "signal_strength_dbm": -65},
+  {"bearing_degrees": 200, "distance_meters": 10, "signal_strength_dbm": -58},
+  {"bearing_degrees": 230, "distance_meters": 35, "signal_strength_dbm": -72},
+  {"bearing_degrees": 260, "distance_meters": 50, "signal_strength_dbm": -80},
+  {"bearing_degrees": 290, "distance_meters": 60, "signal_strength_dbm": -85}
 ]

@@ -1,5 +1,12 @@
 [
   {"image_pixel_u": 50, "image_pixel_v": 100, "transformed_u": 55, "transformed_v": 120},
   {"image_pixel_u": 120, "image_pixel_v": 30, "transformed_u": 130, "transformed_v": 50},
-  {"image_pixel_u": 80, "image_pixel_v": 150, "transformed_u": 90, "transformed_v": 170}
+  {"image_pixel_u": 80, "image_pixel_v": 150, "transformed_u": 90, "transformed_v": 170},
+  {"image_pixel_u": 200, "image_pixel_v": 60, "transformed_u": 220, "transformed_v": 90},
+  {"image_pixel_u": 75, "image_pixel_v": 210, "transformed_u": 95, "transformed_v": 240},
+  {"image_pixel_u": 160, "image_pixel_v": 90, "transformed_u": 170, "transformed_v": 110},
+  {"image_pixel_u": 30, "image_pixel_v": 180, "transformed_u": 40, "transformed_v": 200},
+  {"image_pixel_u": 210, "image_pixel_v": 120, "transformed_u": 230, "transformed_v": 140},
+  {"image_pixel_u": 60, "image_pixel_v": 60, "transformed_u": 70, "transformed_v": 80},
+  {"image_pixel_u": 190, "image_pixel_v": 170, "transformed_u": 200, "transformed_v": 190}
 ]

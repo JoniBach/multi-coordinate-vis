@@ -1,5 +1,12 @@
 [
   {"station_name": "Bristol Air Quality", "latitude": 51.4545, "longitude": -2.5879, "pm25_concentration_ugm3": 15.6},
   {"station_name": "London Monitoring Site", "latitude": 51.5007, "longitude": -0.1246, "pm25_concentration_ugm3": 18.2},
-  {"station_name": "Cardiff Urban", "latitude": 51.4816, "longitude": -3.1791, "pm25_concentration_ugm3": 12.9}
+  {"station_name": "Cardiff Urban", "latitude": 51.4816, "longitude": -3.1791, "pm25_concentration_ugm3": 12.9},
+  {"station_name": "Manchester Central", "latitude": 53.4808, "longitude": -2.2426, "pm25_concentration_ugm3": 17.1},
+  {"station_name": "Birmingham City", "latitude": 52.4862, "longitude": -1.8904, "pm25_concentration_ugm3": 16.3},
+  {"station_name": "Edinburgh Urban", "latitude": 55.9533, "longitude": -3.1883, "pm25_concentration_ugm3": 14.8},
+  {"station_name": "Leeds North", "latitude": 53.8008, "longitude": -1.5491, "pm25_concentration_ugm3": 13.5},
+  {"station_name": "Glasgow South", "latitude": 55.8642, "longitude": -4.2518, "pm25_concentration_ugm3": 15.2},
+  {"station_name": "Liverpool Central", "latitude": 53.4084, "longitude": -2.9916, "pm25_concentration_ugm3": 16.9},
+  {"station_name": "Sheffield East", "latitude": 53.3811, "longitude": -1.4701, "pm25_concentration_ugm3": 15.7}
 ]

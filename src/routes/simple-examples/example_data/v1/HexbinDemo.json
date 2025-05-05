@@ -3,5 +3,10 @@
   {"latitude": 51.46, "longitude": -2.58, "event_count": 12},
   {"latitude": 51.455, "longitude": -2.585, "event_count": 9},
   {"latitude": 51.47, "longitude": -2.60, "event_count": 5},
-  {"latitude": 51.465, "longitude": -2.575, "event_count": 15}
+  {"latitude": 51.465, "longitude": -2.575, "event_count": 15},
+  {"latitude": 51.48, "longitude": -2.59, "event_count": 11},
+  {"latitude": 51.44, "longitude": -2.57, "event_count": 8},
+  {"latitude": 51.42, "longitude": -2.61, "event_count": 13},
+  {"latitude": 51.43, "longitude": -2.595, "event_count": 6},
+  {"latitude": 51.47, "longitude": -2.585, "event_count": 10}
 ]

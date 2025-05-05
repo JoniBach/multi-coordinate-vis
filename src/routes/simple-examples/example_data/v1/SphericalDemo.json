@@ -1,5 +1,12 @@
 [
   {"latitude_degrees": 35, "longitude_degrees": -100, "magnetic_field_strength_ut": 48.5},
   {"latitude_degrees": -20, "longitude_degrees": 150, "magnetic_field_strength_ut": 52.1},
-  {"latitude_degrees": 70, "longitude_degrees": 20, "magnetic_field_strength_ut": 45.9}
+  {"latitude_degrees": 70, "longitude_degrees": 20, "magnetic_field_strength_ut": 45.9},
+  {"latitude_degrees": 10, "longitude_degrees": 80, "magnetic_field_strength_ut": 50.3},
+  {"latitude_degrees": -45, "longitude_degrees": 60, "magnetic_field_strength_ut": 53.7},
+  {"latitude_degrees": 55, "longitude_degrees": -30, "magnetic_field_strength_ut": 47.2},
+  {"latitude_degrees": 0, "longitude_degrees": 0, "magnetic_field_strength_ut": 49.8},
+  {"latitude_degrees": 25, "longitude_degrees": 120, "magnetic_field_strength_ut": 51.4},
+  {"latitude_degrees": -60, "longitude_degrees": -90, "magnetic_field_strength_ut": 54.2},
+  {"latitude_degrees": 80, "longitude_degrees": 10, "magnetic_field_strength_ut": 44.7}
 ]
