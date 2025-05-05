@@ -14,6 +14,20 @@
 	import ObliqueDemoComponent from './demo_components/ObliqueDemo.svelte';
 	import AffineDemoComponent from './demo_components/AffineDemo.svelte';
 
+	// import schemas
+	import CartesianDemoSchema from './schema/CartesianDemo.schema.js';
+	import PolarDemoSchema from './schema/PolarDemo.schema.js';
+	import GeographicDemoSchema from './schema/GeographicDemo.schema.js';
+	import ParallelDemoSchema from './schema/ParallelDemo.schema.js';
+	import RadarDemoSchema from './schema/RadarDemo.schema.js';
+	import TernaryDemoSchema from './schema/TernaryDemo.schema.js';
+	import HexbinDemoSchema from './schema/HexbinDemo.schema.js';
+	import LogPolarDemoSchema from './schema/LogPolarDemo.schema.js';
+	import BarycentricDemoSchema from './schema/BarycentricDemo.schema.js';
+	import SphericalDemoSchema from './schema/SphericalDemo.schema.js';
+	import ObliqueDemoSchema from './schema/ObliqueDemo.schema.js';
+	import AffineDemoSchema from './schema/AffineDemo.schema.js';
+
 	// import data
 	import CartesianDemoData from './generic_data/CartesianDemo.json' with { type: 'json' };
 	import PolarDemoData from './generic_data/PolarDemo.json' with { type: 'json' };
@@ -27,21 +41,6 @@
 	import SphericalDemoData from './generic_data/SphericalDemo.json' with { type: 'json' };
 	import ObliqueDemoData from './generic_data/ObliqueDemo.json' with { type: 'json' };
 	import AffineDemoData from './generic_data/AffineDemo.json' with { type: 'json' };
-
-	// import schemas
-
-	import CartesianDemoSchema from './schema/CartesianDemo.schema.js';
-	import PolarDemoSchema from './schema/PolarDemo.schema.js';
-	import GeographicDemoSchema from './schema/GeographicDemo.schema.js';
-	import ParallelDemoSchema from './schema/ParallelDemo.schema.js';
-	import RadarDemoSchema from './schema/RadarDemo.schema.js';
-	import TernaryDemoSchema from './schema/TernaryDemo.schema.js';
-	import HexbinDemoSchema from './schema/HexbinDemo.schema.js';
-	import LogPolarDemoSchema from './schema/LogPolarDemo.schema.js';
-	import BarycentricDemoSchema from './schema/BarycentricDemo.schema.js';
-	import SphericalDemoSchema from './schema/SphericalDemo.schema.js';
-	import ObliqueDemoSchema from './schema/ObliqueDemo.schema.js';
-	import AffineDemoSchema from './schema/AffineDemo.schema.js';
 </script>
 
 <h2>Cartesian Demo</h2>
