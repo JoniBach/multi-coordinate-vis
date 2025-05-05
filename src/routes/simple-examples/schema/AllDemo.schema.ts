@@ -198,82 +198,126 @@ export const coordinateSchema = {
 	ternary: TernarySchema
 };
 
-const toAffine = (
-	userData: Array<unknown>,
-	inputSchema: AffineRemap,
-	outputSchema: AffineObject[]
-) => {
+const toAffine = (userData: Array<unknown>, inputSchemaConfiguration: AffineRemap) => {
 	// handle remap
+	const remappeUserData = userData;
+	const validatedRemapData = AffineObjectSchema.safeParse(remappeUserData);
+	if (validatedRemapData.success) {
+		return validatedRemapData.data;
+	} else {
+		console.error('Invalid data:', validatedRemapData.error);
+		return [];
+	}
 };
-const toBarycentric = (
-	userData: Array<unknown>,
-	inputSchema: BarycentricRemap,
-	outputSchema: BarycentricObject[]
-) => {
+const toBarycentric = (userData: Array<unknown>, inputSchemaConfiguration: BarycentricRemap) => {
 	// handle remap
+	const remappeUserData = userData;
+	const validatedRemapData = BarycentricObjectSchema.safeParse(remappeUserData);
+	if (validatedRemapData.success) {
+		return validatedRemapData.data;
+	} else {
+		console.error('Invalid data:', validatedRemapData.error);
+		return [];
+	}
 };
-const toCartesian = (
-	userData: Array<unknown>,
-	inputSchema: CartesianRemap,
-	outputSchema: CartesianObject[]
-) => {
+const toCartesian = (userData: Array<unknown>, inputSchemaConfiguration: CartesianRemap) => {
 	// handle remap
+	const remappeUserData = userData;
+	const validatedRemapData = CartesianObjectSchema.safeParse(remappeUserData);
+	if (validatedRemapData.success) {
+		return validatedRemapData.data;
+	} else {
+		console.error('Invalid data:', validatedRemapData.error);
+		return [];
+	}
 };
-const toGeographic = (
-	userData: Array<unknown>,
-	inputSchema: GeographicRemap,
-	outputSchema: GeographicObject[]
-) => {
+const toGeographic = (userData: Array<unknown>, inputSchemaConfiguration: GeographicRemap) => {
 	// handle remap
+	const remappeUserData = userData;
+	const validatedRemapData = GeographicObjectSchema.safeParse(remappeUserData);
+	if (validatedRemapData.success) {
+		return validatedRemapData.data;
+	} else {
+		console.error('Invalid data:', validatedRemapData.error);
+		return [];
+	}
 };
-const toHexbin = (
-	userData: Array<unknown>,
-	inputSchema: HexbinRemap,
-	outputSchema: HexbinObject[]
-) => {
+const toHexbin = (userData: Array<unknown>, inputSchemaConfiguration: HexbinRemap) => {
 	// handle remap
+	const remappeUserData = userData;
+	const validatedRemapData = HexbinObjectSchema.safeParse(remappeUserData);
+	if (validatedRemapData.success) {
+		return validatedRemapData.data;
+	} else {
+		console.error('Invalid data:', validatedRemapData.error);
+		return [];
+	}
 };
-const toLogPolar = (
-	userData: Array<unknown>,
-	inputSchema: LogPolarRemap,
-	outputSchema: LogPolarObject[]
-) => {
+const toLogPolar = (userData: Array<unknown>, inputSchemaConfiguration: LogPolarRemap) => {
 	// handle remap
+	const remappeUserData = userData;
+	const validatedRemapData = LogPolarObjectSchema.safeParse(remappeUserData);
+	if (validatedRemapData.success) {
+		return validatedRemapData.data;
+	} else {
+		console.error('Invalid data:', validatedRemapData.error);
+		return [];
+	}
 };
-const toOblique = (
-	userData: Array<unknown>,
-	inputSchema: ObliqueRemap,
-	outputSchema: ObliqueObject[]
-) => {
+const toOblique = (userData: Array<unknown>, inputSchemaConfiguration: ObliqueRemap) => {
 	// handle remap
+	const remappeUserData = userData;
+	const validatedRemapData = ObliqueObjectSchema.safeParse(remappeUserData);
+	if (validatedRemapData.success) {
+		return validatedRemapData.data;
+	} else {
+		console.error('Invalid data:', validatedRemapData.error);
+		return [];
+	}
 };
-const toParallel = (
-	userData: Array<unknown>,
-	inputSchema: PolarRemap,
-	outputSchema: PolarObject[]
-) => {
+const toParallel = (userData: Array<unknown>, inputSchemaConfiguration: PolarRemap) => {
 	// handle remap
+	const remappeUserData = userData;
+	const validatedRemapData = PolarObjectSchema.safeParse(remappeUserData);
+	if (validatedRemapData.success) {
+		return validatedRemapData.data;
+	} else {
+		console.error('Invalid data:', validatedRemapData.error);
+		return [];
+	}
 };
-const toRadar = (
-	userData: Array<unknown>,
-	inputSchema: RadarRemap,
-	outputSchema: RadarObject[]
-) => {
+const toRadar = (userData: Array<unknown>, inputSchemaConfiguration: RadarRemap) => {
 	// handle remap
+	const remappeUserData = userData;
+	const validatedRemapData = RadarObjectSchema.safeParse(remappeUserData);
+	if (validatedRemapData.success) {
+		return validatedRemapData.data;
+	} else {
+		console.error('Invalid data:', validatedRemapData.error);
+		return [];
+	}
 };
-const toSpherical = (
-	userData: Array<unknown>,
-	inputSchema: SphericalRemap,
-	outputSchema: SphericalObject[]
-) => {
+const toSpherical = (userData: Array<unknown>, inputSchemaConfiguration: SphericalRemap) => {
 	// handle remap
+	const remappeUserData = userData;
+	const validatedRemapData = SphericalObjectSchema.safeParse(remappeUserData);
+	if (validatedRemapData.success) {
+		return validatedRemapData.data;
+	} else {
+		console.error('Invalid data:', validatedRemapData.error);
+		return [];
+	}
 };
-const toTernary = (
-	userData: Array<unknown>,
-	inputSchema: TernaryRemap,
-	outputSchema: TernaryObject[]
-) => {
+const toTernary = (userData: Array<unknown>, inputSchemaConfiguration: TernaryRemap) => {
 	// handle remap
+	const remappeUserData = userData;
+	const validatedRemapData = TernaryObjectSchema.safeParse(remappeUserData);
+	if (validatedRemapData.success) {
+		return validatedRemapData.data;
+	} else {
+		console.error('Invalid data:', validatedRemapData.error);
+		return [];
+	}
 };
 
 export const coordinateMapping = {
