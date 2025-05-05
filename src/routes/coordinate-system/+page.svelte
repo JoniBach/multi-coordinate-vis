@@ -1,12 +1,22 @@
 <script lang="ts">
-	import { processData } from '$lib/utils/coordinate.schema.js';
+	import { createSystem } from '$lib/utils/coordinate.schema.js';
 	import CartesianExampleData from '$lib/data/example_data/v2/CartesianDemo.json';
+	import CartesianSystemComponent from '$lib/components/system/CartesianSystemComponent.svelte';
+	import type { System } from '$lib/utils/coordinate.schema.js';
+	import { onMount } from 'svelte';
 
-	$effect(() => {
-		const processedData = processData('cartesian', CartesianExampleData, {
+	let system: System = $state({ loading: false, success: false });
+
+	onMount(() => {
+		const res = createSystem('cartesian', CartesianExampleData, {
 			x: 'timestamp',
 			y: 'readings.celsius'
 		});
-		console.log(processedData);
+		system = res;
+		console.log(res);
 	});
+
+	$effect(() => {});
 </script>
+
+<CartesianSystemComponent bind:system />

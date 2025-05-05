@@ -1,5 +1,6 @@
 import { z, ZodError } from 'zod';
 import _ from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 
 // Affine
 export const AffineObjectSchema = z.object({
@@ -257,28 +258,52 @@ export const CoordinateTypeSchema = z.enum([
 ]);
 export type CoordinateType = z.infer<typeof CoordinateTypeSchema>;
 
-export const processData = (
+export interface LoadedSystem {
+	uuid: string;
+	valid: {
+		validCoordinateType: boolean;
+		validOriginalUserData: boolean;
+		validUserInputSchemaConfiguration: boolean;
+		validRemapData: boolean;
+	};
+	error?: { name: string; zodError?: ZodError };
+	data: Array<unknown>;
+	success: boolean;
+	loading: boolean;
+}
+
+export interface UnloadedSystem {
+	loading: boolean;
+	success: boolean;
+}
+
+export type System = LoadedSystem | UnloadedSystem;
+
+export const createSystem = (
 	coordinateType: CoordinateType,
 	userData: Array<unknown>,
-	inputSchemaConfiguration: Record<string, string>
-) => {
+	inputSchemaConfiguration: Record<string, string>,
+	loading: boolean = false
+): System => {
 	const valid = {
 		validCoordinateType: false,
 		validOriginalUserData: false,
 		validUserInputSchemaConfiguration: false,
 		validRemapData: false
 	};
+
 	const error: { name: string; zodError?: ZodError } = {
 		name: '',
 		zodError: undefined
 	};
 
+	const uuid = uuidv4();
 	const validatedCoordinateType = CoordinateTypeSchema.safeParse(coordinateType);
 	if (!validatedCoordinateType.success) {
 		console.error('Invalid coordinate type', validatedCoordinateType.error);
 		error.name = 'Invalid coordinate type';
 		error.zodError = validatedCoordinateType.error;
-		return { data: [], valid, error, success: false };
+		return { uuid, data: [], valid, error, success: false, loading };
 	}
 	valid.validCoordinateType = true;
 	const validateOriginalUserData = UserDataTableSchema.safeParse(userData);
@@ -286,7 +311,7 @@ export const processData = (
 		console.error('Invalid user data', validateOriginalUserData.error);
 		error.name = 'Invalid user data';
 		error.zodError = validateOriginalUserData.error;
-		return { data: [], valid, error, success: false };
+		return { uuid, data: [], valid, error, success: false, loading };
 	}
 	valid.validOriginalUserData = true;
 	const validatedUserInputSchemaConfiguration =
@@ -295,7 +320,7 @@ export const processData = (
 		console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
 		error.name = 'Invalid schema configuration';
 		error.zodError = validatedUserInputSchemaConfiguration.error;
-		return { data: [], valid, error, success: false };
+		return { uuid, data: [], valid, error, success: false, loading };
 	}
 	valid.validUserInputSchemaConfiguration = true;
 	const remappedUserData = remapData(userData, inputSchemaConfiguration);
@@ -305,12 +330,14 @@ export const processData = (
 		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
 		error.name = 'Invalid coordinate data (after remap)';
 		error.zodError = validatedRemapData.error;
-		return { data: [], valid, error, success: false };
+		return { uuid, data: [], valid, error, success: false, loading };
 	}
 	valid.validRemapData = true;
 	return {
+		uuid,
 		data: validatedRemapData.data,
 		valid,
-		success: true
+		success: true,
+		loading
 	};
 };
