@@ -1,78 +1,97 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	let svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
 	let { data, schema } = $props();
+	let chartContainer = $state<HTMLDivElement>();
 
-	onMount(() => {
+	$effect(() => {
+		if (!chartContainer) return;
+
+		// Clear previous content
+		chartContainer.innerHTML = '';
+
 		const validatedData = schema.safeParse(data);
 		if (!validatedData.success) {
 			console.error('Invalid data:', validatedData.error);
 			return;
 		}
-		const parsedData = validatedData.data;
-		const width = 400;
-		const height = 400;
-		const margin = 40;
+		const parsedData = validatedData.data || [];
+
+		// Affine transformation matrix
 		const affineMat = [
 			[1.2, 0.5],
 			[0.3, 1.1]
 		];
 
-		svg = d3
-			.select('#affine-demo')
-			.append('svg')
-			.attr('width', width)
-			.attr('height', height)
-			.append('g')
-			.attr('transform', `translate(${margin},${margin})`);
+		// Transform points
+		const transformedPoints = parsedData.map((d) => ({
+			...d,
+			tx: (d.x || 0) * affineMat[0][0] + (d.y || 0) * affineMat[0][1],
+			ty: (d.x || 0) * affineMat[1][0] + (d.y || 0) * affineMat[1][1]
+		}));
+
+		// Calculate dynamic scales
+		const xExtent = d3.extent(transformedPoints.map((d) => d.tx)) || [0, 1];
+		const yExtent = d3.extent(transformedPoints.map((d) => d.ty)) || [0, 1];
+
+		// Determine scale and padding
+		const width = 400;
+		const height = 400;
+		const margin = 40;
+
+		const xScale = d3
+			.scaleLinear()
+			.domain([Math.min(...xExtent), Math.max(...xExtent)])
+			.range([margin, width - margin]);
+
+		const yScale = d3
+			.scaleLinear()
+			.domain([Math.min(...yExtent), Math.max(...yExtent)])
+			.range([height - margin, margin]);
+
+		// Create SVG
+		const svg = d3.select(chartContainer).append('svg').attr('width', width).attr('height', height);
 
 		// Draw axes
-		svg
-			.append('line')
-			.attr('x1', 0)
-			.attr('y1', 0)
-			.attr('x2', 200)
-			.attr('y2', 0)
-			.attr('stroke', '#333');
-		svg
-			.append('line')
-			.attr('x1', 0)
-			.attr('y1', 0)
-			.attr('x2', 0)
-			.attr('y2', 200)
-			.attr('stroke', '#333');
+		const xAxis = d3.axisBottom(xScale);
+		const yAxis = d3.axisLeft(yScale);
 
-		// Add axis labels for affine axes
+		svg
+			.append('g')
+			.attr('transform', `translate(0, ${height - margin})`)
+			.call(xAxis);
+
+		svg.append('g').attr('transform', `translate(${margin}, 0)`).call(yAxis);
+
+		// Add axis labels
 		svg
 			.append('text')
-			.attr('x', 200)
-			.attr('y', -10)
-			.attr('text-anchor', 'end')
-			.attr('fill', '#333')
+			.attr('x', width / 2)
+			.attr('y', height)
+			.attr('text-anchor', 'middle')
 			.text('x (affine)');
+
 		svg
 			.append('text')
-			.attr('x', 10)
-			.attr('y', 200)
-			.attr('text-anchor', 'start')
-			.attr('fill', '#333')
+			.attr('transform', 'rotate(-90)')
+			.attr('x', -height / 2)
+			.attr('y', 15)
+			.attr('text-anchor', 'middle')
 			.text('y (affine)');
 
-		// Transform and plot points
-		parsedData.forEach((d) => {
-			const x = d.x * affineMat[0][0] + d.y * affineMat[0][1];
-			const y = d.x * affineMat[1][0] + d.y * affineMat[1][1];
+		// Plot transformed points
+		transformedPoints.forEach((d) => {
 			svg
 				.append('circle')
-				.attr('cx', x * 70)
-				.attr('cy', y * 70)
+				.attr('cx', xScale(d.tx))
+				.attr('cy', yScale(d.ty))
 				.attr('r', 8)
 				.attr('fill', '#1976d2');
+
 			svg
 				.append('text')
-				.attr('x', x * 70 + 10)
-				.attr('y', y * 70)
+				.attr('x', xScale(d.tx) + 10)
+				.attr('y', yScale(d.ty))
 				.attr('font-size', '12px')
 				.attr('alignment-baseline', 'middle')
 				.text(d.label);
@@ -80,4 +99,4 @@
 	});
 </script>
 
-<div id="affine-demo" style="width: 400px; height: 400px;"></div>
+<div bind:this={chartContainer} style="width: 400px; height: 400px;"></div>
