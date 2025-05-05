@@ -38,16 +38,6 @@
 	import SphericalDemoComponent from '$lib/components/simple/demo_components/SphericalDemo.svelte';
 	import ObliqueDemoComponent from '$lib/components/simple/demo_components/ObliqueDemo.svelte';
 	import AffineDemoComponent from '$lib/components/simple/demo_components/AffineDemo.svelte';
-
-	import CartesianExampleData from '$lib/components/simple/example_data/v2/CartesianDemo.json';
-
-	$effect(() => {
-		const processedData = processData('cartesian', CartesianExampleData, {
-			x: 'timestamp',
-			y: 'readings.celsius'
-		});
-		console.log(processedData);
-	});
 </script>
 
 <h1>Basic Examples</h1>
