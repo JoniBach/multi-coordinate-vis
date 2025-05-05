@@ -1,0 +1,5 @@
+[
+  {"strain_x_microns": 120, "strain_y_microns": 85, "material_strength_mpa": 250},
+  {"strain_x_microns": 95, "strain_y_microns": 110, "material_strength_mpa": 235},
+  {"strain_x_microns": 150, "strain_y_microns": 70, "material_strength_mpa": 265}
+]

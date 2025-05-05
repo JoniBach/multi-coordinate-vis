@@ -1,0 +1,6 @@
+[
+  {"device_id": "WIND-005", "wind_direction_degrees": 45, "wind_speed_mps": 12.3},
+  {"device_id": "WIND-005", "wind_direction_degrees": 70, "wind_speed_mps": 15.1},
+  {"device_id": "WIND-006", "wind_direction_degrees": 180, "wind_speed_mps": 8.7},
+  {"device_id": "WIND-006", "wind_direction_degrees": 205, "wind_speed_mps": 11.2}
+]

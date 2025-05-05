@@ -1,0 +1,5 @@
+[
+  {"process_id": "BATCH-01", "temperature_celsius": 85.2, "pressure_kpa": 155.7, "flow_rate_lpm": 32.1, "yield_percentage": 92.5},
+  {"process_id": "BATCH-02", "temperature_celsius": 83.9, "pressure_kpa": 152.3, "flow_rate_lpm": 30.8, "yield_percentage": 91.1},
+  {"process_id": "BATCH-03", "temperature_celsius": 86.5, "pressure_kpa": 158.9, "flow_rate_lpm": 33.5, "yield_percentage": 93.2}
+]

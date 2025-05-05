@@ -1,0 +1,6 @@
+[
+  {"bearing_degrees": 25, "distance_meters": 15, "signal_strength_dbm": -60},
+  {"bearing_degrees": 50, "distance_meters": 40, "signal_strength_dbm": -75},
+  {"bearing_degrees": 80, "distance_meters": 5, "signal_strength_dbm": -55},
+  {"bearing_degrees": 110, "distance_meters": 20, "signal_strength_dbm": -68}
+]

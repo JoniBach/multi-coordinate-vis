@@ -15,18 +15,18 @@
 	import AffineDemoComponent from './components/AffineDemo.svelte';
 
 	// import data
-	import CartesianDemoData from './data/CartesianDemo.json' with { type: 'json' };
-	import PolarDemoData from './data/PolarDemo.json' with { type: 'json' };
-	import GeographicDemoData from './data/GeographicDemo.json' with { type: 'json' };
-	import ParallelDemoData from './data/ParallelDemo.json' with { type: 'json' };
-	import RadarDemoData from './data/RadarDemo.json' with { type: 'json' };
-	import TernaryDemoData from './data/TernaryDemo.json' with { type: 'json' };
-	import HexbinDemoData from './data/HexbinDemo.json' with { type: 'json' };
-	import LogPolarDemoData from './data/LogPolarDemo.json' with { type: 'json' };
-	import BarycentricDemoData from './data/BarycentricDemo.json' with { type: 'json' };
-	import SphericalDemoData from './data/SphericalDemo.json' with { type: 'json' };
-	import ObliqueDemoData from './data/ObliqueDemo.json' with { type: 'json' };
-	import AffineDemoData from './data/AffineDemo.json' with { type: 'json' };
+	import CartesianDemoData from './generic_data/CartesianDemo.json' with { type: 'json' };
+	import PolarDemoData from './generic_data/PolarDemo.json' with { type: 'json' };
+	import GeographicDemoData from './generic_data/GeographicDemo.json' with { type: 'json' };
+	import ParallelDemoData from './generic_data/ParallelDemo.json' with { type: 'json' };
+	import RadarDemoData from './generic_data/RadarDemo.json' with { type: 'json' };
+	import TernaryDemoData from './generic_data/TernaryDemo.json' with { type: 'json' };
+	import HexbinDemoData from './generic_data/HexbinDemo.json' with { type: 'json' };
+	import LogPolarDemoData from './generic_data/LogPolarDemo.json' with { type: 'json' };
+	import BarycentricDemoData from './generic_data/BarycentricDemo.json' with { type: 'json' };
+	import SphericalDemoData from './generic_data/SphericalDemo.json' with { type: 'json' };
+	import ObliqueDemoData from './generic_data/ObliqueDemo.json' with { type: 'json' };
+	import AffineDemoData from './generic_data/AffineDemo.json' with { type: 'json' };
 
 	// import schemas
 

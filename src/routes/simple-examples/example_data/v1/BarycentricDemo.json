@@ -1,0 +1,6 @@
+[
+  {"nutrient_a_proportion": 0.2, "nutrient_b_proportion": 0.5, "nutrient_c_proportion": 0.3, "growth_rate": 0},
+  {"nutrient_a_proportion": 0.4, "nutrient_b_proportion": 0.4, "nutrient_c_proportion": 0.2, "growth_rate": 0},
+  {"nutrient_a_proportion": 0.3, "nutrient_b_proportion": 0.3, "nutrient_c_proportion": 0.4, "growth_rate": 0},
+  {"nutrient_a_proportion": 0.1, "nutrient_b_proportion": 0.7, "nutrient_c_proportion": 0.2, "growth_rate": 0}
+]

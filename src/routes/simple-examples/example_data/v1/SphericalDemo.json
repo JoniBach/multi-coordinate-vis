@@ -1,0 +1,5 @@
+[
+  {"latitude_degrees": 35, "longitude_degrees": -100, "magnetic_field_strength_ut": 48.5},
+  {"latitude_degrees": -20, "longitude_degrees": 150, "magnetic_field_strength_ut": 52.1},
+  {"latitude_degrees": 70, "longitude_degrees": 20, "magnetic_field_strength_ut": 45.9}
+]

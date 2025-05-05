@@ -1,0 +1,5 @@
+[
+  {"image_pixel_u": 50, "image_pixel_v": 100, "transformed_u": 55, "transformed_v": 120},
+  {"image_pixel_u": 120, "image_pixel_v": 30, "transformed_u": 130, "transformed_v": 50},
+  {"image_pixel_u": 80, "image_pixel_v": 150, "transformed_u": 90, "transformed_v": 170}
+]
