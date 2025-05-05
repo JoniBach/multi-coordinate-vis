@@ -1,12 +1,12 @@
 [
-  {"timestamp": "2025-05-05T08:00:00Z", "greenhouse_id": "GH-01", "celsius": 18.5},
-  {"timestamp": "2025-05-05T10:00:00Z", "greenhouse_id": "GH-01", "celsius": 22.1},
-  {"timestamp": "2025-05-05T12:00:00Z", "greenhouse_id": "GH-01", "celsius": 25.8},
-  {"timestamp": "2025-05-05T14:00:00Z", "greenhouse_id": "GH-01", "celsius": 24.5},
-  {"timestamp": "2025-05-05T16:00:00Z", "greenhouse_id": "GH-01", "celsius": 21.0},
-  {"timestamp": "2025-05-05T08:00:00Z", "greenhouse_id": "GH-02", "celsius": 17.2},
-  {"timestamp": "2025-05-05T10:00:00Z", "greenhouse_id": "GH-02", "celsius": 20.9},
-  {"timestamp": "2025-05-05T12:00:00Z", "greenhouse_id": "GH-02", "celsius": 24.2},
-  {"timestamp": "2025-05-05T14:00:00Z", "greenhouse_id": "GH-02", "celsius": 23.1},
-  {"timestamp": "2025-05-05T16:00:00Z", "greenhouse_id": "GH-02", "celsius": 19.8}
+  {"timestamp": "2025-05-05T08:00:00Z", "greenhouse_id": "GH-01", "readings": {"celsius": 18.5, "humidity": 45}},
+  {"timestamp": "2025-05-05T10:00:00Z", "greenhouse_id": "GH-01", "readings": {"celsius": 22.1, "humidity": 44}},
+  {"timestamp": "2025-05-05T12:00:00Z", "greenhouse_id": "GH-01", "readings": {"celsius": 25.8, "humidity": 43}},
+  {"timestamp": "2025-05-05T14:00:00Z", "greenhouse_id": "GH-01", "readings": {"celsius": 24.5, "humidity": 42}},
+  {"timestamp": "2025-05-05T16:00:00Z", "greenhouse_id": "GH-01", "readings": {"celsius": 21.0, "humidity": 40}},
+  {"timestamp": "2025-05-05T08:00:00Z", "greenhouse_id": "GH-02", "readings": {"celsius": 17.2, "humidity": 44}},
+  {"timestamp": "2025-05-05T10:00:00Z", "greenhouse_id": "GH-02", "readings": {"celsius": 20.9, "humidity": 46}},
+  {"timestamp": "2025-05-05T12:00:00Z", "greenhouse_id": "GH-02", "readings": {"celsius": 24.2, "humidity": 43}},
+  {"timestamp": "2025-05-05T14:00:00Z", "greenhouse_id": "GH-02", "readings": {"celsius": 23.1, "humidity": 41}},
+  {"timestamp": "2025-05-05T16:00:00Z", "greenhouse_id": "GH-02", "readings": {"celsius": 19.8, "humidity": 39}}
 ]

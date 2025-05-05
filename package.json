@@ -57,7 +57,9 @@
 		"svelte"
 	],
 	"dependencies": {
+		"@types/lodash": "^4.17.16",
 		"d3": "^7.9.0",
-		"d3-hexbin": "^0.2.2"
+		"d3-hexbin": "^0.2.2",
+		"lodash": "^4.17.21"
 	}
 }

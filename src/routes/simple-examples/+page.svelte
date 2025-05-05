@@ -28,7 +28,7 @@
 	import ObliqueDemoSchema from './schema/ObliqueDemo.schema.js';
 	import AffineDemoSchema from './schema/AffineDemo.schema.js';
 
-	// import data
+	// import mock data
 	import CartesianDemoData from './generic_data/CartesianDemo.json' with { type: 'json' };
 	import PolarDemoData from './generic_data/PolarDemo.json' with { type: 'json' };
 	import GeographicDemoData from './generic_data/GeographicDemo.json' with { type: 'json' };
@@ -41,8 +41,34 @@
 	import SphericalDemoData from './generic_data/SphericalDemo.json' with { type: 'json' };
 	import ObliqueDemoData from './generic_data/ObliqueDemo.json' with { type: 'json' };
 	import AffineDemoData from './generic_data/AffineDemo.json' with { type: 'json' };
+
+	// import example data
+	import CartesianExampleData from './example_data/v2/CartesianDemo.json' with { type: 'json' };
+	import PolarExampleData from './example_data/v2/PolarDemo.json' with { type: 'json' };
+	import GeographicExampleData from './example_data/v2/GeographicDemo.json' with { type: 'json' };
+	import ParallelExampleData from './example_data/v2/ParallelDemo.json' with { type: 'json' };
+	import RadarExampleData from './example_data/v2/RadarDemo.json' with { type: 'json' };
+	import TernaryExampleData from './example_data/v2/TernaryDemo.json' with { type: 'json' };
+	import HexbinExampleData from './example_data/v2/HexbinDemo.json' with { type: 'json' };
+	import LogPolarExampleData from './example_data/v2/LogPolarDemo.json' with { type: 'json' };
+	import BarycentricExampleData from './example_data/v2/BarycentricDemo.json' with { type: 'json' };
+	import SphericalExampleData from './example_data/v2/SphericalDemo.json' with { type: 'json' };
+	import ObliqueExampleData from './example_data/v2/ObliqueDemo.json' with { type: 'json' };
+	import AffineExampleData from './example_data/v2/AffineDemo.json' with { type: 'json' };
+	import { toCoordinates } from './schema/AllDemo.schema.js';
+
+	$effect(() => {
+		const schema = {
+			x: 'timestamp',
+			y: 'readings.celsius'
+			// celsius: 'greenhouse_id'
+		};
+		const data = toCoordinates['cartesian'](CartesianExampleData, schema);
+		console.log(data);
+	});
 </script>
 
+<h1>Basic Examples</h1>
 <h2>Cartesian Demo</h2>
 <CartesianDemoComponent data={CartesianDemoData} schema={CartesianDemoSchema} />
 <hr />
