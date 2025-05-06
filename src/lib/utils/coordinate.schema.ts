@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
 export const SupportedTypeSchema = z.enum([
+	'any',
 	// basics
 	'number',
 	'string',
@@ -18,58 +19,71 @@ export const SupportedTypeSchema = z.enum([
 
 export type SupportedType = z.infer<typeof SupportedTypeSchema>;
 
-export const SupportedTypeMap = {
-	// basics
-	number: z.number(),
-	string: z.string(),
-	boolean: z.boolean(),
-	// date
-	date: z.date(),
-	date_iso: z.date().refine((v) => v instanceof Date && v.toISOString() === v.toISOString(), {
+export const numberSchema = z.number();
+export const stringSchema = z.string();
+export const booleanSchema = z.boolean();
+export const dateSchema = z.date();
+export const date_isoSchema = z
+	.date()
+	.refine((v) => v instanceof Date && v.toISOString() === v.toISOString(), {
 		message: "Expected a date in format 'YYYY-MM-DDTHH:mm:ss.sssZ'"
-	}),
-	date_only: z
-		.date()
-		.refine(
-			(v) => v instanceof Date && v.toISOString().split('T')[0] === v.toISOString().split('T')[0],
-			{
-				message: "Expected a date in format 'YYYY-MM-DD'"
-			}
-		),
-	date_time: z
-		.date()
-		.refine(
-			(v) =>
-				v instanceof Date &&
-				v.toISOString().split('T')[0] === v.toISOString().split('T')[0] &&
-				v.getHours() === 0 &&
-				v.getMinutes() === 0 &&
-				v.getSeconds() === 0,
-			{
-				message: "Expected a date in format 'YYYY-MM-DD 00:00:00'"
-			}
-		),
-	date_unix_s: z.number().refine((v) => Number.isInteger(v / 1000), {
-		message: 'Expected a unix timestamp in milliseconds'
-	}),
-	date_unix_ms: z.number().refine((v) => Number.isInteger(v), {
-		message: 'Expected a unix timestamp in seconds'
-	})
-};
+	});
+export const date_onlySchema = z
+	.date()
+	.refine(
+		(v) => v instanceof Date && v.toISOString().split('T')[0] === v.toISOString().split('T')[0],
+		{
+			message: "Expected a date in format 'YYYY-MM-DD'"
+		}
+	);
+export const date_timeSchema = z
+	.date()
+	.refine(
+		(v) =>
+			v instanceof Date &&
+			v.toISOString().split('T')[0] === v.toISOString().split('T')[0] &&
+			v.getHours() === 0 &&
+			v.getMinutes() === 0 &&
+			v.getSeconds() === 0,
+		{
+			message: "Expected a date in format 'YYYY-MM-DD 00:00:00'"
+		}
+	);
+export const date_unix_sSchema = z.number().refine((v) => Number.isInteger(v / 1000), {
+	message: 'Expected a unix timestamp in milliseconds'
+});
+export const date_unix_msSchema = z.number().refine((v) => Number.isInteger(v), {
+	message: 'Expected a unix timestamp in seconds'
+});
 
 export const DataTypeSchema = z.union([
 	// basics
-	SupportedTypeMap.number,
-	SupportedTypeMap.string,
-	SupportedTypeMap.boolean,
+	numberSchema,
+	stringSchema,
+	booleanSchema,
 	// date
-	SupportedTypeMap.date,
-	SupportedTypeMap.date_iso,
-	SupportedTypeMap.date_only,
-	SupportedTypeMap.date_time,
-	SupportedTypeMap.date_unix_s,
-	SupportedTypeMap.date_unix_ms
+	dateSchema,
+	date_isoSchema,
+	date_onlySchema,
+	date_timeSchema,
+	date_unix_sSchema,
+	date_unix_msSchema
 ]);
+
+export const SupportedTypeMap = {
+	any: DataTypeSchema,
+	// basics
+	number: numberSchema,
+	string: stringSchema,
+	boolean: booleanSchema,
+	// date
+	date: dateSchema,
+	date_iso: date_isoSchema,
+	date_only: date_onlySchema,
+	date_time: date_timeSchema,
+	date_unix_s: date_unix_sSchema,
+	date_unix_ms: date_unix_msSchema
+};
 
 export type DataType = z.infer<typeof DataTypeSchema>;
 
@@ -78,47 +92,55 @@ export const CoordinateObjectSchema = z.object({
 	type: SupportedTypeSchema, // The data type of the coordinate's value
 	label: z.string() // The label of the coordinate
 });
-
 // Affine
-export const AffineObjectSchema = z.object({
-	x: DataTypeSchema,
-	y: DataTypeSchema
-});
 export const AffineRemapSchema = z.object({
 	x: CoordinateObjectSchema,
 	y: CoordinateObjectSchema
 });
-export type AffineObject = z.infer<typeof AffineObjectSchema>;
+export const AffineObjectSchema = (dataPointType: AffineRemap) =>
+	z.object({
+		x: SupportedTypeMap[dataPointType.x.type],
+		y: SupportedTypeMap[dataPointType.y.type]
+	});
+export const AffineSchema = (dataPointType: AffineRemap) =>
+	z.array(AffineObjectSchema(dataPointType));
+
+export type AffineObject = z.infer<ReturnType<typeof AffineObjectSchema>>;
 export type AffineRemap = z.infer<typeof AffineRemapSchema>;
-export const AffineSchema = z.array(AffineObjectSchema);
 
 // Barycentric
-export const BarycentricObjectSchema = z.object({
-	A: z.number(),
-	B: z.number(),
-	C: z.number()
-});
+export const BarycentricObjectSchema = (dataPointType: BarycentricRemap) =>
+	z.object({
+		A: SupportedTypeMap[dataPointType.A.type],
+		B: SupportedTypeMap[dataPointType.B.type],
+		C: SupportedTypeMap[dataPointType.C.type]
+	});
 export const BarycentricRemapSchema = z.object({
 	A: CoordinateObjectSchema,
 	B: CoordinateObjectSchema,
 	C: CoordinateObjectSchema
 });
-export type BarycentricObject = z.infer<typeof BarycentricObjectSchema>;
+export const BarycentricSchema = (dataPointType: BarycentricRemap) =>
+	z.array(BarycentricObjectSchema(dataPointType));
+
+export type BarycentricObject = z.infer<ReturnType<typeof BarycentricObjectSchema>>;
 export type BarycentricRemap = z.infer<typeof BarycentricRemapSchema>;
-export const BarycentricSchema = z.array(BarycentricObjectSchema);
 
 // Cartesian
-export const CartesianObjectSchema = z.object({
-	x: DataTypeSchema,
-	y: DataTypeSchema
-});
+export const CartesianObjectSchema = (dataPointType: CartesianRemap) =>
+	z.object({
+		x: SupportedTypeMap[dataPointType.x.type],
+		y: SupportedTypeMap[dataPointType.y.type]
+	});
 export const CartesianRemapSchema = z.object({
 	x: CoordinateObjectSchema,
 	y: CoordinateObjectSchema
 });
-export type CartesianObject = z.infer<typeof CartesianObjectSchema>;
+export const CartesianSchema = (dataPointType: CartesianRemap) =>
+	z.array(CartesianObjectSchema(dataPointType));
+
+export type CartesianObject = z.infer<ReturnType<typeof CartesianObjectSchema>>;
 export type CartesianRemap = z.infer<typeof CartesianRemapSchema>;
-export const CartesianSchema = z.array(CartesianObjectSchema);
 
 // Feature (for Geographic)
 export const FeatureSchema = z.object({
@@ -131,99 +153,106 @@ export const FeatureSchema = z.object({
 		name: z.string()
 	})
 });
+
 export const FeatureRemapSchema = z.object({
 	latitude: CoordinateObjectSchema,
 	longitude: CoordinateObjectSchema,
 	name: CoordinateObjectSchema
 });
+
 export type Feature = z.infer<typeof FeatureSchema>;
 export type FeatureRemap = z.infer<typeof FeatureRemapSchema>;
 
 // Geographic
-export const GeographicObjectSchema = z.object({
-	type: z.literal('FeatureCollection'),
-	features: z.array(FeatureSchema)
-});
+export const GeographicObjectSchema = (dataPointType: FeatureRemap) =>
+	z.object({
+		type: z.literal('FeatureCollection'),
+		features: z.array(FeatureSchema)
+	});
+
 export const GeographicRemapSchema = z.object({
 	features: z.array(FeatureRemapSchema)
 });
-export type GeographicObject = z.infer<typeof GeographicObjectSchema>;
+
+export const GeographicSchema = (dataPointType: FeatureRemap) =>
+	z.array(GeographicObjectSchema(dataPointType));
+
+export type GeographicObject = z.infer<ReturnType<typeof GeographicObjectSchema>>;
 export type GeographicRemap = z.infer<typeof GeographicRemapSchema>;
-export const GeographicSchema = z.array(GeographicObjectSchema);
 
 // Hexbin
-export const HexbinObjectSchema = z.object({
-	x: DataTypeSchema,
-	y: DataTypeSchema
-});
+export const HexbinObjectSchema = (dataPointType: HexbinRemap) =>
+	z.object({
+		x: SupportedTypeMap[dataPointType.x.type],
+		y: SupportedTypeMap[dataPointType.y.type]
+	});
 export const HexbinRemapSchema = z.object({
 	x: CoordinateObjectSchema,
 	y: CoordinateObjectSchema
 });
-export type HexbinObject = z.infer<typeof HexbinObjectSchema>;
+export const HexbinSchema = (dataPointType: HexbinRemap) =>
+	z.array(HexbinObjectSchema(dataPointType));
+
+export type HexbinObject = z.infer<ReturnType<typeof HexbinObjectSchema>>;
 export type HexbinRemap = z.infer<typeof HexbinRemapSchema>;
-export const HexbinSchema = z.array(HexbinObjectSchema);
 
 // LogPolar
-export const LogPolarObjectSchema = z.object({
-	r: DataTypeSchema,
-	theta: DataTypeSchema
-});
+export const LogPolarObjectSchema = (dataPointType: LogPolarRemap) =>
+	z.object({
+		r: SupportedTypeMap[dataPointType.r.type],
+		theta: SupportedTypeMap[dataPointType.theta.type]
+	});
 export const LogPolarRemapSchema = z.object({
 	r: CoordinateObjectSchema,
 	theta: CoordinateObjectSchema
 });
-export type LogPolarObject = z.infer<typeof LogPolarObjectSchema>;
+export const LogPolarSchema = (dataPointType: LogPolarRemap) =>
+	z.array(LogPolarObjectSchema(dataPointType));
+
+export type LogPolarObject = z.infer<ReturnType<typeof LogPolarObjectSchema>>;
 export type LogPolarRemap = z.infer<typeof LogPolarRemapSchema>;
-export const LogPolarSchema = z.array(LogPolarObjectSchema);
 
 // Oblique
-export const ObliqueObjectSchema = z.object({
-	x: DataTypeSchema,
-	y: DataTypeSchema
-});
+export const ObliqueObjectSchema = (dataPointType: ObliqueRemap) =>
+	z.object({
+		x: SupportedTypeMap[dataPointType.x.type],
+		y: SupportedTypeMap[dataPointType.y.type]
+	});
 export const ObliqueRemapSchema = z.object({
 	x: CoordinateObjectSchema,
 	y: CoordinateObjectSchema
 });
-export type ObliqueObject = z.infer<typeof ObliqueObjectSchema>;
-export type ObliqueRemap = z.infer<typeof ObliqueRemapSchema>;
-export const ObliqueSchema = z.array(ObliqueObjectSchema);
+export const ObliqueSchema = (dataPointType: ObliqueRemap) =>
+	z.array(ObliqueObjectSchema(dataPointType));
 
-// Parallel (Polar)
-export const PolarObjectSchema = z.object({
-	r: DataTypeSchema,
-	theta: DataTypeSchema
-});
+export type ObliqueObject = z.infer<ReturnType<typeof ObliqueObjectSchema>>;
+export type ObliqueRemap = z.infer<typeof ObliqueRemapSchema>;
+
+// Polar
+export const PolarObjectSchema = (dataPointType: PolarRemap) =>
+	z.object({
+		r: SupportedTypeMap[dataPointType.r.type],
+		theta: SupportedTypeMap[dataPointType.theta.type]
+	});
 export const PolarRemapSchema = z.object({
 	r: CoordinateObjectSchema,
 	theta: CoordinateObjectSchema
 });
-export type PolarObject = z.infer<typeof PolarObjectSchema>;
-export type PolarRemap = z.infer<typeof PolarRemapSchema>;
-export const PolarSchema = z.array(PolarObjectSchema);
+export const PolarSchema = (dataPointType: PolarRemap) => z.array(PolarObjectSchema(dataPointType));
 
-// Parallel
-export const ParallelObjectSchema = z.object({
-	r: DataTypeSchema,
-	theta: DataTypeSchema
-});
-export const ParallelRemapSchema = z.object({
-	r: CoordinateObjectSchema,
-	theta: CoordinateObjectSchema
-});
-export type ParallelObject = z.infer<typeof ParallelObjectSchema>;
-export type ParallelRemap = z.infer<typeof ParallelRemapSchema>;
-export const ParallelSchema = z.array(ParallelObjectSchema);
+export type PolarObject = z.infer<ReturnType<typeof PolarObjectSchema>>;
+export type PolarRemap = z.infer<typeof PolarRemapSchema>;
 
 // Radar
-export const RadarObjectSchema = z.object({
-	species: z.string(),
-	sepal_length: z.union([z.number(), z.string()]),
-	sepal_width: z.union([z.number(), z.string()]),
-	petal_length: z.union([z.number(), z.string()]),
-	petal_width: z.union([z.number(), z.string()])
-});
+export const RadarObjectSchema = (dataPointType: RadarRemap) =>
+	z.object({
+		species: z.string(),
+		sepal_length: z.union([SupportedTypeMap[dataPointType.sepal_length.type], z.string()]),
+		sepal_width: z.union([SupportedTypeMap[dataPointType.sepal_width.type], z.string()]),
+		petal_length: z.union([SupportedTypeMap[dataPointType.petal_length.type], z.string()]),
+		petal_width: z.union([SupportedTypeMap[dataPointType], z.string()])
+	});
+
 export const RadarRemapSchema = z.object({
 	species: z.string(),
 	sepal_length: CoordinateObjectSchema,
@@ -231,39 +260,63 @@ export const RadarRemapSchema = z.object({
 	petal_length: CoordinateObjectSchema,
 	petal_width: CoordinateObjectSchema
 });
-export type RadarObject = z.infer<typeof RadarObjectSchema>;
+
+export const RadarSchema = (dataPointType: RadarRemap) => z.array(RadarObjectSchema(dataPointType));
+
+export type RadarObject = z.infer<ReturnType<typeof RadarObjectSchema>>;
 export type RadarRemap = z.infer<typeof RadarRemapSchema>;
-export const RadarSchema = z.array(RadarObjectSchema);
+
+// Parallel
+export const ParallelObjectSchema = (dataPointType: ParallelRemap) =>
+	z.object({
+		r: SupportedTypeMap[dataPointType.r.type],
+		theta: SupportedTypeMap[dataPointType.theta.type]
+	});
+export const ParallelRemapSchema = z.object({
+	r: CoordinateObjectSchema,
+	theta: CoordinateObjectSchema
+});
+export const ParallelSchema = (dataPointType: ParallelRemap) =>
+	z.array(ParallelObjectSchema(dataPointType));
+
+export type ParallelObject = z.infer<ReturnType<typeof ParallelObjectSchema>>;
+export type ParallelRemap = z.infer<typeof ParallelRemapSchema>;
 
 // Spherical
-export const SphericalObjectSchema = z.object({
-	r: DataTypeSchema,
-	theta: DataTypeSchema,
-	phi: DataTypeSchema
-});
+export const SphericalObjectSchema = (dataPointType: SphericalRemap) =>
+	z.object({
+		r: SupportedTypeMap[dataPointType.r.type],
+		theta: SupportedTypeMap[dataPointType.theta.type],
+		phi: SupportedTypeMap[dataPointType.phi.type]
+	});
 export const SphericalRemapSchema = z.object({
 	r: CoordinateObjectSchema,
 	theta: CoordinateObjectSchema,
 	phi: CoordinateObjectSchema
 });
-export type SphericalObject = z.infer<typeof SphericalObjectSchema>;
+export const SphericalSchema = (dataPointType: SphericalRemap) =>
+	z.array(SphericalObjectSchema(dataPointType));
+
+export type SphericalObject = z.infer<ReturnType<typeof SphericalObjectSchema>>;
 export type SphericalRemap = z.infer<typeof SphericalRemapSchema>;
-export const SphericalSchema = z.array(SphericalObjectSchema);
 
 // Ternary
-export const TernaryObjectSchema = z.object({
-	A: DataTypeSchema,
-	B: DataTypeSchema,
-	C: DataTypeSchema
-});
+export const TernaryObjectSchema = (dataPointType: TernaryRemap) =>
+	z.object({
+		A: SupportedTypeMap[dataPointType.A.type],
+		B: SupportedTypeMap[dataPointType.B.type],
+		C: SupportedTypeMap[dataPointType.C.type]
+	});
 export const TernaryRemapSchema = z.object({
 	A: CoordinateObjectSchema,
 	B: CoordinateObjectSchema,
 	C: CoordinateObjectSchema
 });
-export type TernaryObject = z.infer<typeof TernaryObjectSchema>;
+export const TernarySchema = (dataPointType: TernaryRemap) =>
+	z.array(TernaryObjectSchema(dataPointType));
+
+export type TernaryObject = z.infer<ReturnType<typeof TernaryObjectSchema>>;
 export type TernaryRemap = z.infer<typeof TernaryRemapSchema>;
-export const TernarySchema = z.array(TernaryObjectSchema);
 
 // Unified schema object
 export const coordinateSchema = {
@@ -422,8 +475,9 @@ export const createSystem = (
 	}
 	valid.validUserInputSchemaConfiguration = true;
 	const remappedUserData = remapData(userData, inputSchemaConfiguration);
-	const validatedRemapData =
-		coordinateSchema[validatedCoordinateType.data].safeParse(remappedUserData);
+	const validatedRemapData = coordinateSchema[validatedCoordinateType.data](
+		validatedUserInputSchemaConfiguration.data
+	).safeParse(remappedUserData);
 	if (!validatedRemapData.success) {
 		console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
 		error.name = 'Invalid coordinate data (after remap)';
@@ -431,6 +485,7 @@ export const createSystem = (
 		return { uuid, data: [], valid, error, success: false, loading };
 	}
 	valid.validRemapData = true;
+
 	return {
 		uuid,
 		data: validatedRemapData.data,
