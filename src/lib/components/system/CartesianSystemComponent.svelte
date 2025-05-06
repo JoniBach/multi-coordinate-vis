@@ -1,20 +1,18 @@
 <script lang="ts">
+	import type { System } from '$lib/utils/coordinate.schema.js';
 	import * as d3 from 'd3';
-	let { data, schema, config } = $props();
+	let { system = $bindable<System>() } = $props();
+	let { data, success, loading, config } = $derived(system);
 	let chartContainer = $state<HTMLDivElement>();
 
 	$effect(() => {
+		console.log(system);
+		if (loading) return;
+		if (!success) return;
 		if (!chartContainer) return;
 
 		// Clear previous content
 		chartContainer.innerHTML = '';
-
-		const validatedData = schema.safeParse(data);
-		if (!validatedData.success) {
-			console.error('Invalid data:', validatedData.error);
-			return;
-		}
-		const parsedData = validatedData.data || [];
 
 		// Determine scale and padding
 		const width = config.width;
@@ -22,8 +20,8 @@
 		const margin = config.margin;
 
 		// Calculate dynamic scales
-		const xExtent = d3.extent(parsedData.map((d) => Number(d.x || 0))) || [0, 1];
-		const yExtent = d3.extent(parsedData.map((d) => Number(d.y || 0))) || [0, 1];
+		const xExtent = d3.extent(data.map((d) => Number(d.x))) || [0, 1];
+		const yExtent = d3.extent(data.map((d) => Number(d.y))) || [0, 1];
 
 		const xScale = d3
 			.scaleLinear()
@@ -68,7 +66,7 @@
 		// Plot points
 		svg
 			.selectAll('circle')
-			.data(parsedData)
+			.data(data)
 			.enter()
 			.append('circle')
 			.attr('cx', (d) => xScale(d.x))
@@ -78,4 +76,12 @@
 	});
 </script>
 
-<div bind:this={chartContainer} style="width: {config.width}px; height: {config.height}px;"></div>
+{#if loading}
+	Loading...
+{:else if system.error}
+	Error: {system.error.name}
+{:else if !success}
+	No data
+{:else}
+	<div bind:this={chartContainer} style="width: {config.width}px; height: {config.height}px;"></div>
+{/if}

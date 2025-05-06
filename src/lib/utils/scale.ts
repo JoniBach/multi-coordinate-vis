@@ -14,16 +14,7 @@ import type {
 } from './coordinate.schema.js';
 import { z } from 'zod';
 import * as d3 from 'd3';
-
-const ConfigSchema = z.object({
-	height: z.number().positive().int(),
-	width: z.number().positive().int(),
-	margin: z.number().positive().int(),
-	skewX: z.number().int().optional().nullable(),
-	skewY: z.number().int().optional().nullable()
-});
-
-export type Config = z.infer<typeof ConfigSchema>;
+import type { Config } from './coordinate.schema.js';
 
 const affineScale = (data: Array<AffineObject>, config: Config) => {
 	const { height, width, margin } = config;
