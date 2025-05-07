@@ -23,18 +23,6 @@
 		const res = createSystem(
 			'cartesian',
 			CartesianExampleData,
-			// {
-			// 	x: {
-			// 		key: 'x',
-			// 		type: 'number',
-			// 		label: 'X'
-			// 	},
-			// 	y: {
-			// 		key: 'y',
-			// 		type: 'number',
-			// 		label: 'Y'
-			// 	}
-			// },
 			{
 				x: {
 					key: 'timestamp',

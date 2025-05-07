@@ -146,12 +146,6 @@ export type DateTimeSchema = z.infer<typeof date_timeSchema>;
 export type DateUnixSSchema = z.infer<typeof date_unix_sSchema>;
 export type DateUnixMSchema = z.infer<typeof date_unix_msSchema>;
 
-const isoToDate = (iso: string) => new Date(iso);
-const dateOnlyToDate = (dateOnly: string) => new Date(dateOnly);
-const dateTimeToDate = (dateTime: string) => new Date(dateTime);
-const unixSToDate = (unixS: number) => new Date(unixS * 1000);
-const unixMsToDate = (unixM: number) => new Date(unixM);
-
 export const DataTypeSchema = z.union([
 	// basics
 	numberSchema,
