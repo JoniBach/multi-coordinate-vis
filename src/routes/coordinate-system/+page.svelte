@@ -27,13 +27,20 @@
 				x: {
 					key: 'timestamp',
 					type: 'date_iso',
-					label: 'X'
+					label: 'Time'
 				},
-				y: {
-					key: 'readings.celsius',
-					type: 'number',
-					label: 'Y'
-				},
+				y: [
+					{
+						key: 'readings.celsius',
+						type: 'number',
+						label: 'Temperature'
+					},
+					{
+						key: 'readings.humidity',
+						type: 'number',
+						label: 'Humidity'
+					}
+				],
 				entity: {
 					key: 'greenhouse_id',
 					type: 'string',
