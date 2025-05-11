@@ -1,12 +1,12 @@
 [
-  {"latitude_angle": 30, "longitude_angle": 45, "radiation_watts_m2": 850},
-  {"latitude_angle": 60, "longitude_angle": 120, "radiation_watts_m2": 620},
-  {"latitude_angle": 15, "longitude_angle": 270, "radiation_watts_m2": 910},
-  {"latitude_angle": 45, "longitude_angle": 90, "radiation_watts_m2": 780},
-  {"latitude_angle": 75, "longitude_angle": 180, "radiation_watts_m2": 670},
-  {"latitude_angle": 10, "longitude_angle": 60, "radiation_watts_m2": 940},
-  {"latitude_angle": 50, "longitude_angle": 135, "radiation_watts_m2": 800},
-  {"latitude_angle": 35, "longitude_angle": 210, "radiation_watts_m2": 860},
-  {"latitude_angle": 20, "longitude_angle": 300, "radiation_watts_m2": 920},
-  {"latitude_angle": 65, "longitude_angle": 240, "radiation_watts_m2": 600}
+  { "field_id": "Northwest Field", "soil_type": "Clay", "nutrient_levels": { "nitrogen_ppm": 30, "phosphorus_ppm": 45, "potassium_ppm": 850 } },
+  { "field_id": "Northeast Field", "soil_type": "Silt", "nutrient_levels": { "nitrogen_ppm": 60, "phosphorus_ppm": 120, "potassium_ppm": 620 } },
+  { "field_id": "Southwest Field", "soil_type": "Sand", "nutrient_levels": { "nitrogen_ppm": 15, "phosphorus_ppm": 270, "potassium_ppm": 910 } },
+  { "field_id": "Southeast Field", "soil_type": "Clay", "nutrient_levels": { "nitrogen_ppm": 45, "phosphorus_ppm": 90, "potassium_ppm": 780 } },
+  { "field_id": "Central Field", "soil_type": "Silt", "nutrient_levels": { "nitrogen_ppm": 75, "phosphorus_ppm": 180, "potassium_ppm": 670 } },
+  { "field_id": "North Field", "soil_type": "Sand", "nutrient_levels": { "nitrogen_ppm": 10, "phosphorus_ppm": 60, "potassium_ppm": 940 } },
+  { "field_id": "East Field", "soil_type": "Clay", "nutrient_levels": { "nitrogen_ppm": 50, "phosphorus_ppm": 135, "potassium_ppm": 800 } },
+  { "field_id": "West Field", "soil_type": "Silt", "nutrient_levels": { "nitrogen_ppm": 35, "phosphorus_ppm": 210, "potassium_ppm": 860 } },
+  { "field_id": "South Field", "soil_type": "Sand", "nutrient_levels": { "nitrogen_ppm": 20, "phosphorus_ppm": 300, "potassium_ppm": 920 } },
+  { "field_id": "Garden", "soil_type": "Clay", "nutrient_levels": { "nitrogen_ppm": 65, "phosphorus_ppm": 240, "potassium_ppm": 600 } }
 ]

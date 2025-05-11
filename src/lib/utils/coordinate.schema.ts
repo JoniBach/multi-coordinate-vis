@@ -1,15 +1,8 @@
 import { z, ZodError } from 'zod';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
-import {
-	isValid,
-	isDate,
-	parseISO,
-	format,
-	isWithinInterval,
-	startOfDay,
-	endOfDay
-} from 'date-fns';
+import { isValid, parseISO } from 'date-fns';
+import sizeof from 'object-sizeof';
 
 export const SupportedTypeSchema = z.enum([
 	'any',
@@ -187,14 +180,14 @@ export const AffineRemapSchema = z.object({
 	x: CoordinateObjectSchema,
 	y: CoordinateObjectSchema,
 	entity: CoordinateObjectSchema,
-	dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional() // Add this line
+	dataMapping: z.record(z.string()).optional() // Add this line
 });
 export const AffineObjectSchema = (dataPointType: AffineRemap) =>
 	z.object({
 		x: SupportedTypeMap[dataPointType.x.type],
 		y: SupportedTypeMap[dataPointType.y.type],
 		entity: SupportedTypeMap[dataPointType.entity.type],
-		dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional()
+		dataMapping: z.record(z.string()).optional()
 	});
 export const AffineSchema = (dataPointType: AffineRemap) =>
 	z.array(AffineObjectSchema(dataPointType));
@@ -208,7 +201,7 @@ export const BarycentricObjectSchema = (dataPointType: BarycentricRemap) =>
 		A: SupportedTypeMap[dataPointType.A.type],
 		B: SupportedTypeMap[dataPointType.B.type],
 		C: SupportedTypeMap[dataPointType.C.type],
-		dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional()
+		dataMapping: z.record(z.string()).optional()
 	});
 export const BarycentricRemapSchema = z.object({
 	A: CoordinateObjectSchema,
@@ -227,13 +220,13 @@ export const CartesianObjectSchema = (dataPointType: CartesianRemap) =>
 		x: SupportedTypeMap[dataPointType.x.type],
 		y: SupportedTypeMap[dataPointType.y.type],
 		entity: SupportedTypeMap[dataPointType.entity.type],
-		dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional()
+		dataMapping: z.record(z.string()).optional()
 	});
 export const CartesianRemapSchema = z.object({
 	x: CoordinateObjectSchema,
 	y: CoordinateObjectSchema,
 	entity: CoordinateObjectSchema,
-	dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional() // Add this line
+	dataMapping: z.record(z.string()).optional() // Add this line
 });
 export const CartesianSchema = (dataPointType: CartesianRemap) =>
 	z.array(CartesianObjectSchema(dataPointType));
@@ -241,57 +234,19 @@ export const CartesianSchema = (dataPointType: CartesianRemap) =>
 export type CartesianObject = z.infer<ReturnType<typeof CartesianObjectSchema>>;
 export type CartesianRemap = z.infer<typeof CartesianRemapSchema>;
 
-// Feature (for Geographic)
-export const FeatureSchema = z.object({
-	type: z.literal('Feature'),
-	geometry: z.object({
-		type: z.literal('Point'),
-		coordinates: z.tuple([z.number(), z.number()])
-	}),
-	properties: z.object({
-		name: z.string()
-	})
-});
-
-export const FeatureRemapSchema = z.object({
-	latitude: CoordinateObjectSchema,
-	longitude: CoordinateObjectSchema,
-	name: CoordinateObjectSchema
-});
-
-export type Feature = z.infer<typeof FeatureSchema>;
-export type FeatureRemap = z.infer<typeof FeatureRemapSchema>;
-
-// Geographic
-export const GeographicObjectSchema = (dataPointType: FeatureRemap) =>
-	z.object({
-		type: z.literal('FeatureCollection'),
-		features: z.array(FeatureSchema)
-	});
-
-export const GeographicRemapSchema = z.object({
-	features: z.array(FeatureRemapSchema)
-});
-
-export const GeographicSchema = (dataPointType: FeatureRemap) =>
-	z.array(GeographicObjectSchema(dataPointType));
-
-export type GeographicObject = z.infer<ReturnType<typeof GeographicObjectSchema>>;
-export type GeographicRemap = z.infer<typeof GeographicRemapSchema>;
-
 // Hexbin
 export const HexbinObjectSchema = (dataPointType: HexbinRemap) =>
 	z.object({
 		x: SupportedTypeMap[dataPointType.x.type],
 		y: SupportedTypeMap[dataPointType.y.type],
 		entity: SupportedTypeMap[dataPointType.entity.type],
-		dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional()
+		dataMapping: z.record(z.string()).optional()
 	});
 export const HexbinRemapSchema = z.object({
 	x: CoordinateObjectSchema,
 	y: CoordinateObjectSchema,
 	entity: CoordinateObjectSchema,
-	dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional() // Add this line
+	dataMapping: z.record(z.string()).optional() // Add this line
 });
 export const HexbinSchema = (dataPointType: HexbinRemap) =>
 	z.array(HexbinObjectSchema(dataPointType));
@@ -305,13 +260,13 @@ export const LogPolarObjectSchema = (dataPointType: LogPolarRemap) =>
 		r: SupportedTypeMap[dataPointType.r.type],
 		theta: SupportedTypeMap[dataPointType.theta.type],
 		entity: SupportedTypeMap[dataPointType.entity.type],
-		dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional()
+		dataMapping: z.record(z.string()).optional()
 	});
 export const LogPolarRemapSchema = z.object({
 	r: CoordinateObjectSchema,
 	theta: CoordinateObjectSchema,
 	entity: CoordinateObjectSchema,
-	dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional() // Add this line
+	dataMapping: z.record(z.string()).optional() // Add this line
 });
 export const LogPolarSchema = (dataPointType: LogPolarRemap) =>
 	z.array(LogPolarObjectSchema(dataPointType));
@@ -325,13 +280,13 @@ export const ObliqueObjectSchema = (dataPointType: ObliqueRemap) =>
 		x: SupportedTypeMap[dataPointType.x.type],
 		y: SupportedTypeMap[dataPointType.y.type],
 		entity: SupportedTypeMap[dataPointType.entity.type],
-		dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional()
+		dataMapping: z.record(z.string()).optional()
 	});
 export const ObliqueRemapSchema = z.object({
 	x: CoordinateObjectSchema,
 	y: CoordinateObjectSchema,
 	entity: CoordinateObjectSchema,
-	dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional() // Add this line
+	dataMapping: z.record(z.string()).optional() // Add this line
 });
 export const ObliqueSchema = (dataPointType: ObliqueRemap) =>
 	z.array(ObliqueObjectSchema(dataPointType));
@@ -345,13 +300,13 @@ export const PolarObjectSchema = (dataPointType: PolarRemap) =>
 		r: SupportedTypeMap[dataPointType.r.type],
 		theta: SupportedTypeMap[dataPointType.theta.type],
 		entity: SupportedTypeMap[dataPointType.entity.type],
-		dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional()
+		dataMapping: z.record(z.string()).optional()
 	});
 export const PolarRemapSchema = z.object({
 	r: CoordinateObjectSchema,
 	theta: CoordinateObjectSchema,
 	entity: CoordinateObjectSchema,
-	dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional() // Add this line
+	dataMapping: z.record(z.string()).optional() // Add this line
 });
 export const PolarSchema = (dataPointType: PolarRemap) => z.array(PolarObjectSchema(dataPointType));
 
@@ -361,20 +316,21 @@ export type PolarRemap = z.infer<typeof PolarRemapSchema>;
 // Radar
 export const RadarObjectSchema = (dataPointType: RadarRemap) =>
 	z.object({
-		species: z.string(),
 		sepal_length: SupportedTypeMap[dataPointType.sepal_length.type],
 		sepal_width: SupportedTypeMap[dataPointType.sepal_width.type],
 		petal_length: SupportedTypeMap[dataPointType.petal_length.type],
 		petal_width: SupportedTypeMap[dataPointType.petal_width.type],
-		dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional()
+		entity: SupportedTypeMap[dataPointType.entity.type],
+		dataMapping: z.record(z.string()).optional()
 	});
 
 export const RadarRemapSchema = z.object({
-	species: z.string(),
 	sepal_length: CoordinateObjectSchema,
 	sepal_width: CoordinateObjectSchema,
 	petal_length: CoordinateObjectSchema,
-	petal_width: CoordinateObjectSchema
+	petal_width: CoordinateObjectSchema,
+	entity: CoordinateObjectSchema,
+	dataMapping: z.record(z.string()).optional()
 });
 
 export const RadarSchema = (dataPointType: RadarRemap) => z.array(RadarObjectSchema(dataPointType));
@@ -388,13 +344,13 @@ export const ParallelObjectSchema = (dataPointType: ParallelRemap) =>
 		r: SupportedTypeMap[dataPointType.r.type],
 		theta: SupportedTypeMap[dataPointType.theta.type],
 		entity: SupportedTypeMap[dataPointType.entity.type],
-		dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional()
+		dataMapping: z.record(z.string()).optional()
 	});
 export const ParallelRemapSchema = z.object({
 	r: CoordinateObjectSchema,
 	theta: CoordinateObjectSchema,
 	entity: CoordinateObjectSchema,
-	dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional() // Add this line
+	dataMapping: z.record(z.string()).optional() // Add this line
 });
 export const ParallelSchema = (dataPointType: ParallelRemap) =>
 	z.array(ParallelObjectSchema(dataPointType));
@@ -409,14 +365,14 @@ export const SphericalObjectSchema = (dataPointType: SphericalRemap) =>
 		theta: SupportedTypeMap[dataPointType.theta.type],
 		phi: SupportedTypeMap[dataPointType.phi.type],
 		entity: SupportedTypeMap[dataPointType.entity.type],
-		dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional()
+		dataMapping: z.record(z.string()).optional()
 	});
 export const SphericalRemapSchema = z.object({
 	r: CoordinateObjectSchema,
 	theta: CoordinateObjectSchema,
 	phi: CoordinateObjectSchema,
 	entity: CoordinateObjectSchema,
-	dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional() // Add this line
+	dataMapping: z.record(z.string()).optional() // Add this line
 });
 export const SphericalSchema = (dataPointType: SphericalRemap) =>
 	z.array(SphericalObjectSchema(dataPointType));
@@ -431,14 +387,14 @@ export const TernaryObjectSchema = (dataPointType: TernaryRemap) =>
 		B: SupportedTypeMap[dataPointType.B.type],
 		C: SupportedTypeMap[dataPointType.C.type],
 		entity: SupportedTypeMap[dataPointType.entity.type],
-		dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional()
+		dataMapping: z.record(z.string()).optional()
 	});
 export const TernaryRemapSchema = z.object({
 	A: CoordinateObjectSchema,
 	B: CoordinateObjectSchema,
 	C: CoordinateObjectSchema,
 	entity: CoordinateObjectSchema,
-	dataMapping: z.record(z.union([z.string(), CoordinateObjectSchema])).optional() // Add this line
+	dataMapping: z.record(z.string()).optional() // Add this line
 });
 export const TernarySchema = (dataPointType: TernaryRemap) =>
 	z.array(TernaryObjectSchema(dataPointType));
@@ -451,7 +407,6 @@ export const coordinateSchema = {
 	affine: AffineSchema,
 	barycentric: BarycentricSchema,
 	cartesian: CartesianSchema,
-	geographic: GeographicSchema,
 	hexbin: HexbinSchema,
 	logPolar: LogPolarSchema,
 	oblique: ObliqueSchema,
@@ -466,7 +421,6 @@ export const remapSchema = {
 	affine: AffineRemapSchema,
 	barycentric: BarycentricRemapSchema,
 	cartesian: CartesianRemapSchema,
-	geographic: GeographicRemapSchema,
 	hexbin: HexbinRemapSchema,
 	logPolar: LogPolarRemapSchema,
 	oblique: ObliqueRemapSchema,
@@ -483,16 +437,14 @@ export const UserDataTableSchema = z.array(z.unknown());
 function remapData<T>(userData: Array<unknown>, dataMapping: InputSchemaConfiguration): T[] {
 	return userData.map((item) => {
 		const mapped: Record<string, unknown> = {};
+		const simplifiedMapping: Record<string, string> = {};
 		for (const [outKey, config] of Object.entries(dataMapping)) {
-			// If config is a CoordinateObjectSchema, extract by its key
 			if (typeof config === 'object' && 'key' in config) {
 				mapped[outKey] = _.get(item, config.key);
-			} else {
-				// Fallback to previous behavior if needed
-				mapped[outKey] = _.get(item, config);
+				simplifiedMapping[outKey] = config.key;
 			}
 		}
-		return { ...mapped, dataMapping } as T;
+		return { ...mapped, dataMapping: simplifiedMapping } as T;
 	});
 }
 
@@ -500,7 +452,7 @@ export const CoordinateTypeSchema = z.enum([
 	'affine',
 	'barycentric',
 	'cartesian',
-	'geographic',
+	// 'geographic', // TODO: Add geographic support
 	'hexbin',
 	'logPolar',
 	'oblique',
@@ -547,7 +499,6 @@ export type InputSchemaConfiguration =
 	| z.infer<typeof AffineRemapSchema>
 	| z.infer<typeof BarycentricRemapSchema>
 	| z.infer<typeof CartesianRemapSchema>
-	| z.infer<typeof GeographicRemapSchema>
 	| z.infer<typeof HexbinRemapSchema>
 	| z.infer<typeof LogPolarRemapSchema>
 	| z.infer<typeof ObliqueRemapSchema>
@@ -557,17 +508,50 @@ export type InputSchemaConfiguration =
 	| z.infer<typeof SphericalRemapSchema>
 	| z.infer<typeof TernaryRemapSchema>;
 
+function remapInputSchema(inputSchema: InputSchemaConfiguration): Record<string, CoordinateObject> {
+	const remapped: Record<string, CoordinateObject> = {};
+
+	// Process each field in the input schema
+	for (const [key, value] of Object.entries(inputSchema)) {
+		// Skip dataMapping field as it's not part of the coordinate mapping
+		if (key === 'dataMapping') continue;
+
+		// Handle array values
+		if (Array.isArray(value)) {
+			value.forEach((item) => {
+				if (typeof item === 'object' && 'key' in item && 'type' in item && 'label' in item) {
+					remapped[item.key] = {
+						key,
+						type: item.type,
+						label: item.label
+					};
+				}
+			});
+		}
+		// Handle single values
+		else if (typeof value === 'object' && 'key' in value && 'type' in value && 'label' in value) {
+			remapped[value.key] = {
+				key: key,
+				type: value.type,
+				label: value.label
+			};
+		}
+	}
+	return remapped;
+}
+
 export const createSystem = (
 	coordinateType: CoordinateType,
 	userData: Array<unknown>,
-	inputSchemaConfiguration: InputSchemaConfiguration,
+	inputSchema: InputSchema,
 	config: Config
 ): System => {
+	const startTime = performance.now();
 	const loading = true;
 	const valid = {
 		validCoordinateType: false,
 		validOriginalUserData: false,
-		validUserInputSchemaConfiguration: false,
+		validUserInputSchema: false,
 		validRemapData: false
 	};
 
@@ -577,32 +561,58 @@ export const createSystem = (
 	};
 
 	const uuid = uuidv4();
+
+	const metadata = {
+		size: {
+			in: sizeof(userData),
+			out: 0,
+			res: 0
+		},
+		duration: {
+			validCoordinateType: 0,
+			validOriginalUserData: 0,
+			validUserInputSchemaConfiguration: 0,
+			validRemapData: 0
+		},
+		valid: {
+			validCoordinateType: false,
+			validOriginalUserData: false,
+			validUserInputSchemaConfiguration: false,
+			validRemapData: false
+		}
+	};
+	const referenceSchema = remapInputSchema(inputSchema);
+
+	const completeTask = (key: keyof typeof metadata.valid) => {
+		metadata.duration[key] = performance.now() - startTime;
+		metadata.valid[key] = true;
+	};
 	const validatedCoordinateType = CoordinateTypeSchema.safeParse(coordinateType);
 	if (!validatedCoordinateType.success) {
 		console.error('Invalid coordinate type', validatedCoordinateType.error);
 		error.name = 'Invalid coordinate type';
 		error.zodError = validatedCoordinateType.error;
-		return { uuid, data: [], valid, error, success: false, loading };
+		return { uuid, coordinateType, data: [], valid, error, success: false, loading };
 	}
-	valid.validCoordinateType = true;
+	completeTask('validCoordinateType');
 	const validateOriginalUserData = UserDataTableSchema.safeParse(userData);
 	if (!validateOriginalUserData.success) {
 		console.error('Invalid user data', validateOriginalUserData.error);
 		error.name = 'Invalid user data';
 		error.zodError = validateOriginalUserData.error;
-		return { uuid, data: [], valid, error, success: false, loading };
+		return { uuid, coordinateType, data: [], valid, error, success: false, loading };
 	}
-	valid.validOriginalUserData = true;
+	completeTask('validOriginalUserData');
 
 	// todo: handle multi remap
 
-	const isSingleSeries = Object.values(inputSchemaConfiguration).every(
+	const isSingleSeries = Object.values(inputSchema).every(
 		(param) => typeof param === 'object' && !Array.isArray(param)
 	);
 
 	const isMultiSeries =
-		Object.values(inputSchemaConfiguration).some((param) => Array.isArray(param)) &&
-		Object.values(inputSchemaConfiguration).every((param, index, array) =>
+		Object.values(inputSchema).some((param) => Array.isArray(param)) &&
+		Object.values(inputSchema).every((param, index, array) =>
 			Array.isArray(param)
 				? array
 						.filter((item, i) => i !== index)
@@ -612,88 +622,104 @@ export const createSystem = (
 
 	if (isMultiSeries) {
 		const selectionWithSeriesInfo: Record<string, boolean> = {};
-		Object.entries(inputSchemaConfiguration).forEach(([key, value]) => {
+		Object.entries(inputSchema).forEach(([key, value]) => {
 			selectionWithSeriesInfo[key] = Array.isArray(value);
 		});
 		const seriesKey = Object.entries(selectionWithSeriesInfo).find(([key, value]) => value)?.[0];
-		const seriesConfigData = inputSchemaConfiguration[seriesKey];
+		const seriesConfigData = inputSchema[seriesKey];
 		let multiSeriesData = [];
 
 		for (const series of seriesConfigData) {
-			const validatedUserInputSchemaConfiguration = remapSchema[
-				validatedCoordinateType.data
-			].safeParse({
-				...inputSchemaConfiguration,
-				[seriesKey]: series
+			const validatedUserInputSchema = remapSchema[validatedCoordinateType.data].safeParse({
+				...inputSchema,
+				[seriesKey]: {
+					...series
+				}
 			});
 
-			if (!validatedUserInputSchemaConfiguration.success) {
-				console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
+			if (!validatedUserInputSchema.success) {
+				console.error('Invalid schema configuration', validatedUserInputSchema.error);
 				error.name = 'Invalid schema configuration';
-				error.zodError = validatedUserInputSchemaConfiguration.error;
-				return { uuid, data: [], valid, error, success: false, loading };
+				error.zodError = validatedUserInputSchema.error;
+				return { uuid, coordinateType, data: [], valid, error, success: false, loading };
 			}
-			valid.validUserInputSchemaConfiguration = true;
+			completeTask('validUserInputSchemaConfiguration');
 
 			const remappedUserData = remapData(userData, {
-				...inputSchemaConfiguration,
-				[seriesKey]: series
+				...inputSchema,
+				[seriesKey]: {
+					...series
+				}
 			});
 
 			const validatedRemapData = coordinateSchema[validatedCoordinateType.data](
-				validatedUserInputSchemaConfiguration.data
+				validatedUserInputSchema.data
 			).safeParse(remappedUserData);
-
-			console.log({ remappedUserData, validatedRemapData: validatedRemapData.data });
 
 			if (!validatedRemapData.success) {
 				console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
 				error.name = 'Invalid coordinate data (after remap)';
 				error.zodError = validatedRemapData.error;
-				return { uuid, data: [], valid, error, success: false, loading };
+				return { uuid, coordinateType, data: [], valid, error, success: false, loading };
 			}
 			multiSeriesData = [...multiSeriesData, ...validatedRemapData.data];
 		}
-		valid.validRemapData = true;
+		completeTask('validRemapData');
 
-		return {
-			uuid,
+		metadata.size.out = sizeof(multiSeriesData);
+
+		const res = {
 			data: multiSeriesData,
-			valid,
+			coordinateType,
+			uuid,
+			metadata,
 			error,
+			referenceSchema,
+			inputSchema,
 			success: true,
 			loading: false,
 			config
 		};
+
+		res.metadata.size.res = sizeof(res);
+		return res;
 	} else if (isSingleSeries) {
-		const validatedUserInputSchemaConfiguration =
-			remapSchema[validatedCoordinateType.data].safeParse(inputSchemaConfiguration);
-		if (!validatedUserInputSchemaConfiguration.success) {
-			console.error('Invalid schema configuration', validatedUserInputSchemaConfiguration.error);
+		const validatedUserInputSchema =
+			remapSchema[validatedCoordinateType.data].safeParse(inputSchema);
+		if (!validatedUserInputSchema.success) {
+			console.error('Invalid schema configuration', validatedUserInputSchema.error);
 			error.name = 'Invalid schema configuration';
-			error.zodError = validatedUserInputSchemaConfiguration.error;
-			return { uuid, data: [], valid, error, success: false, loading };
+			error.zodError = validatedUserInputSchema.error;
+			return { uuid, coordinateType, data: [], valid, error, success: false, loading };
 		}
-		valid.validUserInputSchemaConfiguration = true;
-		const remappedUserData = remapData(userData, inputSchemaConfiguration);
+		completeTask('validUserInputSchemaConfiguration');
+		const remappedUserData = remapData(userData, inputSchema);
 		const validatedRemapData = coordinateSchema[validatedCoordinateType.data](
-			validatedUserInputSchemaConfiguration.data
+			validatedUserInputSchema.data
 		).safeParse(remappedUserData);
 		if (!validatedRemapData.success) {
 			console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
 			error.name = 'Invalid coordinate data (after remap)';
 			error.zodError = validatedRemapData.error;
-			return { uuid, data: [], valid, error, success: false, loading };
+			return { uuid, coordinateType, data: [], valid, error, success: false, loading };
 		}
-		valid.validRemapData = true;
+		completeTask('validRemapData');
 
-		return {
-			uuid,
+		metadata.size.out = sizeof(validatedRemapData.data);
+
+		const res = {
 			data: validatedRemapData.data,
-			valid,
+			coordinateType,
+			uuid,
+			metadata,
+			inputSchema,
+			referenceSchema,
+			error,
 			success: true,
 			loading: false,
 			config
 		};
+		res.metadata.size.res = sizeof(res);
+		return res;
 	}
 };
