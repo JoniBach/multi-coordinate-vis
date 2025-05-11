@@ -322,9 +322,18 @@
 	$effect(() => {});
 </script>
 
+<div style="display: flex; flex-wrap: wrap">
+	{#each chartInstances as chart}
+		<p
+			style={`border: 2px solid ${chart.success ? 'green' : 'red'}; margin: 1px; border-radius: 100px; padding: 0 5px`}
+		>
+			{chart.coordinateType}
+		</p>
+	{/each}
+</div>
 {#each chartInstances as chart}
 	<div>
-		<h3>{chart.config.title}</h3>
+		<h3>{chart?.config?.title}</h3>
 		{chart.coordinateType}
 		<span style={`color: ${chart.success ? 'green' : 'red'}`}>{chart.success}</span>
 		{#if !chart.success}
@@ -339,7 +348,9 @@
 					.size.res}
 			</div>
 			Data - {chart.data.length} items:
-			<pre>{JSON.stringify(chart.data[0], null, 2)}</pre>
+			<div style="display: flex; flex-wrap: wrap">
+				<pre>data:{JSON.stringify(chart.data[0], null, 2)}</pre>
+			</div>
 		{/if}
 	</div>
 	<hr />
