@@ -587,7 +587,11 @@ export const createSystem = ({
 }): System => {
 	const coordinateType = system;
 	const userData = data;
-	const inputSchema = schema;
+	// const inputSchema = schema;
+	const inputSchema = Object.fromEntries(
+		Object.entries(schema).map(([key, value]) => [key, Array.isArray(value) ? value : [value]])
+	);
+	console.log(inputSchema);
 	const chartConfig = config;
 	// const config =
 	const startTime = performance.now();
@@ -658,137 +662,82 @@ export const createSystem = ({
 
 	// todo: handle multi remap
 
-	const isSingleSeries = Object.values(inputSchema).every(
-		(param) => typeof param === 'object' && !Array.isArray(param)
-	);
-
-	const isMultiSeries =
-		Object.values(inputSchema).some((param) => Array.isArray(param)) &&
-		Object.values(inputSchema).every((param, index, array) =>
-			Array.isArray(param)
-				? array
-						.filter((item, i) => i !== index)
-						.every((item) => typeof item === 'object' && !Array.isArray(item))
-				: true
-		);
-
 	const allKeys = Object.values(inputSchema)
 		.map((value) => (value?.key ? value.key : undefined))
 		.filter((key) => key !== undefined && key !== 'entity') as string[];
 
 	console.log(allKeys);
-	if (isMultiSeries) {
-		const selectionWithSeriesInfo: Record<string, boolean> = {};
-		Object.entries(inputSchema).forEach(([key, value]) => {
-			selectionWithSeriesInfo[key] = Array.isArray(value);
-		});
-		const seriesKey = Object.entries(selectionWithSeriesInfo).find(([key, value]) => value)?.[0];
-		const seriesConfigData = inputSchema[seriesKey];
-		let multiSeriesData = [];
 
-		for (const series of seriesConfigData) {
-			if (inputSchema?.entity) {
-				console.error('Entity is not supported with multi series');
-			} else {
-				const validatedUserInputSchema = remapSchema[validatedCoordinateType.data].safeParse({
-					...inputSchema,
-					[seriesKey]: {
-						...series
-					}
-				});
+	// multi series
+	const selectionWithSeriesInfo: Record<string, boolean> = {};
+	Object.entries(inputSchema).forEach(([key, value]) => {
+		selectionWithSeriesInfo[key] = Array.isArray(value);
+	});
+	const seriesKey = Object.entries(selectionWithSeriesInfo).find(([key, value]) => value)?.[0];
+	const seriesConfigData = inputSchema[seriesKey];
+	let multiSeriesData = [];
 
-				if (!validatedUserInputSchema.success) {
-					console.error('Invalid schema configuration', validatedUserInputSchema.error);
-					error.name = 'Invalid schema configuration';
-					error.zodError = validatedUserInputSchema.error;
-					return { uuid, coordinateType, data: [], valid, error, success: false, loading };
+	for (const series of seriesConfigData) {
+		if (inputSchema?.entity) {
+			console.error('Entity is not supported with multi series');
+		} else {
+			const validatedUserInputSchema = remapSchema[validatedCoordinateType.data].safeParse({
+				...inputSchema,
+				[seriesKey]: {
+					...series
 				}
-				completeTask('validUserInputSchemaConfiguration');
+			});
 
-				const remappedUserData = remapData(userData, {
-					...inputSchema,
-					[seriesKey]: {
-						...series
-					}
-				});
-
-				const validatedRemapData = coordinateSchema[validatedCoordinateType.data](
-					validatedUserInputSchema.data
-				).safeParse(remappedUserData);
-
-				if (!validatedRemapData.success) {
-					console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-					error.name = 'Invalid coordinate data (after remap)';
-					error.zodError = validatedRemapData.error;
-					return { uuid, coordinateType, data: [], valid, error, success: false, loading };
-				}
-				multiSeriesData = [...multiSeriesData, ...validatedRemapData.data];
-				metadata.series.multiSeriesKeys.push(series.key);
-				metadata.series.singleSeriesKeys = allKeys.filter((key) => key !== seriesKey);
+			if (!validatedUserInputSchema.success) {
+				console.error('Invalid schema configuration', validatedUserInputSchema.error);
+				error.name = 'Invalid schema configuration';
+				error.zodError = validatedUserInputSchema.error;
+				return { uuid, coordinateType, data: [], valid, error, success: false, loading };
 			}
+			completeTask('validUserInputSchemaConfiguration');
+
+			const remappedUserData = remapData(userData, {
+				...inputSchema,
+				[seriesKey]: {
+					...series
+				}
+			});
+
+			const validatedRemapData = coordinateSchema[validatedCoordinateType.data](
+				validatedUserInputSchema.data
+			).safeParse(remappedUserData);
+
+			if (!validatedRemapData.success) {
+				console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
+				error.name = 'Invalid coordinate data (after remap)';
+				error.zodError = validatedRemapData.error;
+				return { uuid, coordinateType, data: [], valid, error, success: false, loading };
+			}
+			multiSeriesData = [...multiSeriesData, ...validatedRemapData.data];
+			metadata.series.multiSeriesKeys.push(series.key);
+			metadata.series.singleSeriesKeys = allKeys.filter((key) => key !== seriesKey);
 		}
-		completeTask('validRemapData');
-
-		metadata.size.out = sizeof(multiSeriesData);
-		metadata.series.isMultiSeries = true;
-		const res = {
-			data: multiSeriesData,
-			system: coordinateType,
-			uuid,
-			metadata,
-			error,
-			schema: {
-				input: normalizedSchema,
-				output: referenceSchema,
-				entity: inputSchema.entity
-			},
-			success: true,
-			loading: false,
-			config: chartConfig
-		};
-
-		res.metadata.size.res = sizeof(res);
-		return res;
-	} else if (isSingleSeries) {
-		const validatedUserInputSchema =
-			remapSchema[validatedCoordinateType.data].safeParse(inputSchema);
-		if (!validatedUserInputSchema.success) {
-			console.error('Invalid schema configuration', validatedUserInputSchema.error);
-			error.name = 'Invalid schema configuration';
-			error.zodError = validatedUserInputSchema.error;
-			return { uuid, coordinateType, data: [], valid, error, success: false, loading };
-		}
-		completeTask('validUserInputSchemaConfiguration');
-		const remappedUserData = remapData(userData, inputSchema);
-		const validatedRemapData = coordinateSchema[validatedCoordinateType.data](
-			validatedUserInputSchema.data
-		).safeParse(remappedUserData);
-		if (!validatedRemapData.success) {
-			console.error('Invalid coordinate data (after remap):', validatedRemapData.error);
-			error.name = 'Invalid coordinate data (after remap)';
-			error.zodError = validatedRemapData.error;
-			return { uuid, coordinateType, data: [], valid, error, success: false, loading };
-		}
-		completeTask('validRemapData');
-
-		metadata.size.out = sizeof(validatedRemapData.data);
-
-		const res = {
-			data: validatedRemapData.data,
-			system: coordinateType,
-			uuid,
-			metadata,
-			schema: {
-				input: normalizedSchema,
-				output: referenceSchema,
-				entity: inputSchema.entity
-			},
-			error: null,
-			success: true,
-			loading: false,
-			config: chartConfig
-		};
-		res.metadata.size.res = sizeof(res);
-		return res;
 	}
+	completeTask('validRemapData');
+
+	metadata.size.out = sizeof(multiSeriesData);
+	metadata.series.isMultiSeries = true;
+	const res = {
+		data: multiSeriesData,
+		system: coordinateType,
+		uuid,
+		metadata,
+		error,
+		schema: {
+			input: normalizedSchema,
+			output: referenceSchema,
+			entity: inputSchema.entity[0]
+		},
+		success: true,
+		loading: false,
+		config: chartConfig
+	};
+
+	res.metadata.size.res = sizeof(res);
+	return res;
 };
