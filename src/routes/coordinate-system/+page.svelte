@@ -243,67 +243,67 @@
 	};
 	const examples = [
 		{
-			type: 'affine',
+			system: 'affine',
 			data: AffineExampleData,
 			schema: affineSchema,
 			config: { ...config, title: 'Affine' }
 		},
 		{
-			type: 'barycentric',
+			system: 'barycentric',
 			data: BarycentricExampleData,
 			schema: barycentricSchema,
 			config: { ...config, title: 'Barycentric' }
 		},
 		{
-			type: 'cartesian',
+			system: 'cartesian',
 			data: CartesianExampleData,
 			schema: cartesianSchema,
 			config: { ...config, title: 'Cartesian' }
 		},
 		{
-			type: 'hexbin',
+			system: 'hexbin',
 			data: HexbinExampleData,
 			schema: hexbinSchema,
 			config: { ...config, title: 'Hexbin' }
 		},
 		{
-			type: 'logPolar',
+			system: 'logPolar',
 			data: LogPolarExampleData,
 			schema: logPolarSchema,
 			config: { ...config, title: 'Log Polar' }
 		},
 		{
-			type: 'oblique',
+			system: 'oblique',
 			data: ObliqueExampleData,
 			schema: obliqueSchema,
 			config: { ...config, title: 'Oblique' }
 		},
 		{
-			type: 'parallel',
+			system: 'parallel',
 			data: ParallelExampleData,
 			schema: parallelSchema,
 			config: { ...config, title: 'Parallel' }
 		},
 		{
-			type: 'polar',
+			system: 'polar',
 			data: PolarExampleData,
 			schema: polarSchema,
 			config: { ...config, title: 'Polar' }
 		},
 		{
-			type: 'radar',
+			system: 'radar',
 			data: RadarExampleData,
 			schema: radarSchema,
 			config: { ...config, title: 'Radar' }
 		},
 		{
-			type: 'spherical',
+			system: 'spherical',
 			data: SphericalExampleData,
 			schema: sphericalSchema,
 			config: { ...config, title: 'Spherical' }
 		},
 		{
-			type: 'ternary',
+			system: 'ternary',
 			data: TernaryExampleData,
 			schema: ternarySchema,
 			config: { ...config, title: 'Ternary' }
@@ -312,9 +312,9 @@
 
 	onMount(() => {
 		examples.forEach((example) => {
-			const res = createSystem(example.type, example.data, example.schema, example.config);
+			const res = createSystem(example);
 			chartInstances.push(res);
-			console.log(example.type, res.success, res);
+			console.log(example.system, res.success, res);
 		});
 	});
 

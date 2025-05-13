@@ -543,12 +543,21 @@ function remapInputSchema(inputSchema: InputSchemaConfiguration): Record<string,
 	return remapped;
 }
 
-export const createSystem = (
-	coordinateType: CoordinateType,
-	userData: Array<unknown>,
-	inputSchema: InputSchema,
-	config: Config
-): System => {
+export const createSystem = ({
+	system,
+	data,
+	schema,
+	config
+}: {
+	system: CoordinateType;
+	data: Array<unknown>;
+	schema: InputSchemaConfiguration;
+	config: Config;
+}): System => {
+	const coordinateType = system;
+	const userData = data;
+	const inputSchema = schema;
+	// const config =
 	const startTime = performance.now();
 	const loading = true;
 	const valid = {

@@ -20,10 +20,10 @@
 	};
 
 	onMount(() => {
-		system = createSystem(
-			'cartesian',
-			CartesianExampleData,
-			{
+		system = createSystem({
+			system: 'cartesian',
+			data: CartesianExampleData,
+			schema: {
 				x: {
 					key: 'timestamp',
 					type: 'date_iso',
@@ -47,7 +47,7 @@
 					label: 'Greenhouse'
 				}
 			},
-			{
+			config: {
 				height: 400,
 				width: 400,
 				margin: 40,
@@ -57,7 +57,7 @@
 				scaleExtent: 200,
 				title: 'Chart'
 			}
-		);
+		});
 	});
 </script>
 
