@@ -2,7 +2,7 @@
 	import type { System } from '$lib/utils/coordinate.schema.js';
 	import * as d3 from 'd3';
 	let { system = $bindable<System>() } = $props();
-	let { data, success, loading, config } = $derived(system);
+	let { data, success, loading, config, inputSchema } = $derived(system);
 	let chartContainer = $state<HTMLDivElement>();
 
 	$effect(() => {
@@ -19,9 +19,13 @@
 		const height = config.height;
 		const margin = config.margin;
 
+		const xType = inputSchema.x;
+		const yType = inputSchema.y;
+
 		// Calculate dynamic scales
 		const xExtent = d3.extent(data.map((d) => Number(d.x))) || [0, 1];
 		const yExtent = d3.extent(data.map((d) => Number(d.y))) || [0, 1];
+
 
 		const xScale = d3
 			.scaleLinear()
@@ -32,6 +36,8 @@
 			.scaleLinear()
 			.domain([Math.min(...yExtent), Math.max(...yExtent)])
 			.range([height - margin, margin]);
+
+		console.log({ xType, yType, xExtent, yExtent });
 
 		// Create SVG
 		const svg = d3.select(chartContainer).append('svg').attr('width', width).attr('height', height);
@@ -45,7 +51,10 @@
 			.attr('transform', `translate(0, ${height - margin})`)
 			.call(xAxis);
 
-		svg.append('g').attr('transform', `translate(${margin}, 0)`).call(yAxis);
+		svg
+			.append('g')
+			.attr('transform', `translate(${margin}, 0)`)
+			.call(yAxis);
 
 		// Add axis labels
 		svg
@@ -78,10 +87,8 @@
 
 {#if loading}
 	Loading...
-{:else if system.error}
-	Error: {system.error.name}
 {:else if !success}
-	No data
+	Error: {system?.error?.name}
 {:else}
 	<div bind:this={chartContainer} style="width: {config.width}px; height: {config.height}px;"></div>
 {/if}

@@ -14,9 +14,8 @@
 	import type { System } from '$lib/utils/coordinate.schema.js';
 	import { onMount } from 'svelte';
 
-	let system: System = $state({ loading: false, success: false });
-
 	let chartInstances: System[] = $state([]);
+
 	const config = {
 		height: 400,
 		width: 400,

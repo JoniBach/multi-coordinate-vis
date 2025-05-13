@@ -28,7 +28,7 @@ export const dateSchema = z.date();
 export const date_isoSchema = z
 	.string()
 	.refine(
-		(v, ctx?) => {
+		(v, ctx?: any) => {
 			const parsed = parseISO(v);
 			const isValidDate = isValid(parsed);
 
@@ -49,7 +49,7 @@ export const date_isoSchema = z
 export const date_onlySchema = z
 	.string()
 	.refine(
-		(v, ctx?) => {
+		(v, ctx?: any) => {
 			const parsed = parseISO(v);
 			const isValidDate = isValid(parsed);
 
@@ -70,7 +70,7 @@ export const date_onlySchema = z
 export const date_timeSchema = z
 	.string()
 	.refine(
-		(v, ctx?) => {
+		(v, ctx?: any) => {
 			const parsed = parseISO(v);
 			const isValidDate = isValid(parsed);
 
@@ -91,7 +91,7 @@ export const date_timeSchema = z
 export const date_unix_sSchema = z
 	.number()
 	.refine(
-		(v, ctx?) => {
+		(v, ctx?: any) => {
 			const date = new Date(v * 1000);
 			const isValidDate = isValid(date);
 
@@ -112,7 +112,7 @@ export const date_unix_sSchema = z
 export const date_unix_msSchema = z
 	.number()
 	.refine(
-		(v, ctx?) => {
+		(v, ctx?: any) => {
 			const date = new Date(v);
 			const isValidDate = isValid(date);
 
@@ -469,7 +469,10 @@ export const ConfigSchema = z.object({
 	width: z.number().positive().int(),
 	margin: z.number().positive().int(),
 	skewX: z.number().int().optional().nullable(),
-	skewY: z.number().int().optional().nullable()
+	skewY: z.number().int().optional().nullable(),
+	gridLevels: z.number().int().optional().nullable(),
+	scaleExtent: z.number().int().optional().nullable(),
+	title: z.string().nullable().optional()
 });
 
 export type Config = z.infer<typeof ConfigSchema>;
