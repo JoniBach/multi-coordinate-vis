@@ -326,14 +326,14 @@
 		<p
 			style={`border: 2px solid ${chart.success ? 'green' : 'red'}; margin: 1px; border-radius: 100px; padding: 0 5px`}
 		>
-			{chart.coordinateType}
+			{chart.system}
 		</p>
 	{/each}
 </div>
 {#each chartInstances as chart}
 	<div>
 		<h3>{chart?.config?.title}</h3>
-		{chart.coordinateType}
+		{chart.system}
 		<span style={`color: ${chart.success ? 'green' : 'red'}`}>{chart.success}</span>
 		{#if !chart.success}
 			<div>

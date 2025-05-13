@@ -30,14 +30,14 @@
 			ty: (d.x || 0) * affineMat[1][0] + (d.y || 0) * affineMat[1][1]
 		}));
 
-		// Calculate dynamic scales
-		const xExtent = d3.extent(transformedPoints.map((d) => d.tx)) || [0, 1];
-		const yExtent = d3.extent(transformedPoints.map((d) => d.ty)) || [0, 1];
-
 		// Determine scale and padding
 		const width = config.width;
 		const height = config.height;
 		const margin = config.margin;
+
+		// Calculate dynamic scales
+		const xExtent = d3.extent(transformedPoints.map((d) => d.tx)) || [0, 1];
+		const yExtent = d3.extent(transformedPoints.map((d) => d.ty)) || [0, 1];
 
 		const xScale = d3
 			.scaleLinear()

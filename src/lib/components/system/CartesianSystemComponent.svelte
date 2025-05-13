@@ -1,8 +1,9 @@
 <script lang="ts">
 	import type { System } from '$lib/utils/coordinate.schema.js';
 	import * as d3 from 'd3';
+	import { calculateExtent } from '$lib/utils/scale.js';
 	let { system = $bindable<System>() } = $props();
-	let { data, success, loading, config, inputSchema } = $derived(system);
+	let { data, success, loading, config, schema } = $derived(system);
 	let chartContainer = $state<HTMLDivElement>();
 
 	$effect(() => {
@@ -15,32 +16,36 @@
 		chartContainer.innerHTML = '';
 
 		// Determine scale and padding
-		const width = config.width;
-		const height = config.height;
-		const margin = config.margin;
 
-		const xType = inputSchema.x;
-		const yType = inputSchema.y;
+		const isMultiSeries = system.metadata.multiseries;
 
+		const xType = schema.input.x.type;
+		const yType = schema.input.y.type;
+		console.log(xType, yType);
 		// Calculate dynamic scales
-		const xExtent = d3.extent(data.map((d) => Number(d.x))) || [0, 1];
-		const yExtent = d3.extent(data.map((d) => Number(d.y))) || [0, 1];
-
+		// const yExtent = d3.extent(data.map((d) => new Date(d.y))) || [new Date(0), new Date()];
+		// const xExtent = d3.extent(data.map((d) => new Date(d.x))) || [new Date(0), new Date()];
+		const yExtent = calculateExtent[yType](data.map((d) => d.y));
+		const xExtent = calculateExtent[xType](data.map((d) => d.x));
 
 		const xScale = d3
 			.scaleLinear()
 			.domain([Math.min(...xExtent), Math.max(...xExtent)])
-			.range([margin, width - margin]);
+			.range([config.margin, config.width - config.margin]);
 
 		const yScale = d3
 			.scaleLinear()
 			.domain([Math.min(...yExtent), Math.max(...yExtent)])
-			.range([height - margin, margin]);
+			.range([config.height - config.margin, config.margin]);
 
 		console.log({ xType, yType, xExtent, yExtent });
 
 		// Create SVG
-		const svg = d3.select(chartContainer).append('svg').attr('width', width).attr('height', height);
+		const svg = d3
+			.select(chartContainer)
+			.append('svg')
+			.attr('width', config.width)
+			.attr('height', config.height);
 
 		// Draw axes
 		const xAxis = d3.axisBottom(xScale);
@@ -48,26 +53,23 @@
 
 		svg
 			.append('g')
-			.attr('transform', `translate(0, ${height - margin})`)
+			.attr('transform', `translate(0, ${config.height - config.margin})`)
 			.call(xAxis);
 
-		svg
-			.append('g')
-			.attr('transform', `translate(${margin}, 0)`)
-			.call(yAxis);
+		svg.append('g').attr('transform', `translate(${config.margin}, 0)`).call(yAxis);
 
 		// Add axis labels
 		svg
 			.append('text')
-			.attr('x', width / 2)
-			.attr('y', height)
+			.attr('x', config.width / 2)
+			.attr('y', config.height)
 			.attr('text-anchor', 'middle')
 			.text('x');
 
 		svg
 			.append('text')
 			.attr('transform', 'rotate(-90)')
-			.attr('x', -height / 2)
+			.attr('x', -config.height / 2)
 			.attr('y', 15)
 			.attr('text-anchor', 'middle')
 			.text('y');
