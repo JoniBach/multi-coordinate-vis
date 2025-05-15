@@ -58,6 +58,11 @@
 			key: 'clay',
 			type: 'number',
 			label: 'Clay'
+		},
+		entity: {
+			key: 'sample_location',
+			type: 'string',
+			label: 'Sample Location'
 		}
 	};
 	const cartesianSchema = {
@@ -66,18 +71,12 @@
 			type: 'date_iso',
 			label: 'Time'
 		},
-		y: [
-			{
-				key: 'readings.celsius',
-				type: 'number',
-				label: 'Temperature'
-			},
-			{
-				key: 'readings.humidity',
-				type: 'number',
-				label: 'Humidity'
-			}
-		],
+		y: {
+			key: 'readings.celsius',
+			type: 'number',
+			label: 'Temperature'
+		},
+
 		entity: {
 			key: 'greenhouse_id',
 			type: 'string',
@@ -330,28 +329,5 @@
 		</p>
 	{/each}
 </div>
-{#each chartInstances as chart}
-	<div>
-		<h3>{chart?.config?.title}</h3>
-		{chart.system}
-		<span style={`color: ${chart.success ? 'green' : 'red'}`}>{chart.success}</span>
-		{#if !chart.success}
-			<div>
-				- &nbsp;{chart.error.name}
-			</div>
-		{/if}
 
-		{#if chart.success}
-			<div>
-				Size - in: {chart.metadata.size.in} / out: {chart.metadata.size.out} / res: {chart.metadata
-					.size.res}
-			</div>
-			Data - {chart.data.length} items:
-			<div style="display: flex; flex-wrap: wrap">
-				<pre>data:{JSON.stringify(chart.data[0], null, 2)}</pre>
-			</div>
-		{/if}
-	</div>
-	<hr />
-{/each}
 <!-- <CartesianSystemComponent bind:system /> -->
