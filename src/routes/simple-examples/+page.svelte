@@ -51,23 +51,17 @@
 </script>
 
 <h1>Basic Examples</h1>
+<h2>Affine Demo</h2>
+<AffineDemoComponent data={AffineDemoData} schema={AffineDemoSchema} {config} />
+<hr />
+<h2>Barycentric Demo</h2>
+<BarycentricDemoComponent data={BarycentricDemoData} schema={BarycentricDemoSchema} {config} />
+<hr />
 <h2>Cartesian Demo</h2>
 <CartesianDemoComponent data={CartesianDemoData} schema={CartesianDemoSchema} {config} />
 <hr />
-<h2>Polar Demo</h2>
-<PolarDemoComponent data={PolarDemoData} schema={PolarDemoSchema} {config} />
-<hr />
 <h2>Geographic Demo</h2>
 <GeographicDemoComponent data={GeographicDemoData} schema={GeographicDemoSchema} {config} />
-<hr />
-<h2>Parallel Demo</h2>
-<ParallelDemoComponent data={ParallelDemoData} schema={ParallelDemoSchema} {config} />
-<hr />
-<h2>Radar Demo</h2>
-<RadarDemoComponent data={RadarDemoData} schema={RadarDemoSchema} {config} />
-<hr />
-<h2>Ternary Demo</h2>
-<TernaryDemoComponent data={TernaryDemoData} schema={TernaryDemoSchema} {config} />
 <hr />
 <h2>Hexbin Demo</h2>
 <HexbinDemoComponent data={HexbinDemoData} schema={HexbinDemoSchema} {config} />
@@ -75,15 +69,21 @@
 <h2>Log-Polar Demo</h2>
 <LogPolarDemoComponent data={LogPolarDemoData} schema={LogPolarDemoSchema} {config} />
 <hr />
-<h2>Barycentric Demo</h2>
-<BarycentricDemoComponent data={BarycentricDemoData} schema={BarycentricDemoSchema} {config} />
+<h2>Oblique Demo</h2>
+<ObliqueDemoComponent data={ObliqueDemoData} schema={ObliqueDemoSchema} {config} />
+<hr />
+<h2>Parallel Demo</h2>
+<ParallelDemoComponent data={ParallelDemoData} schema={ParallelDemoSchema} {config} />
+<hr />
+<h2>Polar Demo</h2>
+<PolarDemoComponent data={PolarDemoData} schema={PolarDemoSchema} {config} />
+<hr />
+<h2>Radar Demo</h2>
+<RadarDemoComponent data={RadarDemoData} schema={RadarDemoSchema} {config} />
 <hr />
 <h2>Spherical Demo</h2>
 <SphericalDemoComponent data={SphericalDemoData} schema={SphericalDemoSchema} {config} />
 <hr />
-<h2>Oblique Demo</h2>
-<ObliqueDemoComponent data={ObliqueDemoData} schema={ObliqueDemoSchema} {config} />
-<hr />
-<h2>Affine Demo</h2>
-<AffineDemoComponent data={AffineDemoData} schema={AffineDemoSchema} {config} />
+<h2>Ternary Demo</h2>
+<TernaryDemoComponent data={TernaryDemoData} schema={TernaryDemoSchema} {config} />
 <hr />

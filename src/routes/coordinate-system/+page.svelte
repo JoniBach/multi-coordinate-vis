@@ -30,12 +30,14 @@
 		x: {
 			key: 'original_u',
 			type: 'number',
-			label: 'Original U'
+			label: 'Original U',
+			scale: 'linear'
 		},
 		y: {
 			key: 'original_v',
 			type: 'number',
-			label: 'Original V'
+			label: 'Original V',
+			scale: 'linear'
 		},
 		entity: {
 			key: 'transformed_u',
@@ -47,17 +49,20 @@
 		A: {
 			key: 'sand',
 			type: 'number',
-			label: 'Sand'
+			label: 'Sand',
+			scale: 'linear'
 		},
 		B: {
 			key: 'silt',
 			type: 'number',
-			label: 'Silt'
+			label: 'Silt',
+			scale: 'linear'
 		},
 		C: {
 			key: 'clay',
 			type: 'number',
-			label: 'Clay'
+			label: 'Clay',
+			scale: 'linear'
 		},
 		entity: {
 			key: 'sample_location',
@@ -69,12 +74,14 @@
 		x: {
 			key: 'timestamp',
 			type: 'date_iso',
-			label: 'Time'
+			label: 'Time',
+			scale: 'linear'
 		},
 		y: {
 			key: 'readings.celsius',
 			type: 'number',
-			label: 'Temperature'
+			label: 'Temperature',
+			scale: 'linear'
 		},
 
 		entity: {
@@ -88,12 +95,14 @@
 		x: {
 			key: 'longitude',
 			type: 'number',
-			label: 'Longitude'
+			label: 'Longitude',
+			scale: 'linear'
 		},
 		y: {
 			key: 'latitude',
 			type: 'number',
-			label: 'Latitude'
+			label: 'Latitude',
+			scale: 'linear'
 		},
 		entity: {
 			key: 'pest_count',
@@ -105,12 +114,14 @@
 		r: {
 			key: 'range_km',
 			type: 'number',
-			label: 'Range (km)'
+			label: 'Range (km)',
+			scale: 'linear'
 		},
 		theta: {
 			key: 'bearing',
 			type: 'number',
-			label: 'Bearing'
+			label: 'Bearing',
+			scale: 'linear'
 		},
 		entity: {
 			key: 'signal_strength_dbm',
@@ -122,12 +133,14 @@
 		x: {
 			key: 'panel_angle_degrees',
 			type: 'number',
-			label: 'Panel Angle'
+			label: 'Panel Angle',
+			scale: 'linear'
 		},
 		y: {
 			key: 'land_slope_degrees',
 			type: 'number',
-			label: 'Land Slope'
+			label: 'Land Slope',
+			scale: 'linear'
 		},
 		entity: {
 			key: 'efficiency_percentage',
@@ -139,12 +152,14 @@
 		r: {
 			key: 'nitrogen_ppm',
 			type: 'number',
-			label: 'Nitrogen'
+			label: 'Nitrogen',
+			scale: 'linear'
 		},
 		theta: {
 			key: 'phosphorus_ppm',
 			type: 'number',
-			label: 'Phosphorus'
+			label: 'Phosphorus',
+			scale: 'linear'
 		},
 		entity: {
 			key: 'field_id',
@@ -156,12 +171,14 @@
 		r: {
 			key: 'speed_mps',
 			type: 'number',
-			label: 'Wind Speed (m/s)'
+			label: 'Wind Speed (m/s)',
+			scale: 'linear'
 		},
 		theta: {
 			key: 'direction_degrees',
 			type: 'number',
-			label: 'Wind Direction'
+			label: 'Wind Direction',
+			scale: 'linear'
 		},
 		entity: {
 			key: 'turbine_id',
@@ -173,22 +190,26 @@
 		sepal_length: {
 			key: 'water_usage_index',
 			type: 'number',
-			label: 'Water Usage'
+			label: 'Water Usage',
+			scale: 'linear'
 		},
 		sepal_width: {
 			key: 'disease_resistance_score',
 			type: 'number',
-			label: 'Disease Resistance'
+			label: 'Disease Resistance',
+			scale: 'linear'
 		},
 		petal_length: {
 			key: 'growth_rate_index',
 			type: 'number',
-			label: 'Growth Rate'
+			label: 'Growth Rate',
+			scale: 'linear'
 		},
 		petal_width: {
 			key: 'yield_potential_index',
 			type: 'number',
-			label: 'Yield Potential'
+			label: 'Yield Potential',
+			scale: 'linear'
 		},
 		entity: {
 			key: 'crop_variety',
@@ -200,17 +221,20 @@
 		r: {
 			key: 'nutrient_levels.nitrogen_ppm',
 			type: 'number',
-			label: 'Nitrogen'
+			label: 'Nitrogen',
+			scale: 'linear'
 		},
 		theta: {
 			key: 'nutrient_levels.phosphorus_ppm',
 			type: 'number',
-			label: 'Phosphorus'
+			label: 'Phosphorus',
+			scale: 'linear'
 		},
 		phi: {
 			key: 'nutrient_levels.potassium_ppm',
 			type: 'number',
-			label: 'Potassium'
+			label: 'Potassium',
+			scale: 'linear'
 		},
 		entity: {
 			key: 'field_id',
@@ -222,17 +246,20 @@
 		A: {
 			key: 'irrigation_mm',
 			type: 'number',
-			label: 'Irrigation (mm)'
+			label: 'Irrigation (mm)',
+			scale: 'linear'
 		},
 		B: {
 			key: 'fertilizer_kg_ha',
 			type: 'number',
-			label: 'Fertilizer (kg/ha)'
+			label: 'Fertilizer (kg/ha)',
+			scale: 'linear'
 		},
 		C: {
 			key: 'pesticide_liters_ha',
 			type: 'number',
-			label: 'Pesticide (liters/ha)'
+			label: 'Pesticide (liters/ha)',
+			scale: 'linear'
 		},
 		entity: {
 			key: 'crop_type',
@@ -242,78 +269,100 @@
 	};
 	const examples = [
 		{
-			system: 'affine',
-			data: AffineExampleData,
-			schema: affineSchema,
-			config: { ...config, title: 'Affine' }
+			options: {
+				system: 'affine',
+				schema: affineSchema,
+				config: { ...config, title: 'Affine' }
+			},
+			data: AffineExampleData
 		},
 		{
-			system: 'barycentric',
-			data: BarycentricExampleData,
-			schema: barycentricSchema,
-			config: { ...config, title: 'Barycentric' }
+			options: {
+				system: 'barycentric',
+				schema: barycentricSchema,
+				config: { ...config, title: 'Barycentric' }
+			},
+			data: BarycentricExampleData
 		},
 		{
-			system: 'cartesian',
-			data: CartesianExampleData,
-			schema: cartesianSchema,
-			config: { ...config, title: 'Cartesian' }
+			options: {
+				system: 'cartesian',
+				schema: cartesianSchema,
+				config: { ...config, title: 'Cartesian' }
+			},
+			data: CartesianExampleData
 		},
 		{
-			system: 'hexbin',
-			data: HexbinExampleData,
-			schema: hexbinSchema,
-			config: { ...config, title: 'Hexbin' }
+			options: {
+				system: 'hexbin',
+				schema: hexbinSchema,
+				config: { ...config, title: 'Hexbin' }
+			},
+			data: HexbinExampleData
 		},
 		{
-			system: 'logPolar',
-			data: LogPolarExampleData,
-			schema: logPolarSchema,
-			config: { ...config, title: 'Log Polar' }
+			options: {
+				system: 'logPolar',
+				schema: logPolarSchema,
+				config: { ...config, title: 'Log Polar' }
+			},
+			data: LogPolarExampleData
 		},
 		{
-			system: 'oblique',
-			data: ObliqueExampleData,
-			schema: obliqueSchema,
-			config: { ...config, title: 'Oblique' }
+			options: {
+				system: 'oblique',
+				schema: obliqueSchema,
+				config: { ...config, title: 'Oblique' }
+			},
+			data: ObliqueExampleData
 		},
 		{
-			system: 'parallel',
-			data: ParallelExampleData,
-			schema: parallelSchema,
-			config: { ...config, title: 'Parallel' }
+			options: {
+				system: 'parallel',
+				schema: parallelSchema,
+				config: { ...config, title: 'Parallel' }
+			},
+			data: ParallelExampleData
 		},
 		{
-			system: 'polar',
-			data: PolarExampleData,
-			schema: polarSchema,
-			config: { ...config, title: 'Polar' }
+			options: {
+				system: 'polar',
+				schema: polarSchema,
+				config: { ...config, title: 'Polar' }
+			},
+			data: PolarExampleData
 		},
 		{
-			system: 'radar',
-			data: RadarExampleData,
-			schema: radarSchema,
-			config: { ...config, title: 'Radar' }
+			options: {
+				system: 'radar',
+				schema: radarSchema,
+				config: { ...config, title: 'Radar' }
+			},
+			data: RadarExampleData
 		},
 		{
-			system: 'spherical',
-			data: SphericalExampleData,
-			schema: sphericalSchema,
-			config: { ...config, title: 'Spherical' }
+			options: {
+				system: 'spherical',
+				schema: sphericalSchema,
+				config: { ...config, title: 'Spherical' }
+			},
+			data: SphericalExampleData
 		},
 		{
-			system: 'ternary',
-			data: TernaryExampleData,
-			schema: ternarySchema,
-			config: { ...config, title: 'Ternary' }
+			options: {
+				system: 'ternary',
+				schema: ternarySchema,
+				config: { ...config, title: 'Ternary' }
+			},
+			data: TernaryExampleData
 		}
 	];
 
 	onMount(() => {
 		examples.forEach((example) => {
-			const res = createSystem(example);
+			const res = createSystem(example.data, example.options);
 			chartInstances.push(res);
-			console.log(example.system, res.success, res);
+			console.log(example.options.system, res.success, res);
 		});
 	});
 
