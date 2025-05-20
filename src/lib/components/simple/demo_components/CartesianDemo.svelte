@@ -44,10 +44,13 @@
 
 		svg
 			.append('g')
-			.attr('transform', `translate(0, ${height - margin})`)
+			.attr('transform', `translate(0, ${height - margin})`) //
 			.call(xAxis);
 
-		svg.append('g').attr('transform', `translate(${margin}, 0)`).call(yAxis);
+		svg
+			.append('g')
+			.attr('transform', `translate(${margin}, 0)`) //
+			.call(yAxis);
 
 		// Add axis labels
 		svg

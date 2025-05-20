@@ -49,6 +49,7 @@ const CoordinateObject = z.object({
 		.transform(
 			(scale, ctx) => {
 				const { type } = ctx?.parent?.data ?? {};
+
 				return type?.toString().startsWith('date') ? 'time' : scale;
 			},
 			{
@@ -211,13 +212,15 @@ const scaleCalculator = {
 
 const calculateScale = (
 	schema: InputSchemaConfiguration,
-	extent: Record<string, [number, number]>
+	extent: Record<string, [number, number]>,
+	config: SystemConfiguration
 ) =>
 	_.transform(
 		schema,
 		(result, { scale, key }, outKey) => {
-			const domain = extent[key] || [0, 1];
-			result[outKey] = scaleCalculator[scale](domain, [0, 1]);
+			const domain = extent[outKey] || [0, 1];
+			console.log(scale);
+			result[outKey] = scaleCalculator[scale](domain, [config.margin, config.size - config.margin]);
 		},
 		{} as Record<string, d3.ScaleLinear<number, number>>
 	);
@@ -232,11 +235,12 @@ export const createSystem = (userData, options) => {
 		schemaList: [],
 		schemaReverseList: [],
 		extent: {},
-		scales: {},
+		scale: {},
 		error: {
 			name: '',
 			message: null as ZodError<unknown> | null
 		},
+		config: options.config,
 		data: []
 	};
 
@@ -277,7 +281,7 @@ export const createSystem = (userData, options) => {
 
 	res.extent = calculateExtent(res.schemaList, res.schema, validData.data);
 
-	res.scales = calculateScale(res.schema, res.extent);
+	res.scale = calculateScale(res.schema, res.extent, res.config);
 
 	res.loading = false;
 	res.success = validData.success;
