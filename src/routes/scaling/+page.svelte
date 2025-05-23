@@ -17,12 +17,14 @@
 					key: 'timestamp',
 					type: 'date_iso',
 					label: 'Time',
+					range: ['2025-05-05T00:00:00Z', null],
 					scale: 'utc'
 				},
 				y: {
 					key: 'readings.celsius',
 					type: 'number',
 					label: 'Temperature',
+					range: [0, null],
 					scale: 'linear'
 				},
 
@@ -44,6 +46,7 @@
 				title: 'Chart'
 			}
 		});
+		console.log(system);
 	});
 </script>
 

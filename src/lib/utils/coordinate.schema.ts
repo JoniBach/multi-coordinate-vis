@@ -43,6 +43,7 @@ const CoordinateObject = z.object({
 	key: z.string(), // The key of the coordinate
 	type: SupportedTypeSchema, // The data type of the coordinate's value
 	label: z.string(), // The label of the coordinate
+	range: z.array(DataTypeSchema.nullable()).optional().nullable(),
 	scale: z
 		.enum(scale_list)
 		.optional()
@@ -59,33 +60,82 @@ const CoordinateObject = z.object({
 		.default('linear') // The scale of the coordinate
 });
 
-export const key_lookup = {
-	affine: ['x', 'y', 'entity'],
-	barycentric: ['A', 'B', 'C', 'entity'],
-	cartesian: ['x', 'y', 'entity'],
-	hexbin: ['x', 'y', 'entity'],
-	logPolar: ['r', 'theta', 'entity'],
-	oblique: ['x', 'y', 'entity'],
-	parallel: ['r', 'theta', 'entity'],
-	polar: ['r', 'theta', 'entity'],
-	radar: ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'entity'],
-	spherical: ['r', 'theta', 'phi', 'entity'],
-	ternary: ['A', 'B', 'C', 'entity']
+export const axis_config = {
+	affine: {
+		x: { inverted: false },
+		y: { inverted: true },
+		entity: {}
+	},
+	barycentric: {
+		A: { inverted: false },
+		B: { inverted: false },
+		C: { inverted: false },
+		entity: {}
+	},
+	cartesian: {
+		x: { inverted: false },
+		y: { inverted: true },
+		entity: {}
+	},
+	hexbin: {
+		x: { inverted: false },
+		y: { inverted: true },
+		entity: {}
+	},
+	logPolar: {
+		r: { inverted: false },
+		theta: { inverted: false },
+		entity: {}
+	},
+	oblique: {
+		x: { inverted: false },
+		y: { inverted: true },
+		entity: {}
+	},
+	parallel: {
+		r: { inverted: false },
+		theta: { inverted: false },
+		entity: {}
+	},
+	polar: {
+		r: { inverted: false },
+		theta: { inverted: false },
+		entity: {}
+	},
+	radar: {
+		sepal_length: { inverted: false },
+		sepal_width: { inverted: false },
+		petal_length: { inverted: false },
+		petal_width: { inverted: false },
+		entity: {}
+	},
+	spherical: {
+		r: { inverted: false },
+		theta: { inverted: false },
+		phi: { inverted: false },
+		entity: {}
+	},
+	ternary: {
+		A: { inverted: false },
+		B: { inverted: false },
+		C: { inverted: false },
+		entity: {}
+	}
 };
 
 const createConfigSchema = (key: string) =>
 	z.object(
 		_.zipObject(
-			key_lookup[key],
-			key_lookup[key].map((key) => CoordinateObject)
+			Object.keys(axis_config[key]),
+			Object.keys(axis_config[key]).map((key) => CoordinateObject)
 		)
 	);
 const createDataSchema = (key: string) =>
 	z.array(
 		z.object(
 			_.zipObject(
-				key_lookup[key],
-				key_lookup[key].map((key) => DataTypeSchema)
+				Object.keys(axis_config[key]),
+				Object.keys(axis_config[key]).map((key) => DataTypeSchema)
 			)
 		)
 	);
@@ -177,9 +227,21 @@ const calculateExtent = (schemaList: string[], schema: InputSchemaConfiguration,
 	_.transform(
 		schemaList,
 		(result, key) => {
+			// console.log(schema[key].range);
 			result[key] = extentCalculator[schema[key].type as keyof typeof extentCalculator](
 				_.map(data, key)
 			);
+			if (schema[key].range) {
+				const [min, max] = schema[key].range;
+
+				if (schema[key].type === 'date') {
+					if (min !== null) result[key][0] = new Date(min);
+					if (max !== null) result[key][1] = new Date(max);
+				} else {
+					if (min !== null) result[key][0] = min;
+					if (max !== null) result[key][1] = max;
+				}
+			}
 		},
 		{} as Record<string, [number, number]>
 	);
@@ -213,17 +275,33 @@ const scaleCalculator = {
 const calculateScale = (
 	schema: InputSchemaConfiguration,
 	extent: Record<string, [number, number]>,
-	config: SystemConfiguration
+	config: any,
+	systemType: string
 ) =>
 	_.transform(
 		schema,
 		(result, { scale, key }, outKey) => {
 			const domain = extent[outKey] || [0, 1];
-			console.log(scale);
-			result[outKey] = scaleCalculator[scale](domain, [config.margin, config.size - config.margin]);
+			// console.log(schema);
+
+			// Get the axis configuration for this coordinate system and axis
+			const axisConfig = axis_config[systemType]?.[outKey];
+
+			// Determine the range based on axis configuration
+			let range;
+			if (axisConfig?.inverted) {
+				// For inverted axes (like y in Cartesian)
+				range = [config.size - config.margin, config.margin];
+			} else {
+				// For standard axes
+				range = [config.margin, config.size - config.margin];
+			}
+
+			result[outKey] = scaleCalculator[scale](domain, range);
 		},
 		{} as Record<string, d3.ScaleLinear<number, number>>
 	);
+
 export const createSystem = (userData, options) => {
 	const res = {
 		system: '',
@@ -281,7 +359,8 @@ export const createSystem = (userData, options) => {
 
 	res.extent = calculateExtent(res.schemaList, res.schema, validData.data);
 
-	res.scale = calculateScale(res.schema, res.extent, res.config);
+	// Pass the system type to calculateScale
+	res.scale = calculateScale(res.schema, res.extent, res.config, options.system);
 
 	res.loading = false;
 	res.success = validData.success;
