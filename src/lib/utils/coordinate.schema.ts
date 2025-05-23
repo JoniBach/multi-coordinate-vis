@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import sizeof from 'object-sizeof';
 import { SupportedTypeMap, SupportedTypeSchema, DataTypeSchema } from './dataTypes.js';
 import * as d3 from 'd3';
+import { chartFeature, createSvg } from './features.js';
 
 export const scale_list = [
 	'linear',
@@ -38,6 +39,25 @@ export const system_list = [
 	'spherical',
 	'ternary'
 ];
+
+export const feature_list = [
+	'x_axis',
+	'y_axis',
+	'x_axis_label',
+	'y_axis_label',
+	'title',
+	'grid',
+	'x_axis_grid',
+	'y_axis_grid',
+	'point',
+	'line',
+	'area',
+	'bar'
+];
+
+export const featureSchema = z.enum(feature_list);
+
+export const featureSchemaList = z.array(featureSchema);
 
 const CoordinateObject = z.object({
 	key: z.string(), // The key of the coordinate
@@ -304,6 +324,7 @@ const calculateScale = (
 
 export const createSystem = (userData, options) => {
 	const res = {
+		id: uuidv4(),
 		system: '',
 		entity: {},
 		loading: true,
@@ -319,7 +340,12 @@ export const createSystem = (userData, options) => {
 			message: null as ZodError<unknown> | null
 		},
 		config: options.config,
-		data: []
+		data: [],
+		features: options.features,
+		vis: {
+			svg: () => null,
+			feature: () => null
+		}
 	};
 
 	const reportError = (message: string, zodError: ZodError) => {
@@ -358,10 +384,12 @@ export const createSystem = (userData, options) => {
 	res.data = validData.data;
 
 	res.extent = calculateExtent(res.schemaList, res.schema, validData.data);
-
-	// Pass the system type to calculateScale
 	res.scale = calculateScale(res.schema, res.extent, res.config, options.system);
 
+	res.vis = {
+		svg: createSvg,
+		feature: chartFeature
+	};
 	res.loading = false;
 	res.success = validData.success;
 	return res;

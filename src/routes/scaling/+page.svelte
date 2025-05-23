@@ -44,7 +44,20 @@
 				gridLevels: 5,
 				scaleExtent: 200,
 				title: 'Chart'
-			}
+			},
+			features: [
+				'x_axis',
+				'y_axis',
+				'x_axis_label',
+				'y_axis_label',
+				'title',
+				'x_axis_grid',
+				'y_axis_grid',
+				'data_points',
+				'lines',
+				'shade_area',
+				'bars'
+			]
 		});
 		console.log(system);
 	});
