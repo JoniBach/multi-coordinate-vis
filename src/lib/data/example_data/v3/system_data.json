@@ -1,0 +1,1590 @@
+[
+  {
+    "timestamp": "2025-05-24T00:00:00Z",
+    "home_id": "home_01",
+    "location": {
+      "room": "living_room",
+      "floor": 1,
+      "coordinates": {
+        "x": 3.5,
+        "y": 4.2,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 21.3,
+      "humidity": 42.5,
+      "co2": 612,
+      "light_level": 0,
+      "noise_level": 12.3
+    },
+    "energy": {
+      "consumption": 0.32,
+      "solar_production": 0,
+      "battery": {
+        "level": 78.2,
+        "charging": false
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_01",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 21.0,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_lr_01",
+        "type": "light",
+        "status": "off",
+        "brightness": 0,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255
+        },
+        "power_usage": 0
+      }
+    ],
+    "occupancy": {
+      "count": 0,
+      "movement_detected": false,
+      "last_movement": "2025-05-23T23:45:12Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-24T01:00:00Z",
+    "home_id": "home_01",
+    "location": {
+      "room": "living_room",
+      "floor": 1,
+      "coordinates": {
+        "x": 3.5,
+        "y": 4.2,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 20.8,
+      "humidity": 43.1,
+      "co2": 580,
+      "light_level": 0,
+      "noise_level": 5.2
+    },
+    "energy": {
+      "consumption": 0.28,
+      "solar_production": 0,
+      "battery": {
+        "level": 77.5,
+        "charging": false
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_01",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 21.0,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_lr_01",
+        "type": "light",
+        "status": "off",
+        "brightness": 0,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255
+        },
+        "power_usage": 0
+      }
+    ],
+    "occupancy": {
+      "count": 0,
+      "movement_detected": false,
+      "last_movement": "2025-05-23T23:45:12Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-24T06:00:00Z",
+    "home_id": "home_01",
+    "location": {
+      "room": "bedroom",
+      "floor": 2,
+      "coordinates": {
+        "x": 8.2,
+        "y": 3.1,
+        "z": 3.2
+      }
+    },
+    "environment": {
+      "temperature": 19.5,
+      "humidity": 45.2,
+      "co2": 620,
+      "light_level": 15,
+      "noise_level": 28.7
+    },
+    "energy": {
+      "consumption": 0.45,
+      "solar_production": 0.02,
+      "battery": {
+        "level": 76.8,
+        "charging": true
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_02",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 20.0,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_br_01",
+        "type": "light",
+        "status": "on",
+        "brightness": 30,
+        "color": {
+          "r": 255,
+          "g": 200,
+          "b": 150
+        },
+        "power_usage": 0.03
+      }
+    ],
+    "occupancy": {
+      "count": 1,
+      "movement_detected": true,
+      "last_movement": "2025-05-24T06:00:00Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-24T08:00:00Z",
+    "home_id": "home_01",
+    "location": {
+      "room": "kitchen",
+      "floor": 1,
+      "coordinates": {
+        "x": 2.1,
+        "y": 7.5,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 22.1,
+      "humidity": 48.3,
+      "co2": 680,
+      "light_level": 85,
+      "noise_level": 45.2
+    },
+    "energy": {
+      "consumption": 1.25,
+      "solar_production": 0.75,
+      "battery": {
+        "level": 77.2,
+        "charging": true
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_03",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 21.5,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_kt_01",
+        "type": "light",
+        "status": "on",
+        "brightness": 90,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255
+        },
+        "power_usage": 0.08
+      },
+      {
+        "id": "coffee_maker",
+        "type": "appliance",
+        "status": "active",
+        "power_usage": 0.95
+      }
+    ],
+    "occupancy": {
+      "count": 2,
+      "movement_detected": true,
+      "last_movement": "2025-05-24T08:00:00Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-24T12:00:00Z",
+    "home_id": "home_01",
+    "location": {
+      "room": "living_room",
+      "floor": 1,
+      "coordinates": {
+        "x": 3.5,
+        "y": 4.2,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 23.8,
+      "humidity": 40.2,
+      "co2": 720,
+      "light_level": 120,
+      "noise_level": 35.6
+    },
+    "energy": {
+      "consumption": 0.85,
+      "solar_production": 1.25,
+      "battery": {
+        "level": 82.5,
+        "charging": true
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_01",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 23.0,
+        "power_usage": 0.02
+      },
+      {
+        "id": "light_lr_01",
+        "type": "light",
+        "status": "on",
+        "brightness": 70,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255
+        },
+        "power_usage": 0.06
+      },
+      {
+        "id": "tv_01",
+        "type": "entertainment",
+        "status": "active",
+        "power_usage": 0.65
+      }
+    ],
+    "occupancy": {
+      "count": 3,
+      "movement_detected": true,
+      "last_movement": "2025-05-24T12:00:00Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-24T16:00:00Z",
+    "home_id": "home_01",
+    "location": {
+      "room": "living_room",
+      "floor": 1,
+      "coordinates": {
+        "x": 3.5,
+        "y": 4.2,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 24.2,
+      "humidity": 38.5,
+      "co2": 750,
+      "light_level": 95,
+      "noise_level": 42.3
+    },
+    "energy": {
+      "consumption": 1.05,
+      "solar_production": 0.85,
+      "battery": {
+        "level": 85.2,
+        "charging": false
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_01",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 23.5,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_lr_01",
+        "type": "light",
+        "status": "on",
+        "brightness": 80,
+        "color": {
+          "r": 255,
+          "g": 220,
+          "b": 180
+        },
+        "power_usage": 0.07
+      },
+      {
+        "id": "tv_01",
+        "type": "entertainment",
+        "status": "active",
+        "power_usage": 0.65
+      }
+    ],
+    "occupancy": {
+      "count": 4,
+      "movement_detected": true,
+      "last_movement": "2025-05-24T16:00:00Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-24T20:00:00Z",
+    "home_id": "home_01",
+    "location": {
+      "room": "living_room",
+      "floor": 1,
+      "coordinates": {
+        "x": 3.5,
+        "y": 4.2,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 23.5,
+      "humidity": 41.2,
+      "co2": 780,
+      "light_level": 60,
+      "noise_level": 38.5
+    },
+    "energy": {
+      "consumption": 1.35,
+      "solar_production": 0.05,
+      "battery": {
+        "level": 82.1,
+        "charging": false
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_01",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 22.5,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_lr_01",
+        "type": "light",
+        "status": "on",
+        "brightness": 65,
+        "color": {
+          "r": 255,
+          "g": 180,
+          "b": 120
+        },
+        "power_usage": 0.06
+      },
+      {
+        "id": "tv_01",
+        "type": "entertainment",
+        "status": "active",
+        "power_usage": 0.65
+      }
+    ],
+    "occupancy": {
+      "count": 3,
+      "movement_detected": true,
+      "last_movement": "2025-05-24T20:00:00Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-24T22:00:00Z",
+    "home_id": "home_01",
+    "location": {
+      "room": "bedroom",
+      "floor": 2,
+      "coordinates": {
+        "x": 8.2,
+        "y": 3.1,
+        "z": 3.2
+      }
+    },
+    "environment": {
+      "temperature": 21.8,
+      "humidity": 43.5,
+      "co2": 650,
+      "light_level": 25,
+      "noise_level": 15.2
+    },
+    "energy": {
+      "consumption": 0.48,
+      "solar_production": 0,
+      "battery": {
+        "level": 80.5,
+        "charging": false
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_02",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 20.5,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_br_01",
+        "type": "light",
+        "status": "on",
+        "brightness": 30,
+        "color": {
+          "r": 255,
+          "g": 150,
+          "b": 100
+        },
+        "power_usage": 0.03
+      }
+    ],
+    "occupancy": {
+      "count": 2,
+      "movement_detected": true,
+      "last_movement": "2025-05-24T22:00:00Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-25T00:00:00Z",
+    "home_id": "home_01",
+    "location": {
+      "room": "bedroom",
+      "floor": 2,
+      "coordinates": {
+        "x": 8.2,
+        "y": 3.1,
+        "z": 3.2
+      }
+    },
+    "environment": {
+      "temperature": 20.5,
+      "humidity": 44.2,
+      "co2": 620,
+      "light_level": 0,
+      "noise_level": 8.5
+    },
+    "energy": {
+      "consumption": 0.35,
+      "solar_production": 0,
+      "battery": {
+        "level": 79.8,
+        "charging": false
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_02",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 20.0,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_br_01",
+        "type": "light",
+        "status": "off",
+        "brightness": 0,
+        "color": {
+          "r": 255,
+          "g": 150,
+          "b": 100
+        },
+        "power_usage": 0
+      }
+    ],
+    "occupancy": {
+      "count": 2,
+      "movement_detected": false,
+      "last_movement": "2025-05-24T23:45:22Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-25T06:00:00Z",
+    "home_id": "home_01",
+    "location": {
+      "room": "bathroom",
+      "floor": 2,
+      "coordinates": {
+        "x": 6.5,
+        "y": 2.2,
+        "z": 3.2
+      }
+    },
+    "environment": {
+      "temperature": 22.3,
+      "humidity": 65.8,
+      "co2": 580,
+      "light_level": 40,
+      "noise_level": 35.2
+    },
+    "energy": {
+      "consumption": 1.15,
+      "solar_production": 0.05,
+      "battery": {
+        "level": 78.2,
+        "charging": true
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_04",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 22.0,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_ba_01",
+        "type": "light",
+        "status": "on",
+        "brightness": 85,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255
+        },
+        "power_usage": 0.08
+      },
+      {
+        "id": "shower",
+        "type": "water",
+        "status": "active",
+        "temperature": 38.5,
+        "flow_rate": 8.2,
+        "power_usage": 0.95
+      }
+    ],
+    "occupancy": {
+      "count": 1,
+      "movement_detected": true,
+      "last_movement": "2025-05-25T06:00:00Z"
+    },
+    "water": {
+      "consumption": 35.2,
+      "temperature": 38.5,
+      "pressure": 4.2
+    }
+  },
+  {
+    "timestamp": "2025-05-25T08:00:00Z",
+    "home_id": "home_01",
+    "location": {
+      "room": "kitchen",
+      "floor": 1,
+      "coordinates": {
+        "x": 2.1,
+        "y": 7.5,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 22.5,
+      "humidity": 47.2,
+      "co2": 650,
+      "light_level": 90,
+      "noise_level": 48.5
+    },
+    "energy": {
+      "consumption": 1.45,
+      "solar_production": 0.85,
+      "battery": {
+        "level": 79.5,
+        "charging": true
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_03",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 21.5,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_kt_01",
+        "type": "light",
+        "status": "on",
+        "brightness": 90,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255
+        },
+        "power_usage": 0.08
+      },
+      {
+        "id": "coffee_maker",
+        "type": "appliance",
+        "status": "active",
+        "power_usage": 0.95
+      },
+      {
+        "id": "toaster",
+        "type": "appliance",
+        "status": "active",
+        "power_usage": 0.85
+      }
+    ],
+    "occupancy": {
+      "count": 2,
+      "movement_detected": true,
+      "last_movement": "2025-05-25T08:00:00Z"
+    },
+    "water": {
+      "consumption": 2.5,
+      "temperature": 40.2,
+      "pressure": 4.0
+    }
+  },
+  {
+    "timestamp": "2025-05-25T12:00:00Z",
+    "home_id": "home_02",
+    "location": {
+      "room": "living_room",
+      "floor": 1,
+      "coordinates": {
+        "x": 4.2,
+        "y": 5.1,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 24.5,
+      "humidity": 38.2,
+      "co2": 580,
+      "light_level": 135,
+      "noise_level": 25.3
+    },
+    "energy": {
+      "consumption": 0.65,
+      "solar_production": 1.85,
+      "battery": {
+        "level": 92.5,
+        "charging": true
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_05",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 24.0,
+        "power_usage": 0.02
+      },
+      {
+        "id": "light_lr_02",
+        "type": "light",
+        "status": "on",
+        "brightness": 50,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255
+        },
+        "power_usage": 0.05
+      },
+      {
+        "id": "fan_01",
+        "type": "climate",
+        "status": "active",
+        "speed": 2,
+        "power_usage": 0.35
+      }
+    ],
+    "occupancy": {
+      "count": 1,
+      "movement_detected": true,
+      "last_movement": "2025-05-25T12:00:00Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-25T16:00:00Z",
+    "home_id": "home_02",
+    "location": {
+      "room": "office",
+      "floor": 1,
+      "coordinates": {
+        "x": 7.8,
+        "y": 5.5,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 25.2,
+      "humidity": 36.5,
+      "co2": 620,
+      "light_level": 110,
+      "noise_level": 18.5
+    },
+    "energy": {
+      "consumption": 0.95,
+      "solar_production": 1.25,
+      "battery": {
+        "level": 95.8,
+        "charging": true
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_06",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 24.5,
+        "power_usage": 0.03
+      },
+      {
+        "id": "light_of_01",
+        "type": "light",
+        "status": "on",
+        "brightness": 85,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255
+        },
+        "power_usage": 0.07
+      },
+      {
+        "id": "computer",
+        "type": "workstation",
+        "status": "active",
+        "power_usage": 0.85
+      }
+    ],
+    "occupancy": {
+      "count": 1,
+      "movement_detected": true,
+      "last_movement": "2025-05-25T16:00:00Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-25T20:00:00Z",
+    "home_id": "home_02",
+    "location": {
+      "room": "living_room",
+      "floor": 1,
+      "coordinates": {
+        "x": 4.2,
+        "y": 5.1,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 23.8,
+      "humidity": 39.5,
+      "co2": 680,
+      "light_level": 65,
+      "noise_level": 42.5
+    },
+    "energy": {
+      "consumption": 1.25,
+      "solar_production": 0.05,
+      "battery": {
+        "level": 92.2,
+        "charging": false
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_05",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 23.0,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_lr_02",
+        "type": "light",
+        "status": "on",
+        "brightness": 70,
+        "color": {
+          "r": 255,
+          "g": 200,
+          "b": 150
+        },
+        "power_usage": 0.06
+      },
+      {
+        "id": "tv_02",
+        "type": "entertainment",
+        "status": "active",
+        "power_usage": 0.75
+      },
+      {
+        "id": "speaker_01",
+        "type": "entertainment",
+        "status": "active",
+        "volume": 45,
+        "power_usage": 0.15
+      }
+    ],
+    "occupancy": {
+      "count": 2,
+      "movement_detected": true,
+      "last_movement": "2025-05-25T20:00:00Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-26T00:00:00Z",
+    "home_id": "home_02",
+    "location": {
+      "room": "bedroom",
+      "floor": 2,
+      "coordinates": {
+        "x": 5.5,
+        "y": 4.2,
+        "z": 3.2
+      }
+    },
+    "environment": {
+      "temperature": 21.2,
+      "humidity": 42.5,
+      "co2": 580,
+      "light_level": 0,
+      "noise_level": 10.2
+    },
+    "energy": {
+      "consumption": 0.32,
+      "solar_production": 0,
+      "battery": {
+        "level": 90.5,
+        "charging": false
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_07",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 20.5,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_br_02",
+        "type": "light",
+        "status": "off",
+        "brightness": 0,
+        "color": {
+          "r": 255,
+          "g": 180,
+          "b": 120
+        },
+        "power_usage": 0
+      },
+      {
+        "id": "air_purifier",
+        "type": "climate",
+        "status": "active",
+        "mode": "sleep",
+        "power_usage": 0.25
+      }
+    ],
+    "occupancy": {
+      "count": 2,
+      "movement_detected": false,
+      "last_movement": "2025-05-25T23:50:15Z"
+    }
+  },
+  {
+    "timestamp": "2025-05-26T08:00:00Z",
+    "home_id": "home_02",
+    "location": {
+      "room": "kitchen",
+      "floor": 1,
+      "coordinates": {
+        "x": 3.2,
+        "y": 8.5,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 22.8,
+      "humidity": 45.2,
+      "co2": 620,
+      "light_level": 95,
+      "noise_level": 52.5
+    },
+    "energy": {
+      "consumption": 1.65,
+      "solar_production": 0.95,
+      "battery": {
+        "level": 88.5,
+        "charging": true
+      }
+    },
+    "devices": [
+      {
+        "id": "thermostat_08",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 22.0,
+        "power_usage": 0.05
+      },
+      {
+        "id": "light_kt_02",
+        "type": "light",
+        "status": "on",
+        "brightness": 95,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255
+        },
+        "power_usage": 0.09
+      },
+      {
+        "id": "coffee_maker_02",
+        "type": "appliance",
+        "status": "active",
+        "power_usage": 0.95
+      },
+      {
+        "id": "microwave",
+        "type": "appliance",
+        "status": "active",
+        "power_usage": 1.25
+      }
+    ],
+    "occupancy": {
+      "count": 2,
+      "movement_detected": true,
+      "last_movement": "2025-05-26T08:00:00Z"
+    },
+    "water": {
+      "consumption": 3.2,
+      "temperature": 38.5,
+      "pressure": 4.1
+    }
+  },
+  {
+    "timestamp": "2025-05-26T12:00:00Z",
+    "home_id": "home_02",
+    "location": {
+      "room": "office",
+      "floor": 1,
+      "coordinates": {
+        "x": 7.8,
+        "y": 5.5,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 23.5,
+      "humidity": 42.8,
+      "co2": 650,
+      "light_level": 120,
+      "noise_level": 22.5,
+      "air_quality": 85,
+      "pressure": 1013.2
+    },
+    "energy": {
+      "consumption": 1.25,
+      "solar_production": 1.75,
+      "battery": {
+        "level": 92.5,
+        "charging": true
+      },
+      "grid_usage": -0.5
+    },
+    "devices": [
+      {
+        "id": "thermostat_06",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 23.0,
+        "power_usage": 0.05,
+        "efficiency": 0.92
+      },
+      {
+        "id": "light_of_01",
+        "type": "light",
+        "status": "on",
+        "brightness": 80,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255
+        },
+        "power_usage": 0.07,
+        "lifetime_hours": 1250
+      },
+      {
+        "id": "computer",
+        "type": "workstation",
+        "status": "active",
+        "power_usage": 0.85,
+        "cpu_usage": 45,
+        "memory_usage": 65
+      },
+      {
+        "id": "printer",
+        "type": "workstation",
+        "status": "standby",
+        "power_usage": 0.05,
+        "ink_levels": {
+          "black": 75,
+          "cyan": 65,
+          "magenta": 80,
+          "yellow": 70
+        }
+      }
+    ],
+    "occupancy": {
+      "count": 1,
+      "movement_detected": true,
+      "last_movement": "2025-05-26T12:00:00Z",
+      "identity": "resident_2"
+    },
+    "network": {
+      "devices_connected": 8,
+      "bandwidth_usage": 15.2,
+      "signal_strength": 92
+    }
+  },
+  {
+    "timestamp": "2025-05-26T16:00:00Z",
+    "home_id": "home_03",
+    "location": {
+      "room": "living_room",
+      "floor": 1,
+      "coordinates": {
+        "x": 5.2,
+        "y": 6.8,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 26.2,
+      "humidity": 35.5,
+      "co2": 520,
+      "light_level": 150,
+      "noise_level": 32.5,
+      "air_quality": 92,
+      "pressure": 1012.5,
+      "pollen_count": 120
+    },
+    "energy": {
+      "consumption": 2.85,
+      "solar_production": 2.25,
+      "wind_production": 0.85,
+      "battery": {
+        "level": 85.2,
+        "charging": true,
+        "health": 95
+      },
+      "grid_usage": -0.25
+    },
+    "devices": [
+      {
+        "id": "thermostat_09",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 25.5,
+        "power_usage": 0.05,
+        "mode": "cool",
+        "fan_speed": "auto"
+      },
+      {
+        "id": "light_lr_03",
+        "type": "light",
+        "status": "on",
+        "brightness": 65,
+        "color": {
+          "r": 255,
+          "g": 245,
+          "b": 235
+        },
+        "power_usage": 0.06,
+        "light_type": "smart_bulb",
+        "connected": true
+      },
+      {
+        "id": "tv_03",
+        "type": "entertainment",
+        "status": "active",
+        "power_usage": 0.85,
+        "volume": 35,
+        "channel": "streaming",
+        "app": "netflix",
+        "screen_brightness": 80
+      },
+      {
+        "id": "ac_unit_01",
+        "type": "climate",
+        "status": "active",
+        "power_usage": 1.85,
+        "mode": "cool",
+        "fan_speed": "high",
+        "target_temp": 24.0
+      }
+    ],
+    "occupancy": {
+      "count": 3,
+      "movement_detected": true,
+      "last_movement": "2025-05-26T16:00:00Z",
+      "identities": ["resident_1", "resident_3", "guest_1"],
+      "locations": {
+        "resident_1": "sofa",
+        "resident_3": "chair",
+        "guest_1": "standing"
+      }
+    },
+    "network": {
+      "devices_connected": 12,
+      "bandwidth_usage": 45.8,
+      "signal_strength": 88,
+      "active_streams": 2
+    },
+    "security": {
+      "doors_locked": true,
+      "windows_closed": false,
+      "alarm_status": "disarmed",
+      "cameras_active": 3,
+      "motion_detected": {
+        "front_yard": false,
+        "back_yard": true,
+        "driveway": false
+      }
+    }
+  },
+  {
+    "timestamp": "2025-05-26T20:00:00Z",
+    "home_id": "home_03",
+    "location": {
+      "room": "kitchen",
+      "floor": 1,
+      "coordinates": {
+        "x": 3.8,
+        "y": 8.2,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 25.8,
+      "humidity": 42.5,
+      "co2": 680,
+      "light_level": 85,
+      "noise_level": 58.5,
+      "air_quality": 78,
+      "pressure": 1012.2,
+      "voc_level": 450
+    },
+    "energy": {
+      "consumption": 3.25,
+      "solar_production": 0.15,
+      "wind_production": 0.35,
+      "battery": {
+        "level": 82.5,
+        "charging": false,
+        "health": 95
+      },
+      "grid_usage": 2.75
+    },
+    "devices": [
+      {
+        "id": "thermostat_10",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 25.0,
+        "power_usage": 0.05,
+        "mode": "cool",
+        "fan_speed": "low"
+      },
+      {
+        "id": "light_kt_03",
+        "type": "light",
+        "status": "on",
+        "brightness": 90,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255
+        },
+        "power_usage": 0.08,
+        "light_type": "recessed",
+        "connected": true
+      },
+      {
+        "id": "oven",
+        "type": "appliance",
+        "status": "active",
+        "power_usage": 2.25,
+        "temperature": 180,
+        "program": "bake",
+        "time_remaining": 35
+      },
+      {
+        "id": "dishwasher",
+        "type": "appliance",
+        "status": "active",
+        "power_usage": 0.85,
+        "program": "normal",
+        "time_remaining": 45,
+        "water_usage": 12.5
+      }
+    ],
+    "occupancy": {
+      "count": 4,
+      "movement_detected": true,
+      "last_movement": "2025-05-26T20:00:00Z",
+      "identities": ["resident_1", "resident_2", "resident_3", "guest_1"],
+      "locations": {
+        "resident_1": "counter",
+        "resident_2": "table",
+        "resident_3": "sink",
+        "guest_1": "table"
+      }
+    },
+    "water": {
+      "consumption": 18.5,
+      "temperature": 42.5,
+      "pressure": 4.2,
+      "flow_rate": 2.8
+    },
+    "network": {
+      "devices_connected": 14,
+      "bandwidth_usage": 28.5,
+      "signal_strength": 85,
+      "active_streams": 1
+    }
+  },
+  {
+    "timestamp": "2025-05-27T00:00:00Z",
+    "home_id": "home_03",
+    "location": {
+      "room": "bedroom",
+      "floor": 2,
+      "coordinates": {
+        "x": 7.2,
+        "y": 5.8,
+        "z": 3.5
+      }
+    },
+    "environment": {
+      "temperature": 22.5,
+      "humidity": 45.2,
+      "co2": 580,
+      "light_level": 0,
+      "noise_level": 8.5,
+      "air_quality": 95,
+      "pressure": 1013.5,
+      "voc_level": 120
+    },
+    "energy": {
+      "consumption": 0.45,
+      "solar_production": 0,
+      "wind_production": 0.15,
+      "battery": {
+        "level": 80.5,
+        "charging": false,
+        "health": 95
+      },
+      "grid_usage": 0.3
+    },
+    "devices": [
+      {
+        "id": "thermostat_11",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 21.5,
+        "power_usage": 0.05,
+        "mode": "fan",
+        "fan_speed": "low"
+      },
+      {
+        "id": "light_br_03",
+        "type": "light",
+        "status": "off",
+        "brightness": 0,
+        "color": {
+          "r": 255,
+          "g": 180,
+          "b": 120
+        },
+        "power_usage": 0,
+        "light_type": "bedside",
+        "connected": true
+      },
+      {
+        "id": "air_purifier_02",
+        "type": "climate",
+        "status": "active",
+        "mode": "sleep",
+        "power_usage": 0.25,
+        "filter_status": 85
+      },
+      {
+        "id": "sleep_tracker",
+        "type": "health",
+        "status": "active",
+        "power_usage": 0.02,
+        "metrics": {
+          "heart_rate": 62,
+          "respiration": 14,
+          "movement": "minimal"
+        }
+      }
+    ],
+    "occupancy": {
+      "count": 2,
+      "movement_detected": false,
+      "last_movement": "2025-05-26T23:55:22Z",
+      "identities": ["resident_1", "resident_2"],
+      "sleep_status": "deep"
+    },
+    "network": {
+      "devices_connected": 8,
+      "bandwidth_usage": 2.5,
+      "signal_strength": 90,
+      "active_streams": 0
+    },
+    "security": {
+      "doors_locked": true,
+      "windows_closed": true,
+      "alarm_status": "armed_stay",
+      "cameras_active": 4,
+      "motion_detected": {
+        "front_yard": false,
+        "back_yard": false,
+        "driveway": false
+      }
+    }
+  },
+  {
+    "timestamp": "2025-05-27T08:00:00Z",
+    "home_id": "home_03",
+    "location": {
+      "room": "bathroom",
+      "floor": 2,
+      "coordinates": {
+        "x": 8.5,
+        "y": 4.2,
+        "z": 3.5
+      }
+    },
+    "environment": {
+      "temperature": 24.5,
+      "humidity": 75.8,
+      "co2": 520,
+      "light_level": 65,
+      "noise_level": 42.5,
+      "air_quality": 85,
+      "pressure": 1014.2,
+      "voc_level": 180
+    },
+    "energy": {
+      "consumption": 2.15,
+      "solar_production": 0.85,
+      "wind_production": 0.35,
+      "battery": {
+        "level": 78.5,
+        "charging": true,
+        "health": 95
+      },
+      "grid_usage": 0.95
+    },
+    "devices": [
+      {
+        "id": "thermostat_12",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 24.0,
+        "power_usage": 0.05,
+        "mode": "heat",
+        "fan_speed": "auto"
+      },
+      {
+        "id": "light_ba_02",
+        "type": "light",
+        "status": "on",
+        "brightness": 85,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255
+        },
+        "power_usage": 0.08,
+        "light_type": "vanity",
+        "connected": true
+      },
+      {
+        "id": "shower_02",
+        "type": "water",
+        "status": "active",
+        "temperature": 39.5,
+        "flow_rate": 9.2,
+        "power_usage": 1.85,
+        "water_usage": 45.2
+      },
+      {
+        "id": "bathroom_fan",
+        "type": "climate",
+        "status": "active",
+        "power_usage": 0.15,
+        "speed": "high",
+        "humidity_trigger": 70
+      }
+    ],
+    "occupancy": {
+      "count": 1,
+      "movement_detected": true,
+      "last_movement": "2025-05-27T08:00:00Z",
+      "identities": ["resident_2"],
+      "locations": {
+        "resident_2": "shower"
+      }
+    },
+    "water": {
+      "consumption": 48.5,
+      "temperature": 39.5,
+      "pressure": 4.3,
+      "flow_rate": 9.2,
+      "hot_water_remaining": 75
+    },
+    "network": {
+      "devices_connected": 9,
+      "bandwidth_usage": 5.2,
+      "signal_strength": 82,
+      "active_streams": 1
+    }
+  },
+  {
+    "timestamp": "2025-05-27T12:00:00Z",
+    "home_id": "home_04",
+    "location": {
+      "room": "living_room",
+      "floor": 1,
+      "coordinates": {
+        "x": 6.5,
+        "y": 7.8,
+        "z": 0
+      }
+    },
+    "environment": {
+      "temperature": 27.5,
+      "humidity": 32.5,
+      "co2": 480,
+      "light_level": 180,
+      "noise_level": 15.2,
+      "air_quality": 98,
+      "pressure": 1010.5,
+      "pollen_count": 85,
+      "uv_index": 8.5
+    },
+    "energy": {
+      "consumption": 3.85,
+      "solar_production": 3.25,
+      "wind_production": 0,
+      "geothermal": 0.95,
+      "battery": {
+        "level": 95.2,
+        "charging": true,
+        "health": 98,
+        "capacity": 15.0
+      },
+      "grid_usage": -0.35
+    },
+    "devices": [
+      {
+        "id": "thermostat_13",
+        "type": "thermostat",
+        "status": "active",
+        "target_temp": 26.0,
+        "power_usage": 0.05,
+        "mode": "cool",
+        "fan_speed": "auto",
+        "schedule": "eco"
+      },
+      {
+        "id": "light_lr_04",
+        "type": "light",
+        "status": "on",
+        "brightness": 40,
+        "color": {
+          "r": 255,
+          "g": 250,
+          "b": 240
+        },
+        "power_usage": 0.04,
+        "light_type": "smart_panel",
+        "connected": true,
+        "scenes": ["daylight", "evening", "movie"]
+      },
+      {
+        "id": "ac_unit_02",
+        "type": "climate",
+        "status": "active",
+        "power_usage": 2.85,
+        "mode": "cool",
+        "fan_speed": "medium",
+        "target_temp": 25.5,
+        "efficiency": 0.92,
+        "filter_status": 90
+      },
+      {
+        "id": "smart_blinds",
+        "type": "window",
+        "status": "partially_closed",
+        "power_usage": 0.02,
+        "position": 65,
+        "light_blocking": 70,
+        "automated": true
+      }
+    ],
+    "occupancy": {
+      "count": 1,
+      "movement_detected": true,
+      "last_movement": "2025-05-27T12:00:00Z",
+      "identities": ["resident_4"],
+      "locations": {
+        "resident_4": "desk"
+      },
+      "activity": "working"
+    },
+    "network": {
+      "devices_connected": 18,
+      "bandwidth_usage": 25.5,
+      "signal_strength": 95,
+      "active_streams": 2,
+      "mesh_nodes": 3,
+      "connection_type": "fiber"
+    },
+    "security": {
+      "doors_locked": true,
+      "windows_closed": false,
+      "alarm_status": "disarmed",
+      "cameras_active": 6,
+      "motion_detected": {
+        "front_yard": false,
+        "back_yard": false,
+        "driveway": false,
+        "perimeter": false
+      },
+      "last_entry": "2025-05-27T08:15:22Z"
+    },
+    "weather": {
+      "condition": "sunny",
+      "temperature": 30.2,
+      "humidity": 28.5,
+      "wind_speed": 5.2,
+      "wind_direction": "NE",
+      "pressure": 1010.2,
+      "forecast": {
+        "today": "clear",
+        "tomorrow": "partly_cloudy",
+        "precipitation_chance": 5
+      }
+    }
+  }
+]

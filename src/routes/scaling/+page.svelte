@@ -1,49 +1,42 @@
 <script lang="ts">
-	import CartesianExampleData from '$lib/data/example_data/v2/CartesianDemo.json';
 	import { onMount } from 'svelte';
 	import { createSystem } from '$lib/utils/coordinate.schema.js';
-	import SystemComponent from '$lib/components/system/SystemComponent.svelte';
+	import PlanarComponent from '$lib/components/system/PlanarComponent.svelte';
+	import system_data from '$lib/data/example_data/v3/system_data.json';
 
-	let system = $state({
+	let planarSystem = $state({
 		loading: false,
 		success: false
 	});
 
 	onMount(() => {
-		system = createSystem(CartesianExampleData, {
+		planarSystem = createSystem(system_data, {
 			system: 'cartesian',
 			schema: {
 				x: {
 					key: 'timestamp',
 					type: 'date_iso',
 					label: 'Time',
-					range: ['2025-05-05T00:00:00Z', null],
+					range: ['2025-05-24T00:00:00Z', '2025-05-27T12:00:00Z'],
 					scale: 'utc'
 				},
 				y: {
-					key: 'readings.celsius',
+					key: 'environment.temperature',
 					type: 'number',
-					label: 'Temperature',
+					label: 'Temperature (°C)',
 					range: [0, null],
 					scale: 'linear'
 				},
-
 				entity: {
-					key: 'greenhouse_id',
+					key: 'home_id',
 					type: 'string',
-					label: 'Greenhouse'
+					label: 'Home ID'
 				}
 			},
 			config: {
-				height: 400,
-				width: 400,
 				size: 400,
-				margin: 40,
-				skewX: 30,
-				skewY: 0,
-				gridLevels: 5,
-				scaleExtent: 200,
-				title: 'Chart'
+				margin: 60,
+				title: 'Smart Home Temperature Over Time'
 			},
 			features: [
 				'x_axis',
@@ -55,12 +48,12 @@
 				'y_axis_grid',
 				'data_points',
 				'lines',
-				'shade_area',
-				'bars'
+				'bars',
+				'hexbin'
 			]
 		});
-		console.log(system);
+		console.log(planarSystem);
 	});
 </script>
 
-<SystemComponent bind:system />
+<PlanarComponent bind:system={planarSystem} />

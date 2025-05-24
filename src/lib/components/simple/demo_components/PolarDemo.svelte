@@ -53,6 +53,19 @@
 				.attr('stroke', '#eee');
 		}
 
+		// Add axis labels (polar)
+		for (let angle = 0; angle < 360; angle += 45) {
+			const rad = (angle * Math.PI) / 180;
+			svg
+				.append('text')
+				.attr('x', (radius + 10) * Math.cos(rad))
+				.attr('y', (radius + 10) * Math.sin(rad))
+				.attr('text-anchor', 'middle')
+				.attr('font-size', '10px')
+				.attr('fill', '#333')
+				.text(`${angle}°`);
+		}
+
 		// Dynamic scales for r and theta
 		const rExtent = d3.extent(parsedData.map((d) => Number(d.r || 0))) || [0, 1];
 		const thetaExtent = d3.extent(parsedData.map((d) => Number(d.theta || 0))) || [0, 360];

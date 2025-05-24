@@ -27,8 +27,8 @@ export const scale_list = [
 ];
 
 export const system_list = [
-	'affine',
-	'barycentric',
+	'affine', // not supported
+	'barycentric', // not supported
 	'cartesian',
 	'hexbin',
 	'logPolar',
@@ -38,7 +38,9 @@ export const system_list = [
 	'radar',
 	'spherical',
 	'ternary'
-];
+] as const;
+
+export type SystemType = (typeof system_list)[number];
 
 export const feature_list = [
 	'x_axis',
@@ -54,6 +56,32 @@ export const feature_list = [
 	'area',
 	'bar'
 ];
+
+const axis_mapping: Record<SystemType, string[]> = {
+	affine: ['x', 'y'],
+	cartesian: ['x', 'y'],
+	oblique: ['x', 'y'],
+	polar: ['r', 'theta'],
+	logPolar: ['r', 'theta'],
+	radar: ['sepal_length', 'sepal_width', 'petal_length', 'petal_width'],
+	spherical: ['r', 'theta', 'phi'],
+	parallel: ['r', 'theta'],
+	barycentric: ['A', 'B', 'C'],
+	ternary: ['A', 'B', 'C'],
+	hexbin: ['x', 'y']
+};
+
+const axis_inversion_reference = {
+	x: false,
+	y: true,
+	A: false,
+	B: false,
+	C: false,
+	r: false,
+	theta: false,
+	phi: false,
+	entity: false
+};
 
 export const featureSchema = z.enum(feature_list);
 
@@ -80,102 +108,45 @@ const CoordinateObject = z.object({
 		.default('linear') // The scale of the coordinate
 });
 
-export const axis_config = {
-	affine: {
-		x: { inverted: false },
-		y: { inverted: true },
-		entity: {}
-	},
-	barycentric: {
-		A: { inverted: false },
-		B: { inverted: false },
-		C: { inverted: false },
-		entity: {}
-	},
-	cartesian: {
-		x: { inverted: false },
-		y: { inverted: true },
-		entity: {}
-	},
-	hexbin: {
-		x: { inverted: false },
-		y: { inverted: true },
-		entity: {}
-	},
-	logPolar: {
-		r: { inverted: false },
-		theta: { inverted: false },
-		entity: {}
-	},
-	oblique: {
-		x: { inverted: false },
-		y: { inverted: true },
-		entity: {}
-	},
-	parallel: {
-		r: { inverted: false },
-		theta: { inverted: false },
-		entity: {}
-	},
-	polar: {
-		r: { inverted: false },
-		theta: { inverted: false },
-		entity: {}
-	},
-	radar: {
-		sepal_length: { inverted: false },
-		sepal_width: { inverted: false },
-		petal_length: { inverted: false },
-		petal_width: { inverted: false },
-		entity: {}
-	},
-	spherical: {
-		r: { inverted: false },
-		theta: { inverted: false },
-		phi: { inverted: false },
-		entity: {}
-	},
-	ternary: {
-		A: { inverted: false },
-		B: { inverted: false },
-		C: { inverted: false },
-		entity: {}
-	}
-};
+export const axis_config = _.mapValues(axis_mapping, (keys) =>
+	_.zipObject(
+		keys,
+		keys.map((key) => axis_inversion_reference[key])
+	)
+);
 
-const createConfigSchema = (key: string) =>
+const createConfigSchema = (key: SystemType) =>
 	z.object(
 		_.zipObject(
 			Object.keys(axis_config[key]),
-			Object.keys(axis_config[key]).map((key) => CoordinateObject)
+			Object.keys(axis_config[key]).map((_) => CoordinateObject)
 		)
 	);
-const createDataSchema = (key: string) =>
+const createDataSchema = (key: SystemType) =>
 	z.array(
 		z.object(
 			_.zipObject(
 				Object.keys(axis_config[key]),
-				Object.keys(axis_config[key]).map((key) => DataTypeSchema)
+				Object.keys(axis_config[key]).map((_) => DataTypeSchema)
 			)
 		)
 	);
 
 const SystemConfigSchema = _.zipObject(
 	system_list,
-	system_list.map((key) => createConfigSchema(key))
+	system_list.map((key) => createConfigSchema(key as SystemType))
 );
 const SystemDataSchema = _.zipObject(
 	system_list,
-	system_list.map((key) => createDataSchema(key))
+	system_list.map((key) => createDataSchema(key as SystemType))
 );
 
-const CoordinateTypeSchema = z.enum(system_list);
+const CoordinateTypeSchema = z.enum(system_list as unknown as [string, ...string[]]);
 
 type InputSchemaConfiguration =
 	| z.infer<typeof SystemConfigSchema.affine>
 	| z.infer<typeof SystemConfigSchema.barycentric>
 	| z.infer<typeof SystemConfigSchema.cartesian>
-	| z.infer<typeof SystemConfigSchema.hexbin>
 	| z.infer<typeof SystemConfigSchema.logPolar>
 	| z.infer<typeof SystemConfigSchema.oblique>
 	| z.infer<typeof SystemConfigSchema.parallel>
@@ -188,7 +159,6 @@ type InputDataConfiguration =
 	| z.infer<typeof SystemDataSchema.affine>
 	| z.infer<typeof SystemDataSchema.barycentric>
 	| z.infer<typeof SystemDataSchema.cartesian>
-	| z.infer<typeof SystemDataSchema.hexbin>
 	| z.infer<typeof SystemDataSchema.logPolar>
 	| z.infer<typeof SystemDataSchema.oblique>
 	| z.infer<typeof SystemDataSchema.parallel>
@@ -309,14 +279,13 @@ const calculateScale = (
 
 			// Determine the range based on axis configuration
 			let range;
-			if (axisConfig?.inverted) {
+			if (axisConfig) {
 				// For inverted axes (like y in Cartesian)
 				range = [config.size - config.margin, config.margin];
 			} else {
 				// For standard axes
 				range = [config.margin, config.size - config.margin];
 			}
-
 			result[outKey] = scaleCalculator[scale](domain, range);
 		},
 		{} as Record<string, d3.ScaleLinear<number, number>>
