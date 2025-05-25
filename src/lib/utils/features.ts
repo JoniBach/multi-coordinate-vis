@@ -8,7 +8,15 @@ export const createSvg = (system, container) =>
 		.attr('width', system.config.size)
 		.attr('height', system.config.size);
 
-export const chartFeature = (system, svg) => {
+export const chartFeature = (system, svg, featureConfig) => {
+	const style = {
+		show: true,
+		color: 'black',
+		strokeWidth: null,
+		radius: null,
+		...featureConfig
+	};
+
 	const features = {
 		x_axis: () =>
 			svg
@@ -17,13 +25,16 @@ export const chartFeature = (system, svg) => {
 				.call(d3.axisBottom(system.scale.x))
 				.selectAll('text')
 				.attr('transform', 'rotate(-45)')
+				.attr('fill', style.color)
 				.attr('text-anchor', 'end'),
 
 		y_axis: () =>
 			svg
 				.append('g')
 				.attr('transform', `translate(${system.config.margin}, 0)`)
-				.call(d3.axisLeft(system.scale.y)),
+				.call(d3.axisLeft(system.scale.y))
+				.selectAll('text')
+				.attr('fill', style.color),
 
 		x_axis_label: () =>
 			svg
@@ -31,6 +42,7 @@ export const chartFeature = (system, svg) => {
 				.attr('x', system.config.size / 2)
 				.attr('y', system.config.size)
 				.attr('text-anchor', 'middle')
+				.attr('fill', style.color)
 				.text(system.schema.x.label),
 
 		y_axis_label: () =>
@@ -40,6 +52,7 @@ export const chartFeature = (system, svg) => {
 				.attr('x', -system.config.size / 2)
 				.attr('y', 15)
 				.attr('text-anchor', 'middle')
+				.attr('fill', style.color)
 				.text(system.schema.y.label),
 
 		title: () =>
@@ -48,6 +61,7 @@ export const chartFeature = (system, svg) => {
 				.attr('x', system.config.size / 2)
 				.attr('y', system.config.margin)
 				.attr('text-anchor', 'middle')
+				.attr('fill', style.color)
 				.text(system.config.title),
 
 		x_axis_grid: () =>
@@ -62,7 +76,8 @@ export const chartFeature = (system, svg) => {
 				.attr('y1', system.config.margin)
 				.attr('x2', (d) => system.scale.x(d))
 				.attr('y2', system.config.size - system.config.margin)
-				.attr('stroke', '#ccc'),
+				.attr('stroke-width', style.strokeWidth || 1)
+				.attr('stroke', style.color),
 
 		y_axis_grid: () =>
 			svg
@@ -76,7 +91,8 @@ export const chartFeature = (system, svg) => {
 				.attr('y1', (d) => system.scale.y(d))
 				.attr('x2', system.config.size - system.config.margin)
 				.attr('y2', (d) => system.scale.y(d))
-				.attr('stroke', '#ccc'),
+				.attr('stroke-width', style.strokeWidth || 1)
+				.attr('stroke', style.color),
 
 		data_points: () =>
 			svg
@@ -87,8 +103,8 @@ export const chartFeature = (system, svg) => {
 				.append('circle')
 				.attr('cx', (d) => system.scale.x(d.x))
 				.attr('cy', (d) => system.scale.y(d.y))
-				.attr('r', 5)
-				.attr('fill', 'red'),
+				.attr('r', style.radius || 5)
+				.attr('fill', style.color || 'red'),
 
 		lines: () =>
 			svg
@@ -105,7 +121,8 @@ export const chartFeature = (system, svg) => {
 						.y((d) => system.scale.y(d.y))
 				)
 				.attr('fill', 'none')
-				.attr('stroke', 'green'),
+				.attr('stroke-width', style.strokeWidth || 2)
+				.attr('stroke', style.color || 'green'),
 
 		shade_area: () =>
 			svg
@@ -119,7 +136,7 @@ export const chartFeature = (system, svg) => {
 					(d) =>
 						`M ${system.scale.x(d[0].x)}, ${system.scale.y(d[0].y)} L ${d.map((p) => `${system.scale.x(p.x)},${system.scale.y(p.y)}`).join(' L ')} L ${system.scale.x(d[d.length - 1].x)}, ${system.scale.y(0)} L ${system.scale.x(d[0].x)}, ${system.scale.y(0)} Z`
 				)
-				.attr('fill', 'green')
+				.attr('fill', style.color || 'green')
 				.attr('opacity', 0.5),
 
 		bars: () =>
@@ -133,13 +150,13 @@ export const chartFeature = (system, svg) => {
 				.attr('y', (d) => system.scale.y(d.y))
 				.attr('width', 10)
 				.attr('height', (d) => system.scale.y(0) - system.scale.y(d.y))
-				.attr('fill', 'blue'),
+				.attr('fill', style.color || 'blue'),
 		hexbin: () => {
 			// Create hexbin generator
 			const hexbin = d3_hexbin()
-				.x((d: any) => system.scale.x(d.x))
-				.y((d: any) => system.scale.y(d.y))
-				.radius(25)
+				.x((d) => system.scale.x(d.x))
+				.y((d) => system.scale.y(d.y))
+				.radius(style.radius || 25)
 				.extent([
 					[system.config.margin, system.config.margin],
 					[system.config.size - system.config.margin, system.config.size - system.config.margin]
@@ -159,7 +176,7 @@ export const chartFeature = (system, svg) => {
 				.append('path')
 				.attr('d', hexbin.hexagon())
 				.attr('transform', (d) => `translate(${d.x},${d.y})`)
-				.attr('fill', '#1976d2')
+				.attr('fill', style.color || '#1976d2')
 				.attr('fill-opacity', (d) => 0.2 + (0.6 * d.length) / maxBinLength)
 				.attr('stroke', '#333');
 		}

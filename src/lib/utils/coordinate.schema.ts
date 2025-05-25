@@ -6,6 +6,20 @@ import { SupportedTypeMap, SupportedTypeSchema, DataTypeSchema } from './dataTyp
 import * as d3 from 'd3';
 import { chartFeature, createSvg } from './features.js';
 
+export const system_list = [
+	'affine', // not supported
+	'barycentric', // not supported
+	'cartesian',
+	'hexbin',
+	'logPolar',
+	'oblique',
+	'parallel',
+	'polar',
+	'radar',
+	'spherical',
+	'ternary'
+];
+
 export const scale_list = [
 	'linear',
 	'log',
@@ -26,22 +40,6 @@ export const scale_list = [
 	'radial'
 ];
 
-export const system_list = [
-	'affine', // not supported
-	'barycentric', // not supported
-	'cartesian',
-	'hexbin',
-	'logPolar',
-	'oblique',
-	'parallel',
-	'polar',
-	'radar',
-	'spherical',
-	'ternary'
-] as const;
-
-export type SystemType = (typeof system_list)[number];
-
 export const feature_list = [
 	'x_axis',
 	'y_axis',
@@ -57,21 +55,39 @@ export const feature_list = [
 	'bar'
 ];
 
-const axis_mapping: Record<SystemType, string[]> = {
+export const axis_list = ['x', 'y', 'A', 'B', 'C', 'r', 'theta', 'phi', 'entity'];
+
+export const systemSchema = z.enum(system_list);
+export const systemListSchema = z.array(systemSchema);
+export type SystemType = z.infer<typeof systemSchema>;
+
+export const scaleSchema = z.enum(scale_list);
+export const scaleListSchema = z.array(scaleSchema);
+export type ScaleType = z.infer<typeof scaleSchema>;
+
+export const featureSchema = z.enum(feature_list);
+export const featureListSchema = z.array(featureSchema);
+export type FeatureType = z.infer<typeof featureSchema>;
+
+export const axisSchema = z.enum(axis_list);
+export const axisListSchema = z.array(axisSchema);
+export type AxisType = z.infer<typeof axisSchema>;
+
+const axis_mapping: Record<SystemType, AxisType[]> = {
 	affine: ['x', 'y'],
 	cartesian: ['x', 'y'],
 	oblique: ['x', 'y'],
 	polar: ['r', 'theta'],
 	logPolar: ['r', 'theta'],
-	radar: ['sepal_length', 'sepal_width', 'petal_length', 'petal_width'],
-	spherical: ['r', 'theta', 'phi'],
 	parallel: ['r', 'theta'],
+	spherical: ['r', 'theta', 'phi'],
+	radar: ['sepal_length', 'sepal_width', 'petal_length', 'petal_width'],
 	barycentric: ['A', 'B', 'C'],
 	ternary: ['A', 'B', 'C'],
 	hexbin: ['x', 'y']
 };
 
-const axis_inversion_reference = {
+const axis_inversion_reference: Record<AxisType, boolean> = {
 	x: false,
 	y: true,
 	A: false,
@@ -83,11 +99,7 @@ const axis_inversion_reference = {
 	entity: false
 };
 
-export const featureSchema = z.enum(feature_list);
-
-export const featureSchemaList = z.array(featureSchema);
-
-const CoordinateObject = z.object({
+const CoordinateObjectSchema = z.object({
 	key: z.string(), // The key of the coordinate
 	type: SupportedTypeSchema, // The data type of the coordinate's value
 	label: z.string(), // The label of the coordinate
@@ -119,7 +131,7 @@ const createConfigSchema = (key: SystemType) =>
 	z.object(
 		_.zipObject(
 			Object.keys(axis_config[key]),
-			Object.keys(axis_config[key]).map((_) => CoordinateObject)
+			Object.keys(axis_config[key]).map((_) => CoordinateObjectSchema)
 		)
 	);
 const createDataSchema = (key: SystemType) =>
@@ -143,34 +155,15 @@ const SystemDataSchema = _.zipObject(
 
 const CoordinateTypeSchema = z.enum(system_list as unknown as [string, ...string[]]);
 
-type InputSchemaConfiguration =
-	| z.infer<typeof SystemConfigSchema.affine>
-	| z.infer<typeof SystemConfigSchema.barycentric>
-	| z.infer<typeof SystemConfigSchema.cartesian>
-	| z.infer<typeof SystemConfigSchema.logPolar>
-	| z.infer<typeof SystemConfigSchema.oblique>
-	| z.infer<typeof SystemConfigSchema.parallel>
-	| z.infer<typeof SystemConfigSchema.polar>
-	| z.infer<typeof SystemConfigSchema.radar>
-	| z.infer<typeof SystemConfigSchema.spherical>
-	| z.infer<typeof SystemConfigSchema.ternary>;
+type InputSchemaConfiguration = {
+	[key in SystemType]: z.infer<(typeof SystemConfigSchema)[key]>;
+}[SystemType];
 
-type InputDataConfiguration =
-	| z.infer<typeof SystemDataSchema.affine>
-	| z.infer<typeof SystemDataSchema.barycentric>
-	| z.infer<typeof SystemDataSchema.cartesian>
-	| z.infer<typeof SystemDataSchema.logPolar>
-	| z.infer<typeof SystemDataSchema.oblique>
-	| z.infer<typeof SystemDataSchema.parallel>
-	| z.infer<typeof SystemDataSchema.polar>
-	| z.infer<typeof SystemDataSchema.radar>
-	| z.infer<typeof SystemDataSchema.spherical>
-	| z.infer<typeof SystemDataSchema.ternary>;
+type InputDataConfiguration = {
+	[key in SystemType]: z.infer<(typeof SystemDataSchema)[key]>;
+}[SystemType];
 
 const filterEntityFromSchema = ({ entity, ...rest }) => rest;
-
-const ensureObjectParamsAreArray = (input: InputSchemaConfiguration) =>
-	Object.fromEntries(_.map(input, (value, key) => [key, _.isArray(value) ? value : [value]]));
 
 const remapDataToSchema = (data, schema) => {
 	return data.map((item) => {
@@ -291,6 +284,9 @@ const calculateScale = (
 		{} as Record<string, d3.ScaleLinear<number, number>>
 	);
 
+const filterFeaturesByVisibility = (features: Record<string, any>) =>
+	_.pickBy(features, (feature) => feature.show !== false);
+
 export const createSystem = (userData, options) => {
 	const res = {
 		id: uuidv4(),
@@ -342,18 +338,19 @@ export const createSystem = (userData, options) => {
 	const validData = SystemDataSchema[options.system as keyof typeof SystemDataSchema].safeParse(
 		remapDataToSchema(userData, options.schema)
 	);
+	if (!validData.success) return reportError('Invalid data:', validData.error);
 
+	res.data = validData.data;
 	res.schema = filterEntityFromSchema(validSchema.data);
 	res.schemaReverse = createSchemaReverse(res.schema);
 	res.schemaList = Object.keys(res.schema);
 	res.schemaReverseList = Object.keys(res.schemaReverse);
 
-	if (!validData.success) return reportError('Invalid data:', validData.error);
-
-	res.data = validData.data;
-
+	// if planar
 	res.extent = calculateExtent(res.schemaList, res.schema, validData.data);
 	res.scale = calculateScale(res.schema, res.extent, res.config, options.system);
+
+	res.features = filterFeaturesByVisibility(options.features);
 
 	res.vis = {
 		svg: createSvg,

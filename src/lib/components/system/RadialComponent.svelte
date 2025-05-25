@@ -18,9 +18,9 @@
 			// Create SVG once
 			const svg = system.vis.svg(system, container);
 
-			// for (const feature of system.features) {
-			// 	system.vis.feature(system, svg)[feature]();
-			// }
+			for (const feature of system.features) {
+				system.vis.feature(system, svg)[feature]();
+			}
 		} catch (error) {
 			console.error('Error creating visualization:', error);
 		}
@@ -32,5 +32,5 @@
 {:else if !system.success}
 	<p>Failed to load data</p>
 {:else}
-	<div id={system.id} style="width: {system.config.width}px; height: {system.config.height}px;" />
+	<div id={system.id} style="width: {system.config.size}px; height: {system.config.size}px;" />
 {/if}
