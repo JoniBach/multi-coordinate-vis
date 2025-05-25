@@ -6,19 +6,7 @@ import { SupportedTypeMap, SupportedTypeSchema, DataTypeSchema } from './dataTyp
 import * as d3 from 'd3';
 import { chartFeature, createSvg } from './features.js';
 
-export const system_list = [
-	'affine', // not supported
-	'barycentric', // not supported
-	'cartesian',
-	'hexbin',
-	'logPolar',
-	'oblique',
-	'parallel',
-	'polar',
-	'radar',
-	'spherical',
-	'ternary'
-];
+export const system_list = ['planar', 'radial', 'ternary'];
 
 export const scale_list = [
 	'linear',
@@ -74,17 +62,11 @@ export const axisListSchema = z.array(axisSchema);
 export type AxisType = z.infer<typeof axisSchema>;
 
 const axis_mapping: Record<SystemType, AxisType[]> = {
-	affine: ['x', 'y'],
-	cartesian: ['x', 'y'],
-	oblique: ['x', 'y'],
-	polar: ['r', 'theta'],
-	logPolar: ['r', 'theta'],
-	parallel: ['r', 'theta'],
-	spherical: ['r', 'theta', 'phi'],
-	radar: ['sepal_length', 'sepal_width', 'petal_length', 'petal_width'],
-	barycentric: ['A', 'B', 'C'],
-	ternary: ['A', 'B', 'C'],
-	hexbin: ['x', 'y']
+	planar: ['x', 'y'],
+	radial: ['r', 'theta'],
+	ternary: ['A', 'B', 'C']
+	// spherical: ['r', 'theta', 'phi'],
+	// radar: ['sepal_length', 'sepal_width', 'petal_length', 'petal_width'],
 };
 
 const axis_inversion_reference: Record<AxisType, boolean> = {

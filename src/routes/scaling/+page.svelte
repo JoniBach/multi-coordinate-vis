@@ -17,7 +17,7 @@
 
 	onMount(() => {
 		planarSystem = createSystem(system_data, {
-			system: 'cartesian',
+			system: 'planar',
 			schema: {
 				x: {
 					key: 'timestamp',
