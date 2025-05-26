@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import sizeof from 'object-sizeof';
 import { SupportedTypeMap, SupportedTypeSchema, DataTypeSchema } from './dataTypes.js';
 import * as d3 from 'd3';
-import { chartFeature, createSvg } from './features.js';
+import { radialFeature, createSvg, planarFeature } from './features.js';
 
 export const system_list = ['planar', 'radial', 'ternary'];
 
@@ -332,12 +332,22 @@ export const createSystem = (userData, options) => {
 	res.extent = calculateExtent(res.schemaList, res.schema, validData.data);
 	res.scale = calculateScale(res.schema, res.extent, res.config, options.system);
 
-	res.features = filterFeaturesByVisibility(options.features);
+	if (options.system === 'planar') {
+		res.features = filterFeaturesByVisibility(options.features);
+		res.vis = {
+			svg: createSvg,
+			feature: planarFeature
+		};
+	}
 
-	res.vis = {
-		svg: createSvg,
-		feature: chartFeature
-	};
+	if (options.system === 'radial') {
+		res.features = filterFeaturesByVisibility(options.features);
+		res.vis = {
+			svg: createSvg,
+			feature: radialFeature
+		};
+	}
+
 	res.loading = false;
 	res.success = validData.success;
 	return res;

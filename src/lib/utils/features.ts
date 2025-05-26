@@ -6,9 +6,10 @@ export const createSvg = (system, container) =>
 		.select(container)
 		.append('svg')
 		.attr('width', system.config.size)
-		.attr('height', system.config.size);
+		.attr('height', system.config.size)
+		.append('g');
 
-export const chartFeature = (system, svg, featureConfig) => {
+export const planarFeature = (system, svg, featureConfig) => {
 	const style = {
 		show: true,
 		color: 'black',
@@ -180,6 +181,32 @@ export const chartFeature = (system, svg, featureConfig) => {
 				.attr('fill-opacity', (d) => 0.2 + (0.6 * d.length) / maxBinLength)
 				.attr('stroke', '#333');
 		}
+	};
+
+	return features;
+};
+
+export const radialFeature = (system, svg, featureConfig) => {
+	const style = {
+		show: true,
+		color: 'black',
+		strokeWidth: null,
+		radius: null,
+		...featureConfig
+	};
+	const features = {
+		theta_axis: () => null,
+		r_axis: () => null,
+		r_axis_label: () => null,
+		theta_axis_label: () => null,
+		title: () =>
+			svg
+				.append('text')
+				.attr('x', system.config.size / 2)
+				.attr('y', system.config.margin)
+				.attr('text-anchor', 'middle')
+				.attr('fill', style.color)
+				.text(system.config.title)
 	};
 
 	return features;

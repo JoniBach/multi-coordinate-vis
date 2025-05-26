@@ -3,7 +3,7 @@
 	import { createSystem } from '$lib/utils/coordinate.schema.js';
 	import PlanarComponent from '$lib/components/system/PlanarComponent.svelte';
 	import system_data from '$lib/data/example_data/v3/system_data.json';
-	import RadialComponent from '$lib/components/system/RadialComponent.svelte';
+	// import RadialComponent from '$lib/components/system/RadialComponent.svelte';
 
 	let planarSystem = $state({
 		loading: false,
@@ -61,7 +61,7 @@
 		});
 
 		// radialSystem = createSystem(system_data, {
-		// 	system: 'polar',
+		// 	system: 'radial',
 		// 	schema: {
 		// 		r: {
 		// 			key: 'environment.temperature',
@@ -84,14 +84,21 @@
 		// 		}
 		// 	},
 		// 	config: {
-		// 		size: 400,
+		// 		size: 500,
 		// 		margin: 60,
 		// 		title: 'Smart Home Temperature (Polar Coordinates)'
 		// 	},
-		// 	features: ['data_points', 'lines']
+		// 	features: {
+		// 		theta_axis: { show: true, color: 'black' },
+		// 		r_axis: { show: true, color: 'black' },
+		// 		r_axis_label: { show: true, color: 'black' },
+		// 		theta_axis_label: { show: true, color: 'black' },
+		// 		title: { show: true, color: 'black' }
+		// 	}
 		// });
 
 		console.log(planarSystem);
+		// console.log(radialSystem);
 	});
 </script>
 

@@ -18,8 +18,8 @@
 			// Create SVG once
 			const svg = system.vis.svg(system, container);
 
-			for (const feature of system.features) {
-				system.vis.feature(system, svg)[feature]();
+			for (const fetureKey of Object.keys(system.features)) {
+				system.vis.feature(system, svg, system.features[fetureKey])[fetureKey]();
 			}
 		} catch (error) {
 			console.error('Error creating visualization:', error);
