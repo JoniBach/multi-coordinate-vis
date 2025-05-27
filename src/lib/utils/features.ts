@@ -18,6 +18,10 @@ export const planarFeature = (system, svg, featureConfig) => {
 		...featureConfig
 	};
 
+	const colorScale = style.colorScale
+		? d3.scaleSequential(d3[style.colorScale]).domain([0, 1])
+		: d3.scaleOrdinal(d3.schemeCategory10).domain(system.data.map((d) => d.entity));
+
 	const features = {
 		x_axis: () =>
 			svg
@@ -95,7 +99,7 @@ export const planarFeature = (system, svg, featureConfig) => {
 				.attr('stroke-width', style.strokeWidth || 1)
 				.attr('stroke', style.color),
 
-		data_points: () =>
+		points: () =>
 			svg
 				.append('g')
 				.selectAll('circle')
@@ -105,39 +109,38 @@ export const planarFeature = (system, svg, featureConfig) => {
 				.attr('cx', (d) => system.scale.x(d.x))
 				.attr('cy', (d) => system.scale.y(d.y))
 				.attr('r', style.radius || 5)
-				.attr('fill', style.color || 'red'),
+				.attr('fill', (d) => colorScale(d.entity)),
 
 		lines: () =>
 			svg
 				.append('g')
 				.selectAll('path')
-				.data([system.data])
+				.data(d3.groups(system.data, (d) => d.entity))
 				.enter()
 				.append('path')
-				.attr(
-					'd',
+				.attr('d', (group) =>
 					d3
 						.line()
 						.x((d) => system.scale.x(d.x))
-						.y((d) => system.scale.y(d.y))
+						.y((d) => system.scale.y(d.y))(group[1])
 				)
 				.attr('fill', 'none')
 				.attr('stroke-width', style.strokeWidth || 2)
-				.attr('stroke', style.color || 'green'),
+				.attr('stroke', (group) => colorScale(group[0])),
 
 		shade_area: () =>
 			svg
 				.append('g')
 				.selectAll('path')
-				.data([system.data])
+				.data(d3.groups(system.data, (d) => d.entity))
 				.enter()
 				.append('path')
 				.attr(
 					'd',
-					(d) =>
-						`M ${system.scale.x(d[0].x)}, ${system.scale.y(d[0].y)} L ${d.map((p) => `${system.scale.x(p.x)},${system.scale.y(p.y)}`).join(' L ')} L ${system.scale.x(d[d.length - 1].x)}, ${system.scale.y(0)} L ${system.scale.x(d[0].x)}, ${system.scale.y(0)} Z`
+					(group) =>
+						`M ${system.scale.x(group[1][0].x)}, ${system.scale.y(group[1][0].y)} L ${group[1].map((p) => `${system.scale.x(p.x)},${system.scale.y(p.y)}`).join(' L ')} L ${system.scale.x(group[1][group[1].length - 1].x)}, ${system.scale.y(0)} L ${system.scale.x(group[1][0].x)}, ${system.scale.y(0)} Z`
 				)
-				.attr('fill', style.color || 'green')
+				.attr('fill', (group) => colorScale(group[0]))
 				.attr('opacity', 0.5),
 
 		bars: () =>
@@ -151,7 +154,9 @@ export const planarFeature = (system, svg, featureConfig) => {
 				.attr('y', (d) => system.scale.y(d.y))
 				.attr('width', 10)
 				.attr('height', (d) => system.scale.y(0) - system.scale.y(d.y))
-				.attr('fill', style.color || 'blue'),
+				.attr('fill', (d) => colorScale(d.entity))
+				.sort((a, b) => a.x - b.x || b.y - a.y),
+
 		hexbin: () => {
 			// Create hexbin generator
 			const hexbin = d3_hexbin()

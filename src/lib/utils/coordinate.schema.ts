@@ -62,9 +62,9 @@ export const axisListSchema = z.array(axisSchema);
 export type AxisType = z.infer<typeof axisSchema>;
 
 const axis_mapping: Record<SystemType, AxisType[]> = {
-	planar: ['x', 'y'],
-	radial: ['r', 'theta'],
-	ternary: ['A', 'B', 'C']
+	planar: ['x', 'y', 'entity'],
+	radial: ['r', 'theta', 'entity'],
+	ternary: ['A', 'B', 'C', 'entity']
 	// spherical: ['r', 'theta', 'phi'],
 	// radar: ['sepal_length', 'sepal_width', 'petal_length', 'petal_width'],
 };
@@ -192,7 +192,6 @@ const calculateExtent = (schemaList: string[], schema: InputSchemaConfiguration,
 	_.transform(
 		schemaList,
 		(result, key) => {
-			// console.log(schema[key].range);
 			result[key] = extentCalculator[schema[key].type as keyof typeof extentCalculator](
 				_.map(data, key)
 			);
@@ -247,7 +246,6 @@ const calculateScale = (
 		schema,
 		(result, { scale, key }, outKey) => {
 			const domain = extent[outKey] || [0, 1];
-			// console.log(schema);
 
 			// Get the axis configuration for this coordinate system and axis
 			const axisConfig = axis_config[systemType]?.[outKey];

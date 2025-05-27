@@ -23,14 +23,14 @@
 					key: 'timestamp',
 					type: 'date_iso',
 					label: 'Time',
-					range: ['2025-05-24T00:00:00Z', '2025-05-27T12:00:00Z'],
+					range: ['2025-05-23T12:00:00Z', null],
 					scale: 'utc'
 				},
 				y: {
 					key: 'environment.temperature',
 					type: 'number',
 					label: 'Temperature (°C)',
-					range: [0, null],
+					range: [18, null],
 					scale: 'linear'
 				},
 				entity: {
@@ -54,9 +54,9 @@
 				x_axis_grid: { show: true, color: 'lightgrey' },
 				y_axis_grid: { show: true, color: 'lightgrey' },
 				bars: { show: true, color: 'blue' },
-				hexbin: { show: true, color: 'yellow', radius: 20 },
+				hexbin: { show: true, color: 'black', radius: 20 },
 				lines: { show: true, color: 'green' },
-				data_points: { show: true, color: 'red', radius: 3 }
+				points: { show: true, color: 'red', radius: 3 }
 			}
 		});
 
