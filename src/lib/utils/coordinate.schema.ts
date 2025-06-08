@@ -350,3 +350,18 @@ export const createSystem = (userData, options) => {
 	res.success = validData.success;
 	return res;
 };
+
+export const createMultiSystem = (multiSystemPayload) => {
+
+	const res = {
+		data: null
+	}
+	// take each dataset item.
+	// create a new flat data array with each item on an equal level
+	// create the extents for the new data set
+	// create the scales for the new extents
+	// using the series configuraiton 
+	
+	console.log(multiSystemPayload)
+
+}
