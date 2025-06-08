@@ -2,9 +2,15 @@ import { z, ZodError } from 'zod';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import sizeof from 'object-sizeof';
-import { SupportedTypeMap, SupportedTypeSchema, DataTypeSchema } from './dataTypes.js';
+import {
+	SupportedTypeMap,
+	SupportedTypeSchema,
+	DataTypeSchema,
+	supported_type_list
+} from './dataTypes.js';
 import * as d3 from 'd3';
 import { radialFeature, createSvg, planarFeature } from './features.js';
+import { nanoid } from 'nanoid';
 
 export const system_list = ['planar', 'radial', 'ternary'];
 
@@ -351,17 +357,143 @@ export const createSystem = (userData, options) => {
 	return res;
 };
 
-export const createMultiSystem = (multiSystemPayload) => {
+const datasetObjectSchema = z.object({
+	key: z.string(),
+	type: SupportedTypeSchema,
+	prvType: z.enum(supported_type_list),
+	label: z.string(),
+	range: z.array(DataTypeSchema.nullable()).optional().nullable(),
+	scale: z.enum(scale_list),
+	systemNanoId: z.string()
+});
 
-	const res = {
-		data: null
+const systemNanoIdSchema = z.string();
+const datasetItemSchema = z
+	.object({
+		systemNanoId: systemNanoIdSchema
+	})
+	.merge(datasetObjectSchema);
+const preparedDatasetSchema = z.array(datasetItemSchema);
+
+const prepareData = (multiSystemPayload) => {
+	// Introduce a unique id for each dataset item
+	// the schema will reformat dates to Date objects
+	// we will preserve the original type in prvType
+	const preparedDataset = preparedDatasetSchema.parse(
+		multiSystemPayload.dataset.map((item) => ({
+			...item,
+			prvType: item.type,
+			systemNanoId: nanoid(6)
+		}))
+	);
+
+	// Validate the dataset
+	const validDataset = z.array(datasetObjectSchema).safeParse(preparedDataset);
+	if (!validDataset.success) {
+		console.error('Invalid dataset:', validDataset.error);
+		return;
 	}
-	// take each dataset item.
-	// create a new flat data array with each item on an equal level
-	// create the extents for the new data set
-	// create the scales for the new extents
-	// using the series configuraiton 
-	
-	console.log(multiSystemPayload)
 
-}
+	// Create a lookup of series by systemNanoId and form a list of ids
+	const seriesLookup = _.keyBy(validDataset.data, 'systemNanoId');
+	const seriesNanoIdList = Object.keys(seriesLookup);
+	const seriesKeyList = _.map(seriesLookup, 'key');
+	// Map the previous type to the validator
+	const dataTypesPrev = _.mapValues(
+		seriesLookup,
+		(datasetItem) => SupportedTypeMap[datasetItem.prvType]
+	);
+
+	// Remap the data to the new format
+	const remappedData = multiSystemPayload.data.map((dataObject) => {
+		const newItem = {};
+		preparedDataset.forEach((datasetItem) => {
+			newItem[datasetItem.systemNanoId] = _.get(dataObject, datasetItem.key);
+		});
+		return newItem;
+	});
+
+	// Validate the data and parse to ensure that its suitable for the system
+	const validData = z
+		.array(z.object(_.mapValues(dataTypesPrev, (type) => type)))
+		.safeParse(remappedData);
+
+	if (!validData.success) console.error('Invalid data:', validData.error);
+	return {
+		validData,
+		seriesNanoIdList,
+		seriesLookup,
+		dataTypesPrev,
+		remappedData,
+		seriesKeyList
+	};
+};
+
+const multi_axis_mapping: Record<SystemType, AxisType[]> = {
+	planar: ['x', 'y'],
+	radial: ['r', 'theta'],
+	ternary: ['A', 'B', 'C']
+	// spherical: ['r', 'theta', 'phi'],
+	// radar: ['sepal_length', 'sepal_width', 'petal_length', 'petal_width'],
+};
+
+const multi_axis_inversion_reference: Record<AxisType, boolean> = {
+	x: false,
+	y: true,
+	A: false,
+	B: false,
+	C: false,
+	r: false,
+	theta: false,
+	phi: false
+};
+
+const multi_system_axis_config = _.mapValues(multi_axis_mapping, (keys) =>
+	_.zipObject(
+		keys,
+		keys.map((key) => multi_axis_inversion_reference[key])
+	)
+);
+
+export const createMultiSystem = (multiSystemPayload) => {
+	const { validData, seriesNanoIdList, seriesLookup, seriesKeyList } =
+		prepareData(multiSystemPayload);
+
+	const seriesConfigSchema = z.array(
+		z
+			.object(
+				_.fromPairs(
+					multi_axis_mapping[multiSystemPayload.system].map((key) => [key, z.enum(seriesKeyList)])
+				)
+			)
+			.transform((v) => ({
+				...v,
+				seriesNanoId: nanoid(6)
+			}))
+	);
+	const validSeriesConfig = seriesConfigSchema.safeParse(multiSystemPayload.series);
+	if (!validSeriesConfig.success) {
+		console.error('Invalid series configuration:', validSeriesConfig.error);
+		return;
+	}
+	console.log('validSeriesConfig', validSeriesConfig.data);
+
+	// Calculate the extent ready for setting the scale
+	const extent = calculateExtent(seriesNanoIdList, seriesLookup, validData.data);
+
+	// Calculate the scale
+	const scale = calculateScale(
+		seriesLookup,
+		extent,
+		multiSystemPayload.config,
+		multiSystemPayload.system
+	);
+
+	return {
+		validData,
+		seriesNanoIdList,
+		seriesLookup,
+		extent,
+		scale
+	};
+};

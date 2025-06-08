@@ -10,17 +10,19 @@
 		success: false
 	});
 
-	// this is the output 
+	// this is the output
 	const series = [
 		{
-			axis: 'x',
-			key: 'timestamp',
-			color: 'purple'
+			x: 'timestamp',
+			y: 'environment.temperature'
 		},
 		{
-			axis: 'y',
-			key: 'environment.temperature',
-			color: 'purple'
+			x: 'timestamp',
+			y: 'environment.humidity'
+		},
+		{
+			x: 'timestamp',
+			y: 'environment.co2'
 		}
 	];
 
@@ -253,17 +255,25 @@
 		// 	scale: 'linear'
 		// }
 	];
-
+	const data = system_data;
+	const system = 'planar';
 	const systemParams = {
+		system,
 		series,
 		features,
 		entity,
 		config,
 		dataset,
-	}
+		data
+	};
+
+	let multiSystem = $state({
+		loading: false,
+		success: false
+	});
 
 	onMount(() => {
-		createMultiSystem(systemParams)
+		multiSystem = createMultiSystem(systemParams);
 		planarSystem = createSystem(system_data, {
 			system: 'planar',
 			schema: {
@@ -346,6 +356,7 @@
 		// });
 
 		console.log(planarSystem);
+		console.log(multiSystem);
 		// console.log(radialSystem);
 	});
 </script>

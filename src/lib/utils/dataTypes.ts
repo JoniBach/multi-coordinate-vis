@@ -120,21 +120,22 @@ export type DateTimeSchema = z.infer<typeof date_timeSchema>;
 export type DateUnixSSchema = z.infer<typeof date_unix_sSchema>;
 export type DateUnixMSchema = z.infer<typeof date_unix_msSchema>;
 
+export const supported_type_list = [
+	'any',
+	// basics
+	'number',
+	'string',
+	'boolean',
+	// date
+	'date', // "Mon May 06 2025 14:42:10 GMT+0100 (British Summer Time)"
+	'date_iso', // "2025-05-06T14:35:00Z"
+	'date_only', // "2025-05-06"
+	'date_time', // "2025-05-06T14:35:00"
+	'date_unix_s', // 1715066100
+	'date_unix_ms' // 1715066100000
+];
 export const SupportedTypeSchema = z
-	.enum([
-		'any',
-		// basics
-		'number',
-		'string',
-		'boolean',
-		// date
-		'date', // "Mon May 06 2025 14:42:10 GMT+0100 (British Summer Time)"
-		'date_iso', // "2025-05-06T14:35:00Z"
-		'date_only', // "2025-05-06"
-		'date_time', // "2025-05-06T14:35:00"
-		'date_unix_s', // 1715066100
-		'date_unix_ms' // 1715066100000
-	])
+	.enum(supported_type_list)
 	.transform((v) => (v.toString().startsWith('date_') ? 'date' : v));
 
 export type SupportedType = z.infer<typeof SupportedTypeSchema>;
