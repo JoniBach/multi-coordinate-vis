@@ -472,7 +472,6 @@ export const createMultiSystem = (multiSystemPayload) => {
 			}))
 	);
 	const validSeriesConfig = seriesConfigSchema.safeParse(multiSystemPayload.series);
-	const systemIdList = _.map(validSeriesConfig.data, 'seriesNanoId');
 	if (!validSeriesConfig.success) {
 		console.error('Invalid series configuration:', validSeriesConfig.error);
 		return;
@@ -489,6 +488,8 @@ export const createMultiSystem = (multiSystemPayload) => {
 		multiSystemPayload.config,
 		multiSystemPayload.system
 	);
+
+	const systemIdList = _.map(validSeriesConfig.data, 'seriesNanoId');
 
 	const systemData = _.mapValues(_.keyBy(validSeriesConfig.data, 'seriesNanoId'), (seriesConfig) =>
 		_.map(
