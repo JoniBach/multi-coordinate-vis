@@ -479,22 +479,6 @@ export const createMultiSystem = (multiSystemPayload) => {
 	}
 	console.log('validSeriesConfig', validSeriesConfig.data);
 
-	const systemData = _.mapValues(
-		_.keyBy(validSeriesConfig.data, 'seriesNanoId'),
-		(seriesConfig) => {
-			const seriesConfigWithoutNanoId = _.omit(seriesConfig, ['seriesNanoId']);
-			const invertedSeriesConfig = _.invert(seriesConfigWithoutNanoId);
-			const arrayOfKeys = Object.keys(invertedSeriesConfig);
-			const data = _.map(validData.data, (item) => _.pick(item, arrayOfKeys));
-			// const data = _.map(validData.data, (item) =>
-			// 	_.mapKeys(_.pick(item, arrayOfKeys), (_, key) => invertedSeriesConfig[key])
-			// );
-			return data;
-		}
-	);
-
-	console.log('systemData', systemData);
-
 	// Calculate the extent ready for setting the scale
 	const extent = calculateExtent(seriesNanoIdList, seriesLookup, validData.data);
 
@@ -506,26 +490,20 @@ export const createMultiSystem = (multiSystemPayload) => {
 		multiSystemPayload.system
 	);
 
-	const systemScale = _.mapValues(
-		_.keyBy(validSeriesConfig.data, 'seriesNanoId'),
-		(seriesConfig) => {
-			const seriesConfigWithoutNanoId = _.omit(seriesConfig, ['seriesNanoId']);
-			const invertedSeriesConfig = _.invert(seriesConfigWithoutNanoId);
-			const arrayOfKeys = Object.keys(invertedSeriesConfig);
-			const systemScale = _.pick(scale, arrayOfKeys);
-			return systemScale;
-		}
+	const systemData = _.mapValues(_.keyBy(validSeriesConfig.data, 'seriesNanoId'), (seriesConfig) =>
+		_.map(
+			validData.data,
+			_.partialRight(_.pick, _, Object.keys(_.invert(_.omit(seriesConfig, ['seriesNanoId']))))
+		)
+	);
+
+	const systemScale = _.mapValues(_.keyBy(validSeriesConfig.data, 'seriesNanoId'), (seriesConfig) =>
+		_.pick(scale, Object.keys(_.invert(_.omit(seriesConfig, ['seriesNanoId']))))
 	);
 
 	const systemExtent = _.mapValues(
 		_.keyBy(validSeriesConfig.data, 'seriesNanoId'),
-		(seriesConfig) => {
-			const seriesConfigWithoutNanoId = _.omit(seriesConfig, ['seriesNanoId']);
-			const invertedSeriesConfig = _.invert(seriesConfigWithoutNanoId);
-			const arrayOfKeys = Object.keys(invertedSeriesConfig);
-			const systemExtent = _.pick(extent, arrayOfKeys);
-			return systemExtent;
-		}
+		(seriesConfig) => _.pick(extent, Object.keys(_.invert(_.omit(seriesConfig, ['seriesNanoId']))))
 	);
 
 	const series = {
