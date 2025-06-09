@@ -528,8 +528,6 @@ export const createMultiSystem = (multiSystemPayload) => {
 		}
 	);
 
-	const systemList = console.log('systemScales', systemScale);
-
 	const series = {
 		data: systemData,
 		scale: systemScale,
