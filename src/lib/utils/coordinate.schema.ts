@@ -395,7 +395,7 @@ const prepareData = (multiSystemPayload) => {
 	}
 
 	// Create a lookup of series by systemNanoId and form a list of ids
-	const seriesLookup = _.keyBy(validDataset.data, 'systemNanoId');
+	const seriesLookup = _.keyBy(validDataset.data, 'key');
 	const seriesNanoIdList = Object.keys(seriesLookup);
 	const seriesKeyList = _.map(seriesLookup, 'key');
 	// Map the previous type to the validator
@@ -408,7 +408,7 @@ const prepareData = (multiSystemPayload) => {
 	const remappedData = multiSystemPayload.data.map((dataObject) => {
 		const newItem = {};
 		preparedDataset.forEach((datasetItem) => {
-			newItem[datasetItem.systemNanoId] = _.get(dataObject, datasetItem.key);
+			newItem[datasetItem.key] = _.get(dataObject, datasetItem.key);
 		});
 		return newItem;
 	});
@@ -472,11 +472,28 @@ export const createMultiSystem = (multiSystemPayload) => {
 			}))
 	);
 	const validSeriesConfig = seriesConfigSchema.safeParse(multiSystemPayload.series);
+	const systemIdList = _.map(validSeriesConfig.data, 'seriesNanoId');
 	if (!validSeriesConfig.success) {
 		console.error('Invalid series configuration:', validSeriesConfig.error);
 		return;
 	}
 	console.log('validSeriesConfig', validSeriesConfig.data);
+
+	const systemData = _.mapValues(
+		_.keyBy(validSeriesConfig.data, 'seriesNanoId'),
+		(seriesConfig) => {
+			const seriesConfigWithoutNanoId = _.omit(seriesConfig, ['seriesNanoId']);
+			const invertedSeriesConfig = _.invert(seriesConfigWithoutNanoId);
+			const arrayOfKeys = Object.keys(invertedSeriesConfig);
+			const data = _.map(validData.data, (item) => _.pick(item, arrayOfKeys));
+			// const data = _.map(validData.data, (item) =>
+			// 	_.mapKeys(_.pick(item, arrayOfKeys), (_, key) => invertedSeriesConfig[key])
+			// );
+			return data;
+		}
+	);
+
+	console.log('systemData', systemData);
 
 	// Calculate the extent ready for setting the scale
 	const extent = calculateExtent(seriesNanoIdList, seriesLookup, validData.data);
@@ -489,11 +506,44 @@ export const createMultiSystem = (multiSystemPayload) => {
 		multiSystemPayload.system
 	);
 
+	const systemScale = _.mapValues(
+		_.keyBy(validSeriesConfig.data, 'seriesNanoId'),
+		(seriesConfig) => {
+			const seriesConfigWithoutNanoId = _.omit(seriesConfig, ['seriesNanoId']);
+			const invertedSeriesConfig = _.invert(seriesConfigWithoutNanoId);
+			const arrayOfKeys = Object.keys(invertedSeriesConfig);
+			const systemScale = _.pick(scale, arrayOfKeys);
+			return systemScale;
+		}
+	);
+
+	const systemExtent = _.mapValues(
+		_.keyBy(validSeriesConfig.data, 'seriesNanoId'),
+		(seriesConfig) => {
+			const seriesConfigWithoutNanoId = _.omit(seriesConfig, ['seriesNanoId']);
+			const invertedSeriesConfig = _.invert(seriesConfigWithoutNanoId);
+			const arrayOfKeys = Object.keys(invertedSeriesConfig);
+			const systemExtent = _.pick(extent, arrayOfKeys);
+			return systemExtent;
+		}
+	);
+
+	const systemList = console.log('systemScales', systemScale);
+
+	const series = {
+		data: systemData,
+		scale: systemScale,
+		extent: systemExtent,
+		list: systemIdList
+	};
+
 	return {
 		validData,
 		seriesNanoIdList,
 		seriesLookup,
+		seriesKeyList,
 		extent,
-		scale
+		scale,
+		series
 	};
 };
