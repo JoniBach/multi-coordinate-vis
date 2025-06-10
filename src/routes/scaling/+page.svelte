@@ -3,6 +3,7 @@
 	import { createMultiSystem, createSystem } from '$lib/utils/coordinate.schema.js';
 	import PlanarComponent from '$lib/components/system/PlanarComponent.svelte';
 	import system_data from '$lib/data/example_data/v3/system_data.json';
+	import SystemComponent from '$lib/components/system/SystemComponent.svelte';
 	// import RadialComponent from '$lib/components/system/RadialComponent.svelte';
 
 	let planarSystem = $state({
@@ -14,16 +15,22 @@
 	const series = [
 		{
 			x: 'timestamp',
-			y: 'environment.temperature'
-		},
-		{
-			x: 'timestamp',
-			y: 'environment.humidity'
-		},
-		{
-			x: 'timestamp',
-			y: 'environment.co2'
+			y: 'environment.temperature',
+			id: 'temperature',
+			features: ['points']
 		}
+		// {
+		// 	x: 'timestamp',
+		// 	y: 'environment.humidity',
+		// 	id: 'humidity',
+		// 	features: ['lines']
+		// },
+		// {
+		// 	x: 'timestamp',
+		// 	y: 'environment.co2',
+		// 	id: 'co2',
+		// 	features: ['lines']
+		// }
 	];
 
 	const features = {
@@ -43,7 +50,6 @@
 
 	const entity = {
 		key: 'home_id',
-		type: 'string',
 		label: 'Home ID'
 	};
 
@@ -361,5 +367,6 @@
 	});
 </script>
 
+<SystemComponent bind:system={multiSystem} />
 <PlanarComponent bind:system={planarSystem} />
 <!-- <RadialComponent bind:system={radialSystem} /> -->

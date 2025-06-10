@@ -11,6 +11,7 @@ import {
 import * as d3 from 'd3';
 import { radialFeature, createSvg, planarFeature } from './features.js';
 import { nanoid } from 'nanoid';
+import { createSeriesSvg, seriesPlanarFeature } from './seriesFeatures.js';
 
 export const system_list = ['planar', 'radial', 'ternary'];
 
@@ -43,10 +44,11 @@ export const feature_list = [
 	'grid',
 	'x_axis_grid',
 	'y_axis_grid',
-	'point',
-	'line',
-	'area',
-	'bar'
+	'points',
+	'lines',
+	'areas',
+	'bars',
+	'hexbin'
 ];
 
 export const axis_list = ['x', 'y', 'A', 'B', 'C', 'r', 'theta', 'phi', 'entity'];
@@ -410,12 +412,18 @@ const prepareData = (multiSystemPayload) => {
 		preparedDataset.forEach((datasetItem) => {
 			newItem[datasetItem.key] = _.get(dataObject, datasetItem.key);
 		});
+		newItem.entity = _.get(dataObject, multiSystemPayload.entity.key);
 		return newItem;
 	});
 
 	// Validate the data and parse to ensure that its suitable for the system
 	const validData = z
-		.array(z.object(_.mapValues(dataTypesPrev, (type) => type)))
+		.array(
+			z.object({
+				..._.mapValues(dataTypesPrev, (type) => type),
+				entity: DataTypeSchema.nullable()
+			})
+		)
 		.safeParse(remappedData);
 
 	if (!validData.success) console.error('Invalid data:', validData.error);
@@ -447,6 +455,10 @@ const multi_axis_inversion_reference: Record<AxisType, boolean> = {
 	theta: false,
 	phi: false
 };
+const commonSchema = {
+	id: z.string(),
+	features: z.array(z.enum(feature_list))
+};
 
 const multi_system_axis_config = _.mapValues(multi_axis_mapping, (keys) =>
 	_.zipObject(
@@ -459,24 +471,26 @@ export const createMultiSystem = (multiSystemPayload) => {
 	const { validData, seriesNanoIdList, seriesLookup, seriesKeyList } =
 		prepareData(multiSystemPayload);
 
+	console.log('multiSystemPayload', multiSystemPayload);
+
 	const seriesConfigSchema = z.array(
-		z
-			.object(
-				_.fromPairs(
-					multi_axis_mapping[multiSystemPayload.system].map((key) => [key, z.enum(seriesKeyList)])
-				)
-			)
-			.transform((v) => ({
-				...v,
-				seriesNanoId: nanoid(6)
-			}))
+		z.object({
+			..._.fromPairs(
+				multi_axis_mapping[multiSystemPayload.system].map((key) => {
+					return [key, z.enum(seriesKeyList)];
+				})
+			),
+			...commonSchema
+		})
 	);
+
 	const validSeriesConfig = seriesConfigSchema.safeParse(multiSystemPayload.series);
+
 	if (!validSeriesConfig.success) {
 		console.error('Invalid series configuration:', validSeriesConfig.error);
 		return;
 	}
-	console.log('validSeriesConfig', validSeriesConfig.data);
+	console.log('validSeriesConfig', multiSystemPayload.series, validSeriesConfig.data);
 
 	// Calculate the extent ready for setting the scale
 	const extent = calculateExtent(seriesNanoIdList, seriesLookup, validData.data);
@@ -489,38 +503,66 @@ export const createMultiSystem = (multiSystemPayload) => {
 		multiSystemPayload.system
 	);
 
-	const systemIdList = _.map(validSeriesConfig.data, 'seriesNanoId');
+	const systemIdList = _.map(validSeriesConfig.data, 'id');
 
-	const systemData = _.mapValues(_.keyBy(validSeriesConfig.data, 'seriesNanoId'), (seriesConfig) =>
-		_.map(
-			validData.data,
-			_.partialRight(_.pick, _, Object.keys(_.invert(_.omit(seriesConfig, ['seriesNanoId']))))
+	const systemData = _.mapValues(_.keyBy(validSeriesConfig.data, 'id'), (seriesConfig, id) =>
+		validData.data.map((dataObject) => ({
+			..._.mapKeys(
+				_.pick(dataObject, Object.keys(_.invert(seriesConfig))),
+				(value, key) => _.invert(seriesConfig)[key]
+			),
+			id,
+			entity: dataObject.entity
+		}))
+	);
+
+	const systemConfig = _.fromPairs(
+		validSeriesConfig.data.map((seriesConfig) => [seriesConfig.id, seriesConfig])
+	);
+
+	// todo: these are not correctly inverted
+
+	const systemScale = _.mapValues(_.keyBy(validSeriesConfig.data, 'id'), (seriesConfig) =>
+		_.mapKeys(
+			_.pick(scale, Object.keys(_.invert(seriesConfig))),
+			(value, key) => _.invert(seriesConfig)[key]
 		)
 	);
 
-	const systemScale = _.mapValues(_.keyBy(validSeriesConfig.data, 'seriesNanoId'), (seriesConfig) =>
-		_.pick(scale, Object.keys(_.invert(_.omit(seriesConfig, ['seriesNanoId']))))
-	);
+	// todo: thjese are not correcty invertedf
 
-	const systemExtent = _.mapValues(
-		_.keyBy(validSeriesConfig.data, 'seriesNanoId'),
-		(seriesConfig) => _.pick(extent, Object.keys(_.invert(_.omit(seriesConfig, ['seriesNanoId']))))
+	const systemExtent = _.mapValues(_.keyBy(validSeriesConfig.data, 'id'), (seriesConfig) =>
+		_.mapKeys(
+			_.pick(extent, Object.keys(_.invert(seriesConfig))),
+			(value, key) => _.invert(seriesConfig)[key]
+		)
 	);
 
 	const series = {
 		data: systemData,
 		scale: systemScale,
 		extent: systemExtent,
-		list: systemIdList
+		list: systemIdList,
+		config: systemConfig,
+		svg: createSeriesSvg,
+		feature: seriesPlanarFeature
 	};
 
 	return {
-		validData,
-		seriesNanoIdList,
-		seriesLookup,
-		seriesKeyList,
-		extent,
-		scale,
-		series
+		// validData,
+		// seriesNanoIdList,
+		// seriesLookup,
+		// seriesKeyList,
+		// extent,
+		// scale,
+		id: nanoid(6),
+		series,
+		config: multiSystemPayload.config,
+		success: true,
+		loading: false,
+		error: {
+			name: '',
+			message: null
+		}
 	};
 };
