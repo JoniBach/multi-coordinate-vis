@@ -22,13 +22,12 @@ export const seriesPlanarFeature = (system, svg, seriesId) => {
 		: d3
 				.scaleOrdinal(d3.schemeCategory10)
 				.domain(system.series.data[seriesId].map((d) => d.entity));
-
 	const features = {
 		x_axis: () =>
 			svg
 				.append('g')
 				.attr('transform', `translate(0, ${system.config.size - system.config.margin})`)
-				.call(d3.axisBottom(system.scale.x))
+				.call(d3.axisBottom(system.series.scale[seriesId].x))
 				.selectAll('text')
 				.attr('transform', 'rotate(-45)')
 				.attr('fill', style.color)
@@ -38,49 +37,49 @@ export const seriesPlanarFeature = (system, svg, seriesId) => {
 			svg
 				.append('g')
 				.attr('transform', `translate(${system.config.margin}, 0)`)
-				.call(d3.axisLeft(system.scale.y))
+				.call(d3.axisLeft(system.series.scale[seriesId].y))
 				.selectAll('text')
 				.attr('fill', style.color),
 
-		x_axis_label: () =>
-			svg
-				.append('text')
-				.attr('x', system.config.size / 2)
-				.attr('y', system.config.size)
-				.attr('text-anchor', 'middle')
-				.attr('fill', style.color)
-				.text(system.schema.x.label),
+		// x_axis_label: () =>
+		// 	svg
+		// 		.append('text')
+		// 		.attr('x', system.config.size / 2)
+		// 		.attr('y', system.config.size)
+		// 		.attr('text-anchor', 'middle')
+		// 		.attr('fill', style.color)
+		// 		.text(system.schema.x.label),
 
-		y_axis_label: () =>
-			svg
-				.append('text')
-				.attr('transform', 'rotate(-90)')
-				.attr('x', -system.config.size / 2)
-				.attr('y', 15)
-				.attr('text-anchor', 'middle')
-				.attr('fill', style.color)
-				.text(system.schema.y.label),
+		// y_axis_label: () =>
+		// 	svg
+		// 		.append('text')
+		// 		.attr('transform', 'rotate(-90)')
+		// 		.attr('x', -system.config.size / 2)
+		// 		.attr('y', 15)
+		// 		.attr('text-anchor', 'middle')
+		// 		.attr('fill', style.color)
+		// 		.text(system.schema.y.label),
 
-		title: () =>
-			svg
-				.append('text')
-				.attr('x', system.config.size / 2)
-				.attr('y', system.config.margin)
-				.attr('text-anchor', 'middle')
-				.attr('fill', style.color)
-				.text(system.config.title),
+		// title: () =>
+		// 	svg
+		// 		.append('text')
+		// 		.attr('x', system.config.size / 2)
+		// 		.attr('y', system.config.margin)
+		// 		.attr('text-anchor', 'middle')
+		// 		.attr('fill', style.color)
+		// 		.text(system.config.title),
 
 		x_axis_grid: () =>
 			svg
 				.append('g')
 				.selectAll('line.x-grid')
-				.data(system.scale.x.ticks())
+				.data(system.series.scale[seriesId].x.ticks())
 				.enter()
 				.append('line')
 				.attr('class', 'x-grid')
-				.attr('x1', (d) => system.scale.x(d))
+				.attr('x1', (d) => system.series.scale[seriesId].x(d))
 				.attr('y1', system.config.margin)
-				.attr('x2', (d) => system.scale.x(d))
+				.attr('x2', (d) => system.series.scale[seriesId].x(d))
 				.attr('y2', system.config.size - system.config.margin)
 				.attr('stroke-width', style.strokeWidth || 1)
 				.attr('stroke', style.color),
@@ -89,14 +88,14 @@ export const seriesPlanarFeature = (system, svg, seriesId) => {
 			svg
 				.append('g')
 				.selectAll('line.y-grid')
-				.data(system.scale.y.ticks())
+				.data(system.series.scale[seriesId].y.ticks())
 				.enter()
 				.append('line')
 				.attr('class', 'y-grid')
 				.attr('x1', system.config.margin)
-				.attr('y1', (d) => system.scale.y(d))
+				.attr('y1', (d) => system.series.scale[seriesId].y(d))
 				.attr('x2', system.config.size - system.config.margin)
-				.attr('y2', (d) => system.scale.y(d))
+				.attr('y2', (d) => system.series.scale[seriesId].y(d))
 				.attr('stroke-width', style.strokeWidth || 1)
 				.attr('stroke', style.color),
 

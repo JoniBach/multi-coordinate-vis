@@ -18,13 +18,13 @@
 			y: 'environment.temperature',
 			id: 'temperature',
 			features: ['points']
+		},
+		{
+			x: 'timestamp',
+			y: 'environment.humidity',
+			id: 'humidity',
+			features: ['points']
 		}
-		// {
-		// 	x: 'timestamp',
-		// 	y: 'environment.humidity',
-		// 	id: 'humidity',
-		// 	features: ['lines']
-		// },
 		// {
 		// 	x: 'timestamp',
 		// 	y: 'environment.co2',
@@ -34,13 +34,13 @@
 	];
 
 	const features = {
-		y_axis: { show: true, color: 'black' },
 		x_axis: { show: true, color: 'black' },
-		x_axis_label: { show: true, color: 'black' },
-		y_axis_label: { show: true, color: 'black' },
-		title: { show: true, color: 'black' },
+		y_axis: { show: true, color: 'black' },
 		x_axis_grid: { show: true, color: 'lightgrey' },
 		y_axis_grid: { show: true, color: 'lightgrey' }
+		// x_axis_label: { show: true, color: 'black' },
+		// y_axis_label: { show: true, color: 'black' },
+		// title: { show: true, color: 'black' },
 		// shade_area: { show: true, color: 'purple' },
 		// bars: { show: true, color: 'blue' },
 		// hexbin: { show: true, color: 'black', radius: 20 },
@@ -361,7 +361,7 @@
 		// 	}
 		// });
 
-		console.log(planarSystem);
+		// console.log(planarSystem);
 		console.log(multiSystem);
 		// console.log(radialSystem);
 	});

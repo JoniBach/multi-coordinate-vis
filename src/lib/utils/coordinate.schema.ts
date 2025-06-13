@@ -471,8 +471,6 @@ export const createMultiSystem = (multiSystemPayload) => {
 	const { validData, seriesNanoIdList, seriesLookup, seriesKeyList } =
 		prepareData(multiSystemPayload);
 
-	console.log('multiSystemPayload', multiSystemPayload);
-
 	const seriesConfigSchema = z.array(
 		z.object({
 			..._.fromPairs(
@@ -490,7 +488,6 @@ export const createMultiSystem = (multiSystemPayload) => {
 		console.error('Invalid series configuration:', validSeriesConfig.error);
 		return;
 	}
-	console.log('validSeriesConfig', multiSystemPayload.series, validSeriesConfig.data);
 
 	// Calculate the extent ready for setting the scale
 	const extent = calculateExtent(seriesNanoIdList, seriesLookup, validData.data);
@@ -515,37 +512,81 @@ export const createMultiSystem = (multiSystemPayload) => {
 			entity: dataObject.entity
 		}))
 	);
+	const keyList = multi_axis_mapping[multiSystemPayload.system];
+
+	const createIndividualSeries = (seriesConfig, id) => {
+		const data = validData.data.map((dataObject) =>
+			_.mapKeys(
+				_.pick(dataObject, Object.keys(_.invert(seriesConfig))),
+				(value, key) => _.invert(seriesConfig)[key]
+			)
+		);
+		const keyValueList = _.fromPairs(_.map(keyList, (key) => [_.get(seriesConfig, key), key]));
+		const filteredSeriesLookup = _.pick(seriesLookup, Object.keys(keyValueList));
+		const reKeyedfilteredSeriesLookup = _.mapKeys(
+			filteredSeriesLookup,
+			(value, key) => keyValueList[key]
+		);
+		const newExtent = calculateExtent(keyList, reKeyedfilteredSeriesLookup, data);
+		const newScale = calculateScale(
+			reKeyedfilteredSeriesLookup,
+			newExtent,
+			multiSystemPayload.config,
+			multiSystemPayload.system
+		);
+
+		return {
+			extent: newExtent,
+			scale: newScale
+		};
+	};
+
+	const individualExtents = _.mapValues(
+		_.keyBy(validSeriesConfig.data, 'id'),
+		(seriesConfig, id) => createIndividualSeries(seriesConfig, id).extent
+	);
+
+	const individualScales = _.mapValues(
+		_.keyBy(validSeriesConfig.data, 'id'),
+		(seriesConfig, id) => createIndividualSeries(seriesConfig, id).scale
+	);
+
+	console.log('individualScales', individualScales);
 
 	const systemConfig = _.fromPairs(
 		validSeriesConfig.data.map((seriesConfig) => [seriesConfig.id, seriesConfig])
 	);
 
-	// todo: these are not correctly inverted
+	// // todo: these are not correctly inverted
 
-	const systemScale = _.mapValues(_.keyBy(validSeriesConfig.data, 'id'), (seriesConfig) =>
-		_.mapKeys(
-			_.pick(scale, Object.keys(_.invert(seriesConfig))),
-			(value, key) => _.invert(seriesConfig)[key]
-		)
-	);
+	// const systemScale = _.mapValues(_.keyBy(validSeriesConfig.data, 'id'), (seriesConfig) =>
+	// 	_.mapKeys(
+	// 		_.pick(scale, Object.keys(_.invert(seriesConfig))),
+	// 		(value, key) => _.invert(seriesConfig)[key]
+	// 	)
+	// );
 
-	// todo: thjese are not correcty invertedf
+	// // todo: thjese are not correcty invertedf
 
-	const systemExtent = _.mapValues(_.keyBy(validSeriesConfig.data, 'id'), (seriesConfig) =>
-		_.mapKeys(
-			_.pick(extent, Object.keys(_.invert(seriesConfig))),
-			(value, key) => _.invert(seriesConfig)[key]
-		)
-	);
+	// const systemExtent = _.mapValues(_.keyBy(validSeriesConfig.data, 'id'), (seriesConfig) =>
+	// 	_.mapKeys(
+	// 		_.pick(extent, Object.keys(_.invert(seriesConfig))),
+	// 		(value, key) => _.invert(seriesConfig)[key]
+	// 	)
+	// );
 
+	const flattenedData = _.flatMap(Object.values(systemData), (value) => value);
+	const features = filterFeaturesByVisibility(multiSystemPayload.features);
+	console.log('features', features);
 	const series = {
 		data: systemData,
-		scale: systemScale,
-		extent: systemExtent,
+		scale: individualScales,
+		extent: individualExtents,
 		list: systemIdList,
 		config: systemConfig,
 		svg: createSeriesSvg,
-		feature: seriesPlanarFeature
+		vis: seriesPlanarFeature,
+		features: features
 	};
 
 	return {
